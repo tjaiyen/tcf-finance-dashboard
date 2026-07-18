@@ -131,6 +131,11 @@
   }
   header.top h1 { font-size: 30px; margin: 0; line-height: 1.05; font-weight: 600; }
   header.top .sub { color: var(--text-secondary); font-size: 13px; margin-top: 8px; max-width: 78ch; }
+  .nav-hint { color: var(--text-muted); font-size: 12px; margin-top: 10px; max-width: 78ch; }
+  .nav-hint kbd {
+    font-family: var(--font-body); font-size: 11px; color: var(--text-secondary);
+    background: color-mix(in srgb, var(--text-primary) 8%, transparent); border-radius: 4px; padding: 1px 5px;
+  }
   .theme-toggle {
     display: inline-flex; align-items: center; gap: 7px;
     font-family: var(--font-heading); font-weight: 500; background: transparent;
@@ -346,6 +351,7 @@
      cmdk entry points are hidden. */
   [data-view="interview"] #cmdkOpen,
   [data-view="interview"] .switcher,
+  [data-view="interview"] .nav-hint,
   [data-view="interview"] .cmdk-backdrop { display: none !important; }
   [data-view="interview"] .sidebar a:not([data-demo]) { display: none; }
   [data-view="interview"] .nav-group:not(:has(a[data-demo])) { display: none; }
@@ -446,6 +452,7 @@
       <div class="kicker">Finance Automation Engine</div>
       <h1>Operations Dashboard</h1>
       <div class="sub">A live read over 14 already-built, stress-tested components + a shared KPI registry &mdash; synthetic sample data throughout, every figure from a real deterministic tool run.</div>
+      <div class="nav-hint">New here? Click <strong>Interview Mode</strong> (top right) for a simplified 5-tool view, or explore the sidebar / press <kbd>&#8984;K</kbd> to search any tool or finding.</div>
     </div>
     <div class="top-actions">
       <div class="switcher">

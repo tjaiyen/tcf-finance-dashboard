@@ -11,6 +11,12 @@ Every figure on the page comes from a real, deterministic run of the underlying 
 synthetic sample data — nothing on the page is invented for display. See the disclaimer footer
 on the page itself for the full statement.
 
+## Getting started
+
+Open the live link above. Click **Interview Mode** (top right) for a simplified view down to
+5 tools, or explore the full sidebar — every tool has an Overview-panel summary, and `⌘K`
+searches across all tools and findings.
+
 ## What's here
 
 - **One file.** The entire dashboard is `index.html` — no build step, no server, no external
