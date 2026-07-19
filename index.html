@@ -290,8 +290,8 @@
   .tour-close:hover { color: var(--text-primary); }
   .tour-card h3 { margin: 0 0 6px; font-size: 16px; }
   .tour-card p { margin: 0 0 14px; font-size: 13.5px; line-height: 1.55; color: var(--text-secondary); }
-  .tour-nav { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-  .tour-dots { display: flex; gap: 5px; }
+  .tour-nav { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+  .tour-dots { display: flex; flex-wrap: wrap; gap: 5px; row-gap: 6px; }
   .tour-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); }
   .tour-dot.current { background: var(--accent); }
   .tour-btn { font: inherit; font-size: 12.5px; padding: 6px 13px; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--text-secondary); cursor: pointer; }
@@ -462,18 +462,18 @@
   .switcher-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
 
   /* ---- Interview Mode — declutters the default click-path down to the 5 tools the
-     live-demo walkthrough uses. CSS/attribute-only: the 20 sections themselves are
-     untouched, still reachable by scroll or a direct #hash — only the sidebar/switcher/
-     cmdk entry points are hidden. */
+     live-demo walkthrough uses. The 15 non-demo sections are actually hidden below
+     (display:none), not just their nav links -- a bare scroll/#hash into one of them is
+     a no-op while Interview Mode is active. The 20-stop "Take the tour" forces Full
+     Dashboard mode before it starts (see startTour()) specifically so every stop stays
+     reachable regardless of which mode the page loaded in. */
   [data-view="interview"] #cmdkOpen,
   [data-view="interview"] .switcher,
   [data-view="interview"] .nav-hint,
   [data-view="interview"] .cmdk-backdrop { display: none !important; }
   [data-view="interview"] .sidebar a:not([data-demo]) { display: none; }
   [data-view="interview"] .nav-group:not(:has(a[data-demo])) { display: none; }
-  /* The nav-link hide above was cosmetic only -- the section content itself stayed fully
-     reachable by scrolling or a direct #hash link even with the nav entry point hidden.
-     .section[data-demo] is set in JS from the matching sidebar link (single source of
+  /* .section[data-demo] is set in JS from the matching sidebar link (single source of
      truth, not a second hand-maintained list) right before Interview Mode is first applied. */
   [data-view="interview"] .section:not([data-demo]) { display: none; }
 
@@ -590,7 +590,7 @@
         <span class="switcher-label">Density</span>
         <button class="theme-toggle" id="densityToggle" title="Toggle layout density"><i class="ph ph-rows"></i>Comfortable</button>
       </div>
-      <button class="theme-toggle" id="tourStart" title="A guided 4-stop walkthrough of the headline findings, in the order the interview talking points recommend leading with"><i class="ph ph-compass"></i>Take the tour</button>
+      <button class="theme-toggle" id="tourStart" title="A guided 20-stop walkthrough covering every tool and reference tab on the dashboard, in sidebar order"><i class="ph ph-compass"></i>Take the tour</button>
       <button class="cmdk-open" id="cmdkOpen"><i class="ph ph-magnifying-glass"></i>Search<kbd>&#8984;K</kbd></button>
       <button class="theme-toggle" id="themeToggle"><i class="ph ph-moon-stars"></i>Toggle theme</button>
       <button class="theme-toggle" id="modeToggle" title="Toggle interview-ready view (hides search, switchers, and non-demo tools)"><i class="ph ph-presentation-chart"></i>Full Dashboard</button>
@@ -3777,15 +3777,35 @@ function buildFeed() {
 }
 
 /* ---------- Guided tour ----------
-   4 stops in the exact order INTERVIEW_TALKING_POINTS.md's "lead with these 4" controller
-   section recommends -- captions paraphrase that file's own already-verified numbers, nothing
-   invented here. Reuses scrollToSection (the same nav function the sidebar/cmdk use) rather
-   than a separate scroll mechanism. */
+   All 20 sidebar sections, in sidebar order. Every caption traces to one of three sources,
+   nothing invented: 4 stops (costroll/margin/vendorscorecard/bbcinv) keep their original,
+   already-tested INTERVIEW_TALKING_POINTS.md-sourced captions unchanged; 5 more
+   (timephasedpnl/yieldmix/energyvar/laboreff/infra) paraphrase that same file's other
+   sections; the remaining 11 adapt each tool's own already-shipped `.desc` copy. Reuses
+   scrollToSection (the same nav function the sidebar/cmdk use) rather than a separate scroll
+   mechanism. startTour() force-exits Interview Mode first (see below) since 15 of these 20
+   stops are non-demo sections Interview Mode hides entirely. */
 const TOUR_STEPS = [
+  { tab: "overview", title: "The whole engine, one screen", caption: "This walkthrough covers all 20 sections in the sidebar, in order — every tool's status rolls up into one verdict banner right here, alongside a findings feed of every flagged item across every tool, worst first." },
+  { tab: "architecture", title: "How the pipeline is wired", caption: "Data sources feed dbt_pipeline's staging/mart models, which feed the 15 tools — all sharing one KPI registry, 12 also sharing one flagging engine. Click any source box or shared-layer box below to trace its exact data-flow path through the diagram." },
+  { tab: "dbt", title: "From hand-shaped files to a real pipeline", caption: "Right now the 15 tools each read a hand-shaped sample file directly. This section shows what a real raw-export → tested-transformation → analysis pipeline in front of them looks like: 31 raw seeds → dbt staging (a malformed value becomes NULL and gets flagged, never crashes the load) → mart models shaped exactly like each tool's real input." },
+  { tab: "narrator", title: "AI commentary, verified before it ships", caption: "The model-drafted narrative here is illustrative only — the numbers underneath are always code-computed, never model output. Direction is independently sign-checked against the real variance and account type, so a model claiming 'favorable' on an actual cost increase gets rejected before it would ever show here." },
+  { tab: "recon", title: "ERP meets CPM", caption: "Two synthetic exports — one shaped like an ERP GL extract, one shaped like a CPM export — reconciled against each other to catch real mismatches and timing differences before they become a close problem." },
+  { tab: "timephasedpnl", title: "Overhead absorption, the literal formula", caption: "Phases an annual plan into periods, then blends actuals with forecast into one continuous Latest Estimate. One line item is a literal overhead-absorption volume variance — (latest-estimate volume − phased budgeted volume) × budgeted fixed overhead rate — the textbook formula, not an analogy to it." },
   { tab: "costroll", title: "The flat-average problem", caption: "Corn - Sweet's flat annual average looks fine: −4.2% vs. the $0.50 standard, inside the ±10% band. Broken into seasons it's a different story — Q1 +10.2%, Q3 −19.9%, Q4 +17.7% — three real cost swings the flat number was hiding until the season was already over." },
+  { tab: "costsim", title: "Is the standard still plausible?", caption: "A probabilistic companion to Cost-Roll Validator, not a replacement — same PO-history data, a different question: is the current standard still statistically plausible given the full shape of real PO experience, not just its average? Seeded Monte Carlo draws cross-check a closed-form analytic calculation per item." },
   { tab: "margin", title: "$20,150 in unrecovered margin", caption: "Freight underpriced, Storage never invoiced, Brokerage a small gap, Cash Discount underpriced — split cleanly by unbilled vs. underpriced because those need different fixes. Two customers, Distributor B ($10,250) and Regional Grocer A ($9,900), account for the entire total." },
+  { tab: "yieldmix", title: "One formula, not a special case", caption: "Material usage variance splits into yield (raw-to-finished loss) and mix (blend-ratio deviation) via the standard weighted-average method. A single-material run isn't a special case: mix comes out to exactly $0.00, because it's the N=1 case of the same general formula multi-material blends use." },
+  { tab: "energyvar", title: "Rate vs. efficiency, and which numbers are grounded", caption: "Decomposes energy variance into rate (paid the right $/kWh?) and efficiency (used the right kWh for the output?). The underlying $/kWh rates and ammonia-vs-cryogenic efficiency figures are vendor-quote-sourced — illustrative, but with a real reference point behind them." },
+  { tab: "laboreff", title: "The same decomposition, a stronger caveat", caption: "Same rate-vs-efficiency split, applied to labor for the first time as a literal dollar decomposition. This one carries a stronger caveat than Energy Variance's: zero labor/headcount/wage data exists anywhere in the underlying research, so these figures are illustrative of the mechanic only, with no external grounding at all." },
+  { tab: "ap", title: "Three-way match, keyed and banded", caption: "Purchase order vs. goods receipt vs. vendor invoice, matched on (po_number, item). Duplicate-key rows are aggregated first, matching a real PO amendment or partial receipt. Bands catch price variance, quantity overbilling, and duplicate invoices — each a distinct, real AP control." },
   { tab: "vendorscorecard", title: "Vendor accountability, quantified", caption: "Highline Ag Supply: 0% on-time delivery this period, and an estimated $6,000 in internal-process impact from those late deliveries — not just a delivery-rate percentage, a real dollar translation of what being late cost internally." },
+  { tab: "opsmonitor", title: "Judged against its own history, not a standard", caption: "No labor/headcount standard exists to compare against here — instead, each product's trend and output are judged against their own trailing history via trend-break detection, plus two new checks: a flatline detector and a period-gap detector, proven non-redundant on real fixture data." },
+  { tab: "fsma", title: "Would this survive a real FDA records request?", caption: "For each lot, checks whether every required Critical Tracking Event has a complete Key Data Element and no impossibly-dated event. A lot failing any check would not survive a real FDA records request within FSMA's actual 24-hour response window." },
   { tab: "bbcinv", title: "PACA trust exposure", caption: "A borrowing-base line gets $12,000 carved out of its eligible collateral value because of unpaid-grower PACA trust exposure — a real statutory risk specific to buying from growers, and something a generic finance candidate almost never knows to model." },
+  { tab: "infra", title: "Built against the JD's own highest weight", caption: "Scores discovery observations per domain, weighted by which JD Essential Duty it maps to. Systems, Data & Automation is weighted 5× — the single highest weight of any domain in the job description — and 6 of the 15 tools are tagged directly to it." },
+  { tab: "crosstool", title: "A different shape — reading the other 14", caption: "The 15th tool doesn't own its own domain data — it reads a findings feed spanning the other 14 tools' already-verified results and produces one prioritized, guardrailed action list. Try the sandbox below: build a hypothetical recommendation and watch it run through the real hallucination/coverage/priority-consistency checks." },
+  { tab: "glossary", title: "Every example, a real number", caption: "Same discipline as everywhere else in this repo: every example here is a real number from a real run of the tool it describes — nothing invented for this page. Three formula terms have a live calculator — change the numbers and watch the result recompute." },
 ];
 let tourStep = 0;
 function tourHighlightTarget() {
@@ -3799,6 +3819,10 @@ function renderTourCard() {
   if (!el) {
     el = document.createElement("div");
     el.id = "tourCard"; el.className = "tour-card"; el.hidden = true;
+    el.tabIndex = -1;
+    el.setAttribute("role", "dialog");
+    el.setAttribute("aria-label", "Guided dashboard tour");
+    el.setAttribute("aria-live", "polite");
     document.body.appendChild(el);
   }
   const step = TOUR_STEPS[tourStep];
@@ -3815,6 +3839,12 @@ function renderTourCard() {
       </div>
     </div>`;
   el.hidden = false;
+  // el itself (not a child button) is the focus target: children are torn down and rebuilt via
+  // innerHTML every step, so focusing one of them would just get orphaned to <body> on the next
+  // render (verified empirically -- confirmed the actual failure mode, not a guess). Focusing the
+  // stable, tabindex=-1 container instead keeps focus anchored in the dialog across every step,
+  // and doubles as the aria-live announcement trigger for screen readers.
+  el.focus();
   el.querySelector("#tourExit").addEventListener("click", exitTour);
   el.querySelector("#tourPrev").addEventListener("click", () => { if (tourStep > 0) { tourStep--; goToTourStep(); } });
   el.querySelector("#tourNext").addEventListener("click", () => {
@@ -3822,16 +3852,28 @@ function renderTourCard() {
     tourStep++; goToTourStep();
   });
 }
+let tourHighlightTimer = null;
 function goToTourStep() {
   scrollToSection(TOUR_STEPS[tourStep].tab);
   renderTourCard();
-  setTimeout(tourHighlightTarget, 350);
+  clearTimeout(tourHighlightTimer);
+  tourHighlightTimer = setTimeout(tourHighlightTarget, 350);
 }
 function startTour() {
+  // Interview Mode hides 15 of these 20 stops' sections entirely (display:none) -- scrolling
+  // to a hidden section is a silent no-op, so a tour started there would desync (card
+  // advances, page/sidebar don't) the moment it hit any non-demo stop. Force Full Dashboard
+  // first so every stop is actually reachable; this is a real, persisted mode switch (same
+  // applyMode() the toggle button uses), not a temporary suspend/restore.
+  if (root.getAttribute("data-view") === "interview") {
+    applyMode("Full");
+    try { localStorage.setItem(MODE_KEY, "Full"); } catch (e) { console.warn("mode persistence unavailable:", e); }
+  }
   tourStep = 0;
   goToTourStep();
 }
 function exitTour() {
+  clearTimeout(tourHighlightTimer);
   document.querySelectorAll(".tour-highlight").forEach(el => el.classList.remove("tour-highlight"));
   const el = document.getElementById("tourCard");
   if (el) el.hidden = true;
