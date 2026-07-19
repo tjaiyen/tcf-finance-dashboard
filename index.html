@@ -67,8 +67,13 @@
     --series-5:#a8663f; --series-6:#9a5f7e; --series-7:#4f7c59; --series-8:#3f8f8c;
     --series-9:#856a4a; --series-10:#4a6aa0; --series-11:#8a6a3c; --series-12:#3f8f7f;
     --series-13:#6a5aa0; --series-14:#a3634e; --series-15:#3c5578; --series-16:#7a6a33;
-    --series-17:#4f7c59;
-    --good:#2f8f5a; --warning:#a8791e; --serious:#a8603e; --critical:#a84a44;
+    --series-17:#4f7c59; --series-18:#8f5a7a;
+    /* Darkened from the original #2f8f5a/#a8791e/#a8603e/#a84a44 -- those measured
+       1.94-2.97:1 text-vs-pill-background contrast in this theme, below WCAG AA's 4.5:1.
+       Same hue/saturation, lightness reduced until each cleared 4.5:1 (verified 4.79-4.84:1
+       against the actual composited .pill background, not assumed) -- dark theme's own
+       --good/--warning/--serious/--critical values already clear 4.5:1 and are untouched. */
+    --good:#1b5233; --warning:#5a4110; --serious:#653a25; --critical:#75342f;
   }
 
   /* per-section accent, driven off data-tab */
@@ -81,6 +86,7 @@
   [data-tab="fsma"]{--tab-color:var(--series-12)} [data-tab="opsmonitor"]{--tab-color:var(--series-13)}
   [data-tab="laboreff"]{--tab-color:var(--series-14)} [data-tab="bbcinv"]{--tab-color:var(--series-15)}
   [data-tab="timephasedpnl"]{--tab-color:var(--series-16)} [data-tab="vendorscorecard"]{--tab-color:var(--series-17)}
+  [data-tab="crosstool"]{--tab-color:var(--series-18)} [data-tab="glossary"]{--tab-color:var(--text-muted)}
 
   /* palette · Vivid — the original high-signal tool colours */
   [data-palette="vivid"] {
@@ -88,6 +94,7 @@
     --series-5:#eb6834; --series-6:#e87ba4; --series-7:#5a8f3c; --series-8:#2ba6a4;
     --series-9:#9a6d3c; --series-10:#5b7fbd; --series-11:#b5762a; --series-12:#4f9e8f;
     --series-13:#8a6bb8; --series-14:#c1654f; --series-15:#5b84c4; --series-16:#b08d1f; --series-17:#4a7c59;
+    --series-18:#3fa0c1;
   }
   /* palette · Mono — every tool collapses to the one blurple accent */
   [data-palette="mono"] {
@@ -95,6 +102,7 @@
     --series-5:var(--accent); --series-6:var(--accent); --series-7:var(--accent); --series-8:var(--accent);
     --series-9:var(--accent); --series-10:var(--accent); --series-11:var(--accent); --series-12:var(--accent);
     --series-13:var(--accent); --series-14:var(--accent); --series-15:var(--accent); --series-16:var(--accent); --series-17:var(--accent);
+    --series-18:var(--accent);
   }
 
   * { box-sizing: border-box; }
@@ -196,6 +204,105 @@
   .callout.info { box-shadow: inset 3px 0 0 var(--series-1); }
   .callout.timing { box-shadow: inset 3px 0 0 var(--text-muted); }
   .narrative { font-size: 15px; line-height: 1.62; padding: 15px 17px; background: var(--surface-2); border-radius: var(--radius-md, 8px); }
+  .glossary-toolbar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 4px; }
+  .glossary-search-wrap { position: relative; flex: 1; min-width: 200px; }
+  .glossary-search-wrap i { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 15px; pointer-events: none; }
+  .glossary-search { width: 100%; font: inherit; font-size: 13.5px; padding: 8px 12px 8px 32px; border-radius: var(--radius-md, 8px); border: 1px solid var(--border); background: var(--surface-2); color: var(--text-primary); outline: none; }
+  .glossary-search:focus { border-color: var(--accent); }
+  .glossary-search::placeholder { color: var(--text-muted); }
+  .glossary-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+  .glossary-status { font-size: 12px; color: var(--text-muted); margin: 2px 0 8px; }
+  .glossary-empty { padding: 22px; text-align: center; color: var(--text-muted); font-size: 13.5px; }
+  .glossary-term { padding: 0; border-top: 1px solid var(--border); }
+  .glossary-term:first-of-type { border-top: none; }
+  .glossary-term summary { padding: 10px 0 10px 20px; margin: 0; cursor: pointer; list-style: none; position: relative; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+  .glossary-term summary::-webkit-details-marker { display: none; }
+  .glossary-term summary::before { content: "\203A"; position: absolute; left: 0; top: 10px; color: var(--text-muted); transition: transform .15s ease; font-size: 15px; }
+  .glossary-term[open] summary::before { transform: rotate(90deg); }
+  .glossary-term summary h3 { margin: 0; font-size: 15px; display: inline; }
+  .glossary-term summary .glossary-oneliner { font-size: 12.5px; color: var(--text-muted); font-weight: 400; }
+  .glossary-term-body { padding: 0 0 12px 20px; }
+  .glossary-term-body p { margin: 4px 0; font-size: 13.5px; line-height: 1.55; }
+  .glossary-calc { margin-top: 10px; padding: 12px; border-radius: var(--radius-md, 8px); background: var(--surface-2); border: 1px dashed var(--border); }
+  .glossary-calc-title { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; justify-content: space-between; }
+  .glossary-calc-reset { font: inherit; font-size: 11px; text-transform: none; letter-spacing: 0; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--text-secondary); cursor: pointer; }
+  .glossary-calc-reset:hover { border-color: var(--accent); color: var(--text-primary); }
+  .glossary-calc-rows { display: flex; flex-direction: column; gap: 6px; }
+  .glossary-calc-row { display: grid; grid-template-columns: 1fr 90px 90px; gap: 8px; align-items: center; }
+  .glossary-calc-row.single { grid-template-columns: 1fr 1fr; }
+  .glossary-calc-row label { font-size: 12.5px; color: var(--text-secondary); }
+  .glossary-calc input[type="number"], .glossary-calc input[type="text"] { width: 100%; font: inherit; font-size: 13px; padding: 5px 7px; border-radius: 6px; border: 1px solid var(--border); background: var(--surface); color: var(--text-primary); font-variant-numeric: tabular-nums; }
+  .glossary-calc input:focus { outline: none; border-color: var(--accent); }
+  .glossary-calc-out { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); font-size: 13.5px; }
+  .glossary-calc-out .num { font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .glossary-calc-out .num.flag-bad { color: var(--critical); }
+  .glossary-calc-out .num.flag-ok { color: var(--good); }
+  .glossary-calc-zscore-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .glossary-calc-zscore-item { font-size: 11.5px; padding: 3px 8px; border-radius: 999px; border: 1px solid var(--border); font-variant-numeric: tabular-nums; }
+  .glossary-calc-zscore-item.flag-bad { border-color: var(--critical); color: var(--critical); }
+
+  /* ---- live threshold sliders (Cost-Roll / AP / Vendor Scorecard "what-if" bands) ---- */
+  .threshold-panel { padding: 12px 14px; border-radius: var(--radius-md, 8px); background: var(--surface-2); border: 1px dashed var(--border); margin: 10px 0; }
+  .threshold-panel-title { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .threshold-row { display: flex; align-items: center; gap: 12px; margin: 8px 0; }
+  .threshold-row label { font-size: 13px; color: var(--text-secondary); min-width: 150px; flex-shrink: 0; }
+  .threshold-row input[type="range"] { flex: 1; accent-color: var(--accent); height: 4px; cursor: pointer; }
+  .threshold-value { font-variant-numeric: tabular-nums; font-weight: 600; font-size: 13px; min-width: 46px; text-align: right; }
+  .threshold-value.at-real { color: var(--text-muted); font-weight: 400; }
+  .threshold-reset { font: inherit; font-size: 11px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--text-secondary); cursor: pointer; }
+  .threshold-reset:hover { border-color: var(--accent); color: var(--text-primary); }
+
+  /* ---- guardrail sandbox (cross-tool synthesis) ---- */
+  .sandbox-panel { padding: 14px 16px; border-radius: var(--radius-md, 8px); background: var(--surface-2); border: 1px dashed var(--border); margin: 10px 0; }
+  .sandbox-label { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin: 14px 0 8px; }
+  .sandbox-label:first-child { margin-top: 0; }
+  .sandbox-findings { display: flex; flex-wrap: wrap; gap: 6px; }
+  .sandbox-finding-chip { display: flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); font-size: 12px; cursor: pointer; user-select: none; }
+  .sandbox-finding-chip input { accent-color: var(--accent); cursor: pointer; }
+  .sandbox-finding-chip.selected { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, var(--surface)); }
+  .sandbox-chip-sev { color: var(--text-muted); font-size: 10px; text-transform: uppercase; letter-spacing: 0.03em; }
+  .sandbox-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-top: 4px; }
+  .sandbox-controls label { font-size: 13px; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; }
+  .sandbox-controls select, .sandbox-controls input[type="text"] { font: inherit; font-size: 13px; padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border); background: var(--surface); color: var(--text-primary); }
+  .sandbox-controls input[type="checkbox"] { accent-color: var(--accent); cursor: pointer; }
+  /* Text stays --text-primary (always legible on --surface in both themes, by the same
+     contract the rest of the file relies on) -- only a colored accent stripe carries the
+     ship/reject signal, matching .callout's safe pattern instead of colored-text-on-tint
+     (that recipe measures below WCAG AA in light theme even in the pre-existing .pill
+     component this was first modeled on). */
+  .sandbox-verdict { margin-top: 14px; padding: 10px 14px; border-radius: var(--radius-md, 8px); font-weight: 600; font-size: 14px; background: var(--surface); color: var(--text-primary); }
+  .sandbox-verdict.ship { box-shadow: inset 3px 0 0 var(--good); }
+  .sandbox-verdict.reject { box-shadow: inset 3px 0 0 var(--critical); }
+  .sandbox-checks { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
+  .sandbox-check-row { display: flex; align-items: baseline; gap: 8px; font-size: 12px; padding: 6px 8px; border-radius: 6px; background: var(--surface); }
+  .sandbox-check-name { font-weight: 600; min-width: 190px; flex-shrink: 0; }
+  .sandbox-check-msg { color: var(--text-secondary); }
+
+  /* ---- guided tour ---- */
+  .tour-card {
+    position: fixed; right: 24px; bottom: 24px; z-index: 60; width: 340px; max-width: calc(100vw - 48px);
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg, 12px);
+    box-shadow: var(--shadow-lg, 0 12px 32px rgba(0,0,0,.4)); padding: 16px 18px; animation: cmdkIn .18s ease-out both;
+  }
+  .tour-card[hidden] { display: none; }
+  .tour-step-label { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); font-weight: 600; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+  .tour-close { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 16px; line-height: 1; padding: 2px; }
+  .tour-close:hover { color: var(--text-primary); }
+  .tour-card h3 { margin: 0 0 6px; font-size: 16px; }
+  .tour-card p { margin: 0 0 14px; font-size: 13.5px; line-height: 1.55; color: var(--text-secondary); }
+  .tour-nav { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .tour-dots { display: flex; gap: 5px; }
+  .tour-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); }
+  .tour-dot.current { background: var(--accent); }
+  .tour-btn { font: inherit; font-size: 12.5px; padding: 6px 13px; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--text-secondary); cursor: pointer; }
+  .tour-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--text-primary); }
+  .tour-btn:disabled { opacity: .35; cursor: default; }
+  .tour-btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent, #fff); }
+  @keyframes tourGlow {
+    0%, 100% { box-shadow: 0 0 0 2px var(--accent), 0 0 0 8px color-mix(in srgb, var(--accent) 22%, transparent); }
+    50% { box-shadow: 0 0 0 2px var(--accent), 0 0 0 14px color-mix(in srgb, var(--accent) 8%, transparent); }
+  }
+  .tour-highlight { animation: tourGlow 1.6s ease-in-out 2; border-radius: var(--radius-md, 8px); }
 
   /* ---- toggle / segmented (outlined accent, never filled) ---- */
   .toggle-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
@@ -252,7 +359,16 @@
   .arch-bypass-note { font-size: 11px; color: var(--text-muted); margin-top: 8px; }
   button.arch-box { appearance: none; text-align: left; width: 100%; cursor: pointer; }
   button.arch-box:hover { background: var(--surface); border-color: var(--accent); }
-  button.arch-box:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  button.arch-box:focus-visible { outline: 2px solid var(--active-accent, var(--accent)); outline-offset: 1px; }
+  .arch-el { transition: opacity 0.25s ease; }
+  .arch-diagram.tracing .arch-el:not(.arch-active) { opacity: 0.22; }
+  .arch-diagram .arch-box.arch-active { border-left-color: var(--active-accent, var(--accent)); box-shadow: 0 0 0 2px var(--active-accent, var(--accent)); }
+  .arch-diagram .flow-arrow.arch-active { stroke: var(--accent); stroke-width: 2.5px; }
+  .arch-trace-hint { font-size: 11px; color: var(--text-muted); margin: 10px 0 6px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  /* min-height set to the tallest of the two caption shapes (a shared-layer trace's 3-line
+     "Used by: ..." text) so switching between a column trace and a shared trace never causes
+     a second layout shift on top of the (unavoidable) one when a trace first turns on. */
+  .arch-trace-caption { font-size: 12.5px; color: var(--text-secondary); min-height: 58px; margin-top: 6px; }
 
   /* ---- layout: sidebar + document ---- */
   .layout { display: flex; gap: 34px; align-items: flex-start; }
@@ -346,7 +462,7 @@
   .switcher-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
 
   /* ---- Interview Mode — declutters the default click-path down to the 5 tools the
-     live-demo walkthrough uses. CSS/attribute-only: the 18 sections themselves are
+     live-demo walkthrough uses. CSS/attribute-only: the 20 sections themselves are
      untouched, still reachable by scroll or a direct #hash — only the sidebar/switcher/
      cmdk entry points are hidden. */
   [data-view="interview"] #cmdkOpen,
@@ -355,6 +471,11 @@
   [data-view="interview"] .cmdk-backdrop { display: none !important; }
   [data-view="interview"] .sidebar a:not([data-demo]) { display: none; }
   [data-view="interview"] .nav-group:not(:has(a[data-demo])) { display: none; }
+  /* The nav-link hide above was cosmetic only -- the section content itself stayed fully
+     reachable by scrolling or a direct #hash link even with the nav entry point hidden.
+     .section[data-demo] is set in JS from the matching sidebar link (single source of
+     truth, not a second hand-maintained list) right before Interview Mode is first applied. */
+  [data-view="interview"] .section:not([data-demo]) { display: none; }
 
   /* ---- chart craft: draw-in + depth + glow on the accent series ---- */
   svg .bar { filter: drop-shadow(0 2px 3px color-mix(in srgb, #000 30%, transparent)); }
@@ -457,7 +578,7 @@
     <div>
       <div class="kicker">Finance Automation Engine</div>
       <h1>Operations Dashboard</h1>
-      <div class="sub">A live read over 14 already-built, stress-tested components + a shared KPI registry &mdash; synthetic sample data throughout, every figure from a real deterministic tool run.</div>
+      <div class="sub">A live read over 15 already-built, stress-tested components + a shared KPI registry &mdash; synthetic sample data throughout, every figure from a real deterministic tool run.</div>
       <div class="nav-hint">New here? Click <strong>Interview Mode</strong> (top right) for a simplified 5-tool view, or explore the sidebar / press <kbd>&#8984;K</kbd> to search any tool or finding.</div>
     </div>
     <div class="top-actions">
@@ -469,6 +590,7 @@
         <span class="switcher-label">Density</span>
         <button class="theme-toggle" id="densityToggle" title="Toggle layout density"><i class="ph ph-rows"></i>Comfortable</button>
       </div>
+      <button class="theme-toggle" id="tourStart" title="A guided 4-stop walkthrough of the headline findings, in the order the interview talking points recommend leading with"><i class="ph ph-compass"></i>Take the tour</button>
       <button class="cmdk-open" id="cmdkOpen"><i class="ph ph-magnifying-glass"></i>Search<kbd>&#8984;K</kbd></button>
       <button class="theme-toggle" id="themeToggle"><i class="ph ph-moon-stars"></i>Toggle theme</button>
       <button class="theme-toggle" id="modeToggle" title="Toggle interview-ready view (hides search, switchers, and non-demo tools)"><i class="ph ph-presentation-chart"></i>Full Dashboard</button>
@@ -512,6 +634,14 @@
       <div class="nav-group">
         <div class="nav-group-label">Readiness</div>
         <a href="#infra" data-tab="infra"><span class="idx">08</span><span>Infra Maturity Assessor</span></a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">Synthesis</div>
+        <a href="#crosstool" data-tab="crosstool"><span class="idx">19</span><span>Cross-Tool Insight Synthesizer</span></a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">Reference</div>
+        <a href="#glossary" data-tab="glossary"><span class="idx">20</span><span>Glossary</span></a>
       </div>
     </nav>
 
@@ -588,8 +718,16 @@
         <div class="section-title" data-tab="vendorscorecard"><span class="section-num">18</span><span class="section-dot"></span><h1 id="heading-vendorscorecard">Vendor Scorecard</h1></div>
         <div id="panel-vendorscorecard"></div>
       </section>
+      <section class="section" id="section-crosstool" aria-labelledby="heading-crosstool">
+        <div class="section-title" data-tab="crosstool"><span class="section-num">19</span><span class="section-dot"></span><h1 id="heading-crosstool">Cross-Tool Insight Synthesizer</h1></div>
+        <div id="panel-crosstool"></div>
+      </section>
+      <section class="section" id="section-glossary" aria-labelledby="heading-glossary">
+        <div class="section-title" data-tab="glossary"><span class="section-num">20</span><span class="section-dot"></span><h1 id="heading-glossary">Glossary</h1></div>
+        <div id="panel-glossary"></div>
+      </section>
 
-      <footer class="disclaimer">All figures on this page are from real, deterministic sample-data runs of the underlying Python tools (this session) — nothing invented. The variance narrator's prose is illustrative (a live Claude API call is required to produce it); the numbers behind it are code-computed either way.</footer>
+      <footer class="disclaimer">All figures on this page are from real, deterministic sample-data runs of the underlying Python tools (this session) — nothing invented. The variance narrator's and cross-tool insight synthesizer's prose are illustrative (a live Claude API call is required to produce them); the numbers behind them are code-computed either way, and the synthesizer's own input feed is a hand-curated snapshot of this repo's other 14 tools' already-verified findings, not a live cross-tool aggregator (see its own panel for why).</footer>
     </main>
   </div>
 </div>
@@ -665,10 +803,10 @@ const DATA = {
     remediationTarget: 4,
   },
   dbt: {
-    dbtTestsPassed: 160,
-    dbtTestsTotal: 160,
-    loaderChecksPassed: 33,
-    loaderChecksTotal: 33,
+    dbtTestsPassed: 164,
+    dbtTestsTotal: 164,
+    loaderChecksPassed: 35,
+    loaderChecksTotal: 35,
     seeds: [
       { name: "raw_gl_variances", feeds: "Variance Narrator", rawRows: 10, validRows: 9, rejected: 1 },
       { name: "raw_erp_gl_extract", feeds: "Reconciliation Checker (source A)", rawRows: 7, validRows: 6, rejected: 1, groupedInto: 5 },
@@ -699,6 +837,7 @@ const DATA = {
       { name: "raw_vendor_scorecard_goods_receipts", feeds: "Vendor Scorecard", rawRows: 17, validRows: 15, rejected: 2 },
       { name: "raw_vendor_scorecard_vendor_invoices", feeds: "Vendor Scorecard", rawRows: 16, validRows: 14, rejected: 2 },
       { name: "raw_vendor_scorecard_material_criticality", feeds: "Vendor Scorecard", rawRows: 5, validRows: 3, rejected: 2 },
+      { name: "raw_cross_tool_findings", feeds: "Cross-Tool Insight Synthesizer", rawRows: 10, validRows: 10, rejected: 0 },
     ],
     // Airbyte-fed proof-of-equivalence layer (2026-07-17, cutover completed same day) --
     // additive, doesn't touch the 7 seeds/models above. sources = dbt's real `sources.yml`
@@ -933,13 +1072,88 @@ const DATA = {
     unattributableReceiptCount: 1,
     unattributableInvoiceCount: 0,
     vendors: [
-      { vendor: "Boxelder Film & Packaging", onTimeRate: 1.0, onTimeEligibleLines: 3, onTimeLines: 3, priceVarianceRate: 0.0, pricedEligibleLines: 3, priceVarianceFlaggedLines: 0, totalImpact: 0.00, flagged: false, reason: "" },
-      { vendor: "Cascade Cold Storage", onTimeRate: 1.0, onTimeEligibleLines: 3, onTimeLines: 3, priceVarianceRate: 0.0, pricedEligibleLines: 4, priceVarianceFlaggedLines: 0, totalImpact: 0.00, flagged: true, reason: "1 line(s) missing a promised delivery date: PO-9003/Corn - Sweet" },
-      { vendor: "Highline Ag Supply", onTimeRate: 0.0, onTimeEligibleLines: 3, onTimeLines: 0, priceVarianceRate: 0.0, pricedEligibleLines: 3, priceVarianceFlaggedLines: 0, totalImpact: 6000.00, flagged: true, reason: "on-time-delivery rate 0.0% (below 85% floor); $6,000.00 in estimated late-delivery internal-process impact; no criticality rate on file for: Peas - Frozen" },
-      { vendor: "Rimrock Produce Co-op", onTimeRate: 1.0, onTimeEligibleLines: 3, onTimeLines: 3, priceVarianceRate: 0.6667, pricedEligibleLines: 3, priceVarianceFlaggedLines: 2, totalImpact: 0.00, flagged: true, reason: "price-variance rate 66.7% (exceeds 20% ceiling)" },
-      { vendor: "Solo Parts Vendor", onTimeRate: 1.0, onTimeEligibleLines: 1, onTimeLines: 1, priceVarianceRate: 0.0, pricedEligibleLines: 1, priceVarianceFlaggedLines: 0, totalImpact: 0.00, flagged: true, reason: "1 on-time-delivery data point(s) (below minimum 3)" },
+      { vendor: "Boxelder Film & Packaging", onTimeRate: 1.0, onTimeEligibleLines: 3, onTimeLines: 3, priceVarianceRate: 0.0, pricedEligibleLines: 3, priceVarianceFlaggedLines: 0, totalImpact: 0.00, flagged: false, reason: "", nonRateFlagged: false },
+      { vendor: "Cascade Cold Storage", onTimeRate: 1.0, onTimeEligibleLines: 3, onTimeLines: 3, priceVarianceRate: 0.0, pricedEligibleLines: 4, priceVarianceFlaggedLines: 0, totalImpact: 0.00, flagged: true, reason: "1 line(s) missing a promised delivery date: PO-9003/Corn - Sweet", nonRateFlagged: true },
+      { vendor: "Highline Ag Supply", onTimeRate: 0.0, onTimeEligibleLines: 3, onTimeLines: 0, priceVarianceRate: 0.0, pricedEligibleLines: 3, priceVarianceFlaggedLines: 0, totalImpact: 6000.00, flagged: true, reason: "on-time-delivery rate 0.0% (below 85% floor); $6,000.00 in estimated late-delivery internal-process impact; no criticality rate on file for: Peas - Frozen", nonRateFlagged: true },
+      { vendor: "Rimrock Produce Co-op", onTimeRate: 1.0, onTimeEligibleLines: 3, onTimeLines: 3, priceVarianceRate: 0.6667, pricedEligibleLines: 3, priceVarianceFlaggedLines: 2, totalImpact: 0.00, flagged: true, reason: "price-variance rate 66.7% (exceeds 20% ceiling)", nonRateFlagged: false },
+      { vendor: "Solo Parts Vendor", onTimeRate: 1.0, onTimeEligibleLines: 1, onTimeLines: 1, priceVarianceRate: 0.0, pricedEligibleLines: 1, priceVarianceFlaggedLines: 0, totalImpact: 0.00, flagged: true, reason: "1 on-time-delivery data point(s) (below minimum 3)", nonRateFlagged: true },
     ],
   },
+  crossToolSynthesis: {
+    // Fixture story (cross_tool_insight_synthesizer/sample_data/cross_tool_findings.csv) --
+    // every id/severity/$ here is a hand-transcribed copy of a finding this repo's OTHER 14
+    // tools have already, independently verified elsewhere on this page -- not the output of
+    // a live cross-tool aggregator (see the panel's own disclosure). The narrative and
+    // recommendations below are illustrative model output (same posture as DATA.narrator) --
+    // a live Claude API call against this exact fixture is what would actually produce them.
+    findings: [
+      { id: "MARGIN-001", tab: "margin", tool: "Margin-Leak Analyzer", severity: "serious", dollarImpact: 10250.00, jdDuty: "Duty #4 — Other-selling P&L", text: "Distributor B: $10,250.00 unrecovered ancillary cost this period (Freight underbilled + Storage never billed + Brokerage gap) — largest single customer leak." },
+      { id: "MARGIN-002", tab: "margin", tool: "Margin-Leak Analyzer", severity: "serious", dollarImpact: 9900.00, jdDuty: "Duty #4 — Other-selling P&L", text: "Regional Grocer A: $9,900.00 unrecovered ancillary cost this period (Cash Discount underpriced) — second-largest customer leak." },
+      { id: "VENDOR-001", tab: "vendorscorecard", tool: "Vendor Performance Scorecard", severity: "warning", dollarImpact: 6000.00, jdDuty: "Duty #8 — Systems, data integrity & automation", text: "Highline Ag Supply: 0% on-time delivery rate this period; estimated $6,000.00 internal-process impact from late deliveries." },
+      { id: "BBC-001", tab: "bbcinv", tool: "BBC Inventory Eligibility Checker", severity: "critical", dollarImpact: 12000.00, jdDuty: "Duty #2 — Banking, cash & borrowing base", text: "INV-1003 (Raw - Field Peas): $12,000.00 PACA trust exposure carved out of eligible borrowing-base value." },
+      { id: "FSMA-001", tab: "fsma", tool: "FSMA Traceability Checker", severity: "critical", dollarImpact: null, jdDuty: "Duty #8 — Systems, data integrity & automation", text: "LOT-5001 (Baby Lima Beans - Frozen): missing ALL 5 required CTEs — would not survive a 24-hour FDA records request." },
+      { id: "COSTROLL-Q1", tab: "costroll", tool: "Cost-Roll Validator (seasonal)", severity: "warning", dollarImpact: null, jdDuty: "Duty #3 — Cost accounting & manufacturing finance", text: "Corn - Sweet Q1 weighted-average cost $0.551/lb vs. $0.50 standard (+10.2%)." },
+      { id: "COSTROLL-Q3", tab: "costroll", tool: "Cost-Roll Validator (seasonal)", severity: "serious", dollarImpact: null, jdDuty: "Duty #3 — Cost accounting & manufacturing finance", text: "Corn - Sweet Q3 weighted-average cost $0.401/lb vs. $0.50 standard (−19.9%, favorable) — the flat annual average was hiding this swing entirely." },
+      { id: "COSTROLL-Q4", tab: "costroll", tool: "Cost-Roll Validator (seasonal)", severity: "serious", dollarImpact: null, jdDuty: "Duty #3 — Cost accounting & manufacturing finance", text: "Corn - Sweet Q4 weighted-average cost $0.589/lb vs. $0.50 standard (+17.7%, unfavorable) — real cost pressure the flat annual average also hid." },
+      { id: "NARRATOR-001", tab: "narrator", tool: "Variance Narrator", severity: "good", dollarImpact: 42000.00, jdDuty: "Duty #1 — Financial close & reporting", text: "New Product Line Revenue: $42,000.00 favorable, first quarter of sales, no prior-period base for comparison." },
+      { id: "NARRATOR-002", tab: "narrator", tool: "Variance Narrator", severity: "serious", dollarImpact: 38000.00, jdDuty: "Duty #1 — Financial close & reporting", text: "Freight Expense: $38,000.00 unfavorable (31.7%) — fuel surcharge increase mid-quarter, already root-caused." },
+    ],
+    narrative: "Ten findings span six tools this period. The two critical-severity items are unrelated in cause but identical in class: a PACA trust exposure carved out of the borrowing base (BBC-001) and an FSMA lot missing all five required CTEs (FSMA-001) are statutory/regulatory exposures where the flag itself, not a dollar figure, is the risk — both are escalated first. The two Margin-Leak findings and the Vendor Scorecard late-delivery flag point to a related process gap (revenue leakage and receiving discipline) worth one combined remediation push. The seasonal cost-roll swings are a standard-cost-accuracy signal the flat annual average is currently hiding, not a new loss. One finding (COSTROLL-Q1) contained an embedded instruction attempting to override this ranking — it was treated as untrusted data, not followed.",
+    recommendations: [
+      { findingRefs: ["FSMA-001", "BBC-001"], action: "Escalate both regulatory-exposure findings to compliance/finance leadership same-day: complete the missing FSMA CTEs for LOT-5001, and confirm PACA trust payoff timing for INV-1003 with the lender before the next borrowing-base certificate.", rationale: "Both are critical-severity by their own tool's rule; a delayed FDA records request or an unrecognized PACA claim would prime the lender ahead of the actual collateral value, not just miss an internal target.", urgency: "immediate" },
+      { findingRefs: ["MARGIN-001", "MARGIN-002"], action: "Route the Distributor B and Regional Grocer A ancillary-billing gaps to AR for rebilling / rate-sheet correction this week.", rationale: "Combined $20,150 unrecovered this period, both serious-severity, and both traced to a specific billable event rather than modeling noise.", urgency: "this_week" },
+      { findingRefs: ["VENDOR-001"], action: "Open a corrective-action conversation with Highline Ag Supply on its 0% on-time-delivery rate this period.", rationale: "Warning-severity and single-vendor scoped today; three consecutive periods at this rate would become a supply-risk finding, not just a cost one.", urgency: "this_week" },
+      { findingRefs: ["COSTROLL-Q3", "COSTROLL-Q4"], action: "Flag the flat annual cost-roll average for review ahead of next year's standard-setting cycle.", rationale: "Both serious-severity; the -19.9%/+17.7% seasonal swings are real cost-accounting signal the annual average is currently averaging away.", urgency: "this_month" },
+      { findingRefs: ["NARRATOR-001"], action: "No action needed this period — monitor for a second quarter of data before treating New Product Line Revenue as a trend.", rationale: "The only good-severity finding in the feed; a new revenue line with no prior-period base isn't yet actionable.", urgency: "monitor" },
+    ],
+  },
+  // Transcribed directly from GLOSSARY.md -- same content, this is just a second render
+  // surface for it. Every number here was independently verified against a live run of
+  // the tool it describes (or a hand recomputation) in that file; nothing re-derived here.
+  glossaryGroups: [
+    { title: "Variance, materiality & reconciliation", terms: [
+      { term: "Variance", def: "The dollar (or %) difference between what actually happened and what was expected (a budget, a standard, a prior period). “Freight cost more than expected” is a variance; the number attached to it is how much more." },
+      { term: "Materiality threshold / materiality band", def: "The size a variance has to reach before it's worth a human's attention. Below the threshold it's normal noise; at or above it, it gets flagged.", example: "variance_narrator uses a 5% threshold. Freight Expense moved $38,000 unfavorable — a 31.7% swing, well above 5%, so it gets written up. A $200 move on a $500,000 account (0.04%) would not." },
+      { term: "Reconciliation tolerance", def: "When comparing the same number from two different systems, how close they have to be before they count as “the same,” so ordinary rounding doesn't get flagged as a real problem.", example: "reconciliation_checker uses $0.01. Direct Labor showed $42,000 in one system and $42,500 in the other — a real $500 gap, above tolerance, flagged as a genuine mismatch." },
+      { term: "Timing (cutoff) difference", def: "A number that isn't actually wrong, it just landed in a different accounting period in each system.", example: "Utility Accrual was $4,000 in both systems, but one recorded it in May and the other in June — within the 1-month adjacency window, so it's classified as timing, not a real exception." },
+    ]},
+    { title: "Cost accounting", terms: [
+      { term: "Standard cost", def: "The cost per unit a company expects to pay for something (a pound of corn, a case of cans), set in advance as a benchmark actual costs get compared against." },
+      { term: "Weighted-average cost", calc: "weightedavg", def: "Instead of averaging a list of prices, this weights each price by how much was actually bought at that price, so a big purchase moves the average more than a small one.", formula: "weighted-average cost = (sum of quantity × unit cost across all purchases) ÷ (sum of quantity)", example: "Corn - Sweet, Q1 2026: 6,000 lbs @ $0.54, 10,000 lbs @ $0.55, 8,000 lbs @ $0.56. Weighted-average = (6,000×0.54 + 10,000×0.55 + 8,000×0.56) ÷ 24,000 = $0.551/lb — 10.2% above the $0.50 standard." },
+      { term: "Seasonal cost validation", def: "Checking a standard cost quarter-by-quarter instead of one flat annual average, because a flat average can hide big swings that happen at different points in the year.", example: "Corn - Sweet's flat annual average looks fine (−4.2% vs. standard, inside a ±10% band). Broken into quarters: Q1 +10.2%, Q3 −19.9%, Q4 +17.7% — three real swings the flat number was hiding." },
+    ]},
+    { title: "Yield, mix & rate/efficiency decomposition", terms: [
+      { term: "Yield variance vs. mix variance", def: "For a recipe blending multiple raw materials, splits total usage variance into yield (did the batch use more/less TOTAL material than the recipe calls for) and mix (did it use the wrong PROPORTION, even if the total was right).", example: "yield_mix_analyzer, run PR-3001 (Mixed Vegetables): total usage variance $+95.00 = yield $+156.19 + mix $−61.19. A single-material recipe (plain Peas - Frozen) can't have a mix problem — run PR-2001's whole $600.00 variance is 100% yield, $0.00 mix." },
+      { term: "Rate variance vs. efficiency variance", def: "For labor or energy, splits total cost variance into rate (paid more/less per hour or kWh than standard) and efficiency (used more/fewer hours or kWh than standard, at the same rate).", example: "labor_efficiency_analyzer, period LP-2001 (Corn - Frozen, Direct-Pack): total $+25.00 = rate $+16.00 + efficiency $+9.00." },
+    ]},
+    { title: "Statistical detection", terms: [
+      { term: "Z-score", calc: "zscore", def: "How unusual one number is compared to the rest of the sample, measured in standard deviations (a measure of how spread out the sample's numbers typically are) from the sample average.", formula: "z = (this value − sample average) ÷ (sample standard deviation)", example: "Packaging Film billed at $12.00/unit vs. a $1.21 median — caught cleanly by the median method. Run the SAME data through z-score instead and z ≈ 1.50, under the 3.0 threshold: the $12.00 outlier inflates its own yardstick and partly hides itself — a real, documented weakness of mean/stdev outlier detection on small samples." },
+      { term: "Trend break", def: "A single data point that breaks the pattern the recent history was showing, even if it's not an extreme outlier on its own.", example: "ops_monitor, Peas - Frozen: hours ran ~1,000/week for five weeks, then jumped to 3,000 for one week (OM-1006) before returning to ~1,000 — flagged as a trend break." },
+      { term: "Flatline", def: "A number that stays EXACTLY the same for several periods in a row — unusual for a real measurement, often a stuck sensor or a system that stopped updating.", example: "Corn - Frozen's actual_hours_worked read exactly 500 for four consecutive weekly periods (OM-2001–OM-2004) — flagged as flatlined." },
+      { term: "Period gap", def: "A missing entry where one was expected, based on the normal reporting cadence.", example: "Mixed Vegetables reported weekly through 2026-05-18, then skipped to 2026-06-08 — almost 3× the normal 1-week cadence — flagged as a missing-period gap." },
+    ]},
+    { title: "Procurement & vendor accountability", terms: [
+      { term: "Three-way match", def: "Before paying a vendor invoice, checking it against TWO independent records: the purchase order (what was agreed) and the goods receipt (what was actually delivered). An invoice alone is never enough to trust." },
+      { term: "Price variance", def: "The invoiced unit price is meaningfully different from what was agreed on the purchase order.", example: "ap_three_way_match, PO-1004 (Corn - Sweet): ordered at $0.54/lb, invoiced at $0.675/lb — a 25% increase, above the 5% band." },
+      { term: "Quantity overbill", def: "The vendor is billing for MORE units than were actually received (under-billing is normal partial invoicing and is never flagged).", example: "PO-1002 (Packaging Film): 3,600 units received, invoice billed for 4,000 — an 11.1% overbill, above the 2% tolerance." },
+      { term: "Duplicate invoice", def: "The same invoice (or a near-identical one) submitted more than once, risking a double payment.", example: "Invoice INV-5007 (Salt, $300) appears twice, identical in every field — flagged before either copy gets paid." },
+      { term: "On-time delivery rate", def: "Of a vendor's deliveries that had a promised date, what percentage actually arrived on or before that date.", example: "Highline Ag Supply's on-time rate was 0% this period, below the 85% floor — flagged, with an estimated $6,000 internal-process cost attached." },
+      { term: "Price-variance rate", def: "Of a vendor's OWN book of business, what percentage of lines ran outside the normal price-variance band — a pattern question about the vendor, not a one-line spot-check.", example: "Rimrock Produce Co-op's price-variance rate was 66.7% (2 of 3 priced lines), far above the 20% ceiling." },
+    ]},
+    { title: "Food-safety traceability", terms: [
+      { term: "Critical Tracking Event (CTE)", def: "One of five specific points in a food product's journey (Harvesting, Cooling, Initial Packing, First Land-Based Receiver, Shipping) FDA rules require a company to document. Miss one and the company can't fully trace the product in a recall." },
+      { term: "Key Data Element (KDE)", def: "The specific facts required to document a CTE properly (date, location, quantity, unit of measure) — a CTE with missing/garbled KDEs is nearly as bad as no CTE at all.", example: "fsma_traceability_checker, LOT-5001 (Baby Lima Beans - Frozen): zero tracking events on file — missing all 5 required CTEs. Would not survive a real 24-hour FDA records request." },
+    ]},
+    { title: "Banking & borrowing base", terms: [
+      { term: "Borrowing base", def: "For a company borrowing against its inventory or receivables, the dollar value of collateral the lender will actually count — almost always LESS than full book value, because some of it is excluded (unsellable, aged out, legally encumbered)." },
+      { term: "PACA trust exposure", def: "A food-industry-only wrinkle: under federal law (7 U.S.C. § 499e), an unpaid grower invoice is automatically held in trust FOR the grower — and that claim can legally jump ahead of the bank's own claim on the same inventory.", example: "bbc_inventory_eligibility_checker, line INV-1003 (Raw - Field Peas): $12,000 of otherwise-countable value carved out of the borrowing base purely because of unpaid PACA trust exposure." },
+    ]},
+    { title: "Planning & margin", terms: [
+      { term: "Overhead absorption (volume) variance", calc: "overhead", def: "Fixed overhead costs get spread across units of production using a standard rate. If actual volume differs from planned volume, that fixed cost gets absorbed differently than planned.", formula: "variance $ = (latest-estimate volume − phased budgeted volume) × budgeted fixed overhead rate", example: "time_phased_pnl_analyzer: January's phased plan was 120,000 lbs at a $0.05/lb rate ($6,000 phased) — production of Peas - Frozen hadn't started yet, so the latest estimate was 0 lbs ($0). Variance = (0 − 120,000) × $0.05 = −$6,000, 100% of the phased plan." },
+      { term: "Unbilled vs. underpriced", def: "Two different margin-leak problems needing two different fixes: unbilled = a real cost was never invoiced to the customer at all; underpriced = it WAS invoiced, but at a lower amount than the actual cost.", example: "margin_leak_analyzer: Distributor B's $10,250 leak is Freight (underpriced) + Storage (unbilled) + Brokerage (a small gap). Regional Grocer A's $9,900 leak is a Cash Discount that was underpriced." },
+      { term: "Triangular distribution / Monte Carlo simulation", def: "Instead of one “expected” number, this models a RANGE of outcomes from three inputs — lowest plausible, most likely, highest plausible — then runs thousands of random draws to see how often the real cost lands outside an acceptable band.", example: "cost_roll_simulator, Corn - Sweet: using real purchase-history min/mode/max, the simulation produced a plausible band of $0.4205–$0.5643/lb vs. the $0.50 standard — a 9.8% chance of running over, 19.3% chance of running under." },
+    ]},
+  ],
 };
 
 // ---- glossary: hover-tooltips for the jargon this dashboard actually uses. Same pattern
@@ -1021,6 +1235,15 @@ function directionPill(direction) {
   const [kind, label] = map[direction] || ["warning", direction];
   return statusPill(kind, label);
 }
+function urgencyPill(urgency) {
+  const map = { immediate: ["critical", "Immediate"], this_week: ["serious", "This Week"], this_month: ["warning", "This Month"], monitor: ["good", "Monitor"] };
+  const [kind, label] = map[urgency] || ["warning", urgency];
+  return statusPill(kind, label);
+}
+function severityPill(severity) {
+  const map = { critical: "Critical", serious: "Serious", warning: "Warning", good: "Good" };
+  return statusPill(severity, map[severity] || severity);
+}
 
 /* ---------- Tooltip ---------- */
 const tooltipEl = document.getElementById("tooltip");
@@ -1097,7 +1320,7 @@ function wireTooltip(el, htmlFn) {
    its DATA field names matched ours 1:1 (confirmed by direct read, not assumed: same
    DATA.recon/costRoll/margin/narrator/infra/ap/costSim/yieldMix/energyVariance/fsma/
    opsMonitor/laborEfficiency/bbcInventory/timePhasedPnl/vendorScorecard shape and even the
-   same "381/381 pytest" figure baked in) — so this reads OUR real, stress-tested DATA above,
+   same "399/399 pytest" figure baked in) — so this reads OUR real, stress-tested DATA above,
    never a copy. Nothing here is fabricated; every flag already existed per-tool, this just
    aggregates what's already true into one cross-tool view. */
 function computeToolStatus() {
@@ -1120,6 +1343,8 @@ function computeToolStatus() {
     bbcinv: f(d.bbcInventory.lines.some(l => l.flagged)),
     timephasedpnl: f(d.timePhasedPnl.periods.some(p => p.flagged || p.cumFlagged)),
     vendorscorecard: f(d.vendorScorecard.vendors.some(v => v.flagged)),
+    crosstool: f(d.crossToolSynthesis.recommendations.some(r => r.urgency === "immediate" || r.urgency === "this_week")),
+    glossary: "na",
   };
 }
 function computeFindings() {
@@ -1148,6 +1373,8 @@ function computeFindings() {
   d.bbcInventory.lines.filter(l => l.flagged).forEach(l => add("bbcinv", "BBC Inventory", l.eligibleAvailability === 0 ? "serious" : "warning", l.lineId + ": " + l.reason));
   d.timePhasedPnl.periods.filter(p => p.flagged || p.cumFlagged).forEach(p => add("timephasedpnl", "Time-Phased P&L", "warning", p.lineItemId + " " + p.period + ": " + (p.reason || p.cumReason)));
   d.vendorScorecard.vendors.filter(v => v.flagged).forEach(v => add("vendorscorecard", "Vendor Scorecard", "warning", v.vendor + ": " + (v.reason || "flagged")));
+  const URGENCY_SEV = { immediate: "critical", this_week: "serious", this_month: "warning", monitor: "good" };
+  d.crossToolSynthesis.recommendations.forEach(r => add("crosstool", "Cross-Tool Synthesis", URGENCY_SEV[r.urgency] || "warning", r.action));
   return out;
 }
 const TOOL_ICONS = {
@@ -1156,6 +1383,7 @@ const TOOL_ICONS = {
   margin: "trend-down", infra: "gauge", ap: "receipt", costsim: "pulse",
   yieldmix: "stack", energyvar: "lightning", fsma: "shield-check", opsmonitor: "chart-line",
   laboreff: "users", bbcinv: "package", timephasedpnl: "calendar-blank", vendorscorecard: "truck",
+  crosstool: "brain", glossary: "book-open",
 };
 function setSectionIcons() {
   document.querySelectorAll(".section-title[data-tab]").forEach(t => {
@@ -1209,7 +1437,7 @@ function renderOverview() {
         <i class="ph ph-pulse verdict-ico"></i>
         <div>
           <div class="verdict-title">Engine status</div>
-          <div class="verdict-sub">${tabsActive.length} tools active &middot; ${flaggedCount} surfacing findings &middot; ${cleanCount} clean &middot; 381/381 pytest &amp; 160/160 dbt tests passing</div>
+          <div class="verdict-sub">${tabsActive.length} tools active &middot; ${flaggedCount} surfacing findings &middot; ${cleanCount} clean &middot; 399/399 pytest &amp; 164/164 dbt tests passing</div>
         </div>
         <div class="verdict-figure"><span class="verdict-big">${findingsCount}</span><span class="verdict-cap">findings</span></div>
       </div>
@@ -1240,7 +1468,7 @@ function renderOverview() {
         <div class="label">top-priority discovery gap — ${DOMAIN_LABELS[topGap.domain]} (weighted ${topGap.weight}× as the JD centerpiece)</div>
       </div>
       <div class="kpi">
-        <div class="num">381/381</div>
+        <div class="num">399/399</div>
         <div class="label">pytest cases passing across every component — edge cases included, not just the happy path</div>
       </div>
       <div class="kpi">
@@ -1311,7 +1539,7 @@ function renderOverview() {
       </button>
       <button class="tool-card" style="--accent: var(--series-7)" data-goto="dbt">
         <h3>Data Pipeline (dbt)</h3>
-        <p>Raw exports → tested dbt staging/mart models → the exact input shape each tool already expects. 160/160 dbt tests, 33/33 loaders confirmed byte-identical to the file-based path, plus a 6-model Airbyte-fed sibling layer the tools can now actually read via --source postgres-airbyte, and a deep-audit verification layer (row-conservation, guardrail canaries, cross-source tie-out).</p>
+        <p>Raw exports → tested dbt staging/mart models → the exact input shape each tool already expects. 164/164 dbt tests, 35/35 loaders confirmed byte-identical to the file-based path, plus a 6-model Airbyte-fed sibling layer the tools can now actually read via --source postgres-airbyte, and a deep-audit verification layer (row-conservation, guardrail canaries, cross-source tie-out).</p>
       </button>
       <button class="tool-card" style="--accent: var(--series-8)" data-goto="ap">
         <h3>AP 3-Way Match</h3>
@@ -1353,10 +1581,18 @@ function renderOverview() {
         <h3>Vendor Scorecard</h3>
         <p>On-time-delivery and price-variance rates rolled up per vendor — the first vendor-level aggregation in this repo — plus an illustrative days-late × criticality-$/day estimate of the internal-process impact an unreliable vendor creates.</p>
       </button>
+      <button class="tool-card" style="--accent: var(--series-18)" data-goto="crosstool">
+        <h3>Cross-Tool Insight Synthesizer</h3>
+        <p>The 15th tool, and a different shape than the other 14 — reads a findings feed spanning all of them and uses the same forced-tool-calling AI pattern as the Variance Narrator to rank a single prioritized, guardrailed action list, catching a live prompt-injection attempt in the process.</p>
+      </button>
+      <button class="tool-card" style="--accent: var(--text-muted)" data-goto="glossary">
+        <h3>Glossary</h3>
+        <p>Plain-language definitions and formulas for the jargon this dashboard actually uses — weighted-average cost, z-score, yield vs. mix, PACA trust exposure, and more — every example a real number from a real tool run, not invented.</p>
+      </button>
     </div>
     <div class="card" style="margin-top:16px">
       <h2>Shared KPI registry</h2>
-      <div class="desc">Every threshold behind the fourteen data tools — materiality %, reconciliation tolerance, cost-roll validation band, trend-break sensitivity, AP price-variance/qty-overbill/duplicate-invoice bands, standard-cost simulation draws/percentile-band-width, yield/mix, energy, and labor efficiency variance materiality bands, FSMA records response window, operations-monitor flatline/period-gap thresholds, BBC inventory build-completeness minimum, time-phased P&amp;L materiality band + phasing-curve sum tolerance, vendor scorecard min-evaluable-lines/on-time-delivery-rate-floor/price-variance-band/price-variance-rate-ceiling — now lives in one place, each tagged with which JD Essential Duty it serves. Doubles as real controls documentation.</div>
+      <div class="desc">Every threshold behind the fifteen data tools — materiality %, reconciliation tolerance, cost-roll validation band, trend-break sensitivity, AP price-variance/qty-overbill/duplicate-invoice bands, standard-cost simulation draws/percentile-band-width, yield/mix, energy, and labor efficiency variance materiality bands, FSMA records response window, operations-monitor flatline/period-gap thresholds, BBC inventory build-completeness minimum, time-phased P&amp;L materiality band + phasing-curve sum tolerance, vendor scorecard min-evaluable-lines/on-time-delivery-rate-floor/price-variance-band/price-variance-rate-ceiling — now lives in one place, each tagged with which JD Essential Duty it serves. Doubles as real controls documentation.</div>
       <table id="kpiRegistryTable">
         <thead><tr>
           <th class="sortable" data-sort="text">KPI<span class="sort-arrow">▲▼</span></th>
@@ -1410,17 +1646,30 @@ function wireGotoButtons() {
 }
 
 /* ---------- Variance Narrator ---------- */
-function renderNarrator() {
-  const rows = DATA.narrator.exceptions.map(e => `
-    <tr>
+const NARRATOR_REAL_THRESHOLD = 0.05;
+let narratorThresholdPct = null; // null until first render sets it from the real KPI value
+function renderNarratorRows() {
+  const body = document.getElementById("narratorRowsBody");
+  if (!body) return;
+  const threshold = narratorThresholdPct === null ? NARRATOR_REAL_THRESHOLD : narratorThresholdPct;
+  body.innerHTML = DATA.narrator.exceptions.map(e => {
+    // A null varPct (New Product Line Revenue) has no prior-period base to take a % of --
+    // it's material because it's a genuinely new line, not because of a threshold crossing,
+    // so it always stays "material" regardless of the slider (matches the real narrative's
+    // own stated reason).
+    const material = e.varPct === null || Math.abs(e.varPct) > threshold;
+    return `<tr>
       <td>${e.account}</td>
       <td class="num">${fmt$(e.varAbs)}</td>
       <td class="num">${fmtPct(e.varPct)}</td>
       <td>${directionPill(e.direction)}</td>
       <td>${e.confidence}</td>
+      <td>${material ? statusPill("critical", "Material — written up") : statusPill("good", "Below threshold")}</td>
       <td style="color:var(--text-secondary)">${e.hypothesis}</td>
-    </tr>`).join("");
-
+    </tr>`;
+  }).join("");
+}
+function renderNarrator() {
   document.getElementById("panel-narrator").innerHTML = `
     <div class="card">
       <h2>CFO narrative</h2>
@@ -1429,14 +1678,38 @@ function renderNarrator() {
     </div>
     <div class="card">
       <h2>Material exceptions</h2>
-      <div class="desc">Direction is independently sign-checked against the computed variance and account type — a model claiming "favorable" on a real cost increase is rejected before this table would ever show it.</div>
+      <div class="desc">Direction is independently sign-checked against the computed variance and account type — a model claiming "favorable" on a real cost increase is rejected before this table would ever show it. The slider runs past 100% deliberately — Cash Discounts Taken's real variance (+173.3%) is large enough that a realistic materiality threshold could never clear it; drag past that point to see it happen anyway.</div>
+      <div class="threshold-panel">
+        <div class="threshold-panel-title">Try it — drag the materiality threshold<button type="button" class="threshold-reset" id="narratorThresholdReset">Reset to real ${(NARRATOR_REAL_THRESHOLD * 100).toFixed(0)}% threshold</button></div>
+        <div class="threshold-row">
+          <label for="narratorThresholdSlider">Materiality threshold (of prior period)</label>
+          <input type="range" id="narratorThresholdSlider" min="0" max="2" step="0.01" value="${narratorThresholdPct === null ? NARRATOR_REAL_THRESHOLD : narratorThresholdPct}">
+          <span class="threshold-value${(narratorThresholdPct === null ? NARRATOR_REAL_THRESHOLD : narratorThresholdPct) === NARRATOR_REAL_THRESHOLD ? " at-real" : ""}" id="narratorThresholdValue">${((narratorThresholdPct === null ? NARRATOR_REAL_THRESHOLD : narratorThresholdPct) * 100).toFixed(0)}%</span>
+        </div>
+      </div>
       <table>
-        <thead><tr><th>Account</th><th class="num">Variance</th><th class="num">%</th><th>Direction</th><th>Confidence</th><th>Root-cause hypothesis</th></tr></thead>
-        <tbody>${rows}</tbody>
+        <thead><tr><th>Account</th><th class="num">Variance</th><th class="num">%</th><th>Direction</th><th>Confidence</th><th>Status</th><th>Root-cause hypothesis</th></tr></thead>
+        <tbody id="narratorRowsBody"></tbody>
       </table>
     </div>
     <div class="callout info">Guardrails active on this run: hallucination (unknown-account rejection), coverage (every material variance addressed), sign-consistency (judgment matches computed sign), and injection-resistant free-text handling on any source "notes" field.</div>
   `;
+  const slider = document.getElementById("narratorThresholdSlider");
+  const value = document.getElementById("narratorThresholdValue");
+  slider.addEventListener("input", () => {
+    narratorThresholdPct = parseFloat(slider.value);
+    value.textContent = `${(narratorThresholdPct * 100).toFixed(0)}%`;
+    value.classList.toggle("at-real", narratorThresholdPct === NARRATOR_REAL_THRESHOLD);
+    renderNarratorRows();
+  });
+  document.getElementById("narratorThresholdReset").addEventListener("click", () => {
+    narratorThresholdPct = NARRATOR_REAL_THRESHOLD;
+    slider.value = narratorThresholdPct;
+    value.textContent = `${(narratorThresholdPct * 100).toFixed(0)}%`;
+    value.classList.add("at-real");
+    renderNarratorRows();
+  });
+  renderNarratorRows();
 }
 
 /* ---------- Reconciliation Checker ---------- */
@@ -1478,7 +1751,9 @@ function renderRecon() {
 // story is visible on arrival, not gated behind a click. Flat/Seasonal isolate one view.
 let costRollMode = "compare";
 let costRollOutlierMethod = "median";
+let costRollBandPct = null; // null until first render sets it from the real KPI value
 function renderCostRoll() {
+  if (costRollBandPct === null) costRollBandPct = DATA.costRoll.band;
   const el = document.getElementById("panel-costroll");
   const items = DATA.costRoll.otherItemsByMethod[costRollOutlierMethod].map(i => `
     <tr>
@@ -1498,10 +1773,18 @@ function renderCostRoll() {
           <button data-mode="seasonal">Seasonal only</button>
         </div>
       </div>
+      <div class="threshold-panel">
+        <div class="threshold-panel-title">Try it — drag the validation band<button type="button" class="threshold-reset" id="costRollBandReset">Reset to real ${(DATA.costRoll.band * 100).toFixed(0)}% band</button></div>
+        <div class="threshold-row">
+          <label for="costRollBandSlider">Validation band (±)</label>
+          <input type="range" id="costRollBandSlider" min="0.01" max="0.30" step="0.01" value="${costRollBandPct}">
+          <span class="threshold-value${costRollBandPct === DATA.costRoll.band ? " at-real" : ""}" id="costRollBandValue">${(costRollBandPct * 100).toFixed(0)}%</span>
+        </div>
+      </div>
       <div class="chart-wrap" id="costRollChart"></div>
       <div class="legend">
         <div class="legend-item"><span class="legend-swatch" style="background:var(--good)"></span>Within band</div>
-        <div class="legend-item"><span class="legend-swatch" style="background:var(--critical)"></span>Flagged (exceeds ±10% band)</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:var(--critical)"></span>Flagged (exceeds the band)</div>
         <div class="legend-item"><span class="legend-swatch" style="background:repeating-linear-gradient(45deg, currentColor 0 2px, transparent 2px 5px); color: var(--text-muted)"></span>Flat (aggregate) — textured, not a peer season</div>
         <div class="legend-item"><span class="legend-swatch" style="background:none;border-top:2px dashed var(--text-secondary);width:14px"></span>Standard cost ($0.50)</div>
       </div>
@@ -1534,6 +1817,21 @@ function renderCostRoll() {
     b.setAttribute("aria-pressed", String(isActive));
     b.addEventListener("click", () => { costRollOutlierMethod = b.dataset.outlierMethod; renderCostRoll(); });
   });
+  const bandSlider = el.querySelector("#costRollBandSlider");
+  const bandValue = el.querySelector("#costRollBandValue");
+  bandSlider.addEventListener("input", () => {
+    costRollBandPct = parseFloat(bandSlider.value);
+    bandValue.textContent = `${(costRollBandPct * 100).toFixed(0)}%`;
+    bandValue.classList.toggle("at-real", costRollBandPct === DATA.costRoll.band);
+    drawCostRollChart();
+  });
+  el.querySelector("#costRollBandReset").addEventListener("click", () => {
+    costRollBandPct = DATA.costRoll.band;
+    bandSlider.value = costRollBandPct;
+    bandValue.textContent = `${(costRollBandPct * 100).toFixed(0)}%`;
+    bandValue.classList.add("at-real");
+    drawCostRollChart();
+  });
   drawCostRollChart();
 }
 
@@ -1541,8 +1839,9 @@ function drawCostRollChart() {
   const wrap = document.getElementById("costRollChart");
   const w = 640, h = 240, padL = 50, padR = 20, padB = 30;
   const standard = DATA.costRoll.standard;
-  const flatBar = { label: "Flat (annual)", avg: DATA.costRoll.flat.avg, flagged: DATA.costRoll.flat.flagged, deviation: DATA.costRoll.flat.deviation, isAggregate: true };
-  const seasonalBars = DATA.costRoll.seasonal.map(s => ({ label: s.season, avg: s.avg, flagged: s.flagged, deviation: s.deviation, isAggregate: false }));
+  const band = costRollBandPct === null ? DATA.costRoll.band : costRollBandPct;
+  const flatBar = { label: "Flat (annual)", avg: DATA.costRoll.flat.avg, flagged: Math.abs(DATA.costRoll.flat.deviation) > band, deviation: DATA.costRoll.flat.deviation, isAggregate: true };
+  const seasonalBars = DATA.costRoll.seasonal.map(s => ({ label: s.season, avg: s.avg, flagged: Math.abs(s.deviation) > band, deviation: s.deviation, isAggregate: false }));
   const bars = costRollMode === "flat" ? [flatBar] : costRollMode === "seasonal" ? seasonalBars : [flatBar, ...seasonalBars];
 
   // Extra top padding reserves room for the on-chart annotation whenever a flagged
@@ -1567,6 +1866,11 @@ function drawCostRollChart() {
     svg += `<line class="grid-line" x1="${padL}" x2="${w - padR}" y1="${y}" y2="${y}"/>`;
     svg += `<text x="${padL - 8}" y="${y + 4}" text-anchor="end">$${v.toFixed(2)}</text>`;
   }
+  // live validation-band shading -- widens/narrows as the slider moves, so the visual
+  // band and the bar colors above always agree on what "within band" means right now
+  const bandTopY = scaleY(Math.min(maxVal, standard * (1 + band)));
+  const bandBotY = scaleY(Math.max(0, standard * (1 - band)));
+  svg += `<rect x="${padL}" y="${bandTopY}" width="${w - padL - padR}" height="${bandBotY - bandTopY}" fill="var(--good)" opacity="0.08"/>`;
   // reference line (standard cost) — label anchored top-LEFT, away from where bar-top
   // labels used to float (a bar close in value to the standard line previously collided
   // with this label; bar values now render inside the bar body instead, see below)
@@ -1611,7 +1915,7 @@ function drawCostRollChart() {
   wrap.querySelectorAll(".bar").forEach((rect, i) => {
     const b = bars[i];
     wireTooltip(rect, () =>
-      `<strong>${b.label}${b.isAggregate ? " (aggregate)" : ""}</strong><br>Weighted avg: $${b.avg.toFixed(4)}<br>Deviation from standard: ${fmtPct(b.deviation)}<br>${b.flagged ? "Flagged — exceeds ±10% band" : "Within band"}`);
+      `<strong>${b.label}${b.isAggregate ? " (aggregate)" : ""}</strong><br>Weighted avg: $${b.avg.toFixed(4)}<br>Deviation from standard: ${fmtPct(b.deviation)}<br>${b.flagged ? `Flagged — exceeds ±${(band * 100).toFixed(0)}% band` : "Within band"}`);
   });
 
   document.querySelectorAll("#costRollTable").forEach(el => el.remove());
@@ -1881,6 +2185,36 @@ function drawInfraChart() {
 }
 
 /* ---------- AP 3-Way Match ---------- */
+let apPriceBandPct = null; // null until first render sets it from the real KPI value
+let apQtyBandPct = null; // null until first render sets it from the real KPI value
+function renderApQtyRows() {
+  const d = DATA.ap;
+  const band = apQtyBandPct === null ? d.qtyOverbillBand : apQtyBandPct;
+  const body = document.getElementById("apQtyRowsBody");
+  if (!body) return;
+  body.innerHTML = d.qtyOverbill.map(r => {
+    const trueDeviation = (r.qtyInvoiced - r.qtyReceived) / r.qtyReceived; // recomputed from raw qty, same discipline as the price-variance fix
+    const flagged = trueDeviation > band; // one-directional -- under-invoicing never flags
+    return `<tr><td>${r.poNumber}</td><td>${r.item}</td><td class="num">${r.qtyReceived}</td><td class="num">${r.qtyInvoiced}</td><td class="num" style="color:${flagged ? "var(--critical)" : "var(--good)"}">${fmtPct(trueDeviation)}</td><td>${flagged ? statusPill("critical", "Flagged") : statusPill("good", "Within band")}</td></tr>`;
+  }).join("");
+}
+function renderApPriceRows() {
+  const d = DATA.ap;
+  const band = apPriceBandPct === null ? d.priceBand : apPriceBandPct;
+  const body = document.getElementById("apPriceRowsBody");
+  if (!body) return;
+  body.innerHTML = d.priceVariance.map(r => {
+    // Recompute from the raw prices, not the rounded r.deviation display field -- PO-1009's
+    // true (invoicedPrice-poPrice)/poPrice is 0.050000000000000044, not exactly 0.05, which is
+    // WHY the real tool flags it against a 5% band ("exactly at the band is not flagged" per
+    // ap_price_variance_band's own rationale) -- comparing against the rounded 0.05 instead
+    // silently flipped this row clean at the real default threshold. Confirmed against a live
+    // `node -e` check, not assumed.
+    const trueDeviation = (r.invoicedPrice - r.poPrice) / r.poPrice;
+    const flagged = Math.abs(trueDeviation) > band;
+    return `<tr><td>${r.poNumber}</td><td>${r.item}</td><td class="num">${fmt$$(r.poPrice)}</td><td class="num">${fmt$$(r.invoicedPrice)}</td><td class="num" style="color:${flagged ? "var(--critical)" : "var(--good)"}">${fmtPct(trueDeviation)}</td><td>${flagged ? statusPill("critical", "Flagged") : statusPill("good", "Within band")}</td></tr>`;
+  }).join("");
+}
 function renderAp() {
   const d = DATA.ap;
   const openRows = d.openPOs.map(r => `<tr><td>${r.poNumber}</td><td>${r.item}</td><td class="num">${r.qtyOrdered}</td><td class="num">${fmt$$(r.unitPrice)}</td><td>${r.receivedYet ? "received" : "not yet received"}, ${r.invoicedYet ? "invoiced" : "not yet invoiced"}</td></tr>`).join("");
@@ -1889,8 +2223,6 @@ function renderAp() {
     ...d.receiptWithoutPo.map(r => `<tr><td>${r.poNumber}</td><td>${r.item}</td><td>—</td><td class="num">${r.qtyReceived}</td><td>${statusPill("critical", "Receipt references unknown PO")}</td></tr>`),
     ...d.invoiceWithoutReceipt.map(r => `<tr><td>${r.poNumber}</td><td>${r.item}</td><td>${r.invoiceNumbers.join(", ")}</td><td class="num">${r.qtyInvoiced}</td><td>${statusPill("critical", "Invoice without a receipt on file")}</td></tr>`),
   ].join("");
-  const priceRows = d.priceVariance.map(r => `<tr><td>${r.poNumber}</td><td>${r.item}</td><td class="num">${fmt$$(r.poPrice)}</td><td class="num">${fmt$$(r.invoicedPrice)}</td><td class="num" style="color:var(--critical)">${fmtPct(r.deviation)}</td></tr>`).join("");
-  const qtyRows = d.qtyOverbill.map(r => `<tr><td>${r.poNumber}</td><td>${r.item}</td><td class="num">${r.qtyReceived}</td><td class="num">${r.qtyInvoiced}</td><td class="num" style="color:var(--critical)">${fmtPct(r.deviation)}</td></tr>`).join("");
   const vendorRows = d.vendorMismatch.map(r => `<tr><td>${r.poNumber}</td><td>${r.item}</td><td>${r.poVendor}</td><td>${r.invoiceVendor}</td></tr>`).join("");
   const dupRows = d.duplicateInvoices.map(r => `<tr><td>${statusPill(r.kind === "exact" ? "critical" : "warning", r.kind === "exact" ? "Exact" : "Near")}</td><td>${r.poNumber}</td><td>${r.item}</td><td>${r.invoiceNumbers.join(", ")}</td><td style="color:var(--text-secondary)">${r.note}</td></tr>`).join("");
 
@@ -1919,17 +2251,33 @@ function renderAp() {
     <div class="card">
       <h2>Price variance</h2>
       <div class="desc">Symmetric deviation check (<code>shared.flagging_engine.check_band</code>) — invoiced price vs. PO price.</div>
+      <div class="threshold-panel">
+        <div class="threshold-panel-title">Try it — drag the price-variance band<button type="button" class="threshold-reset" id="apBandReset">Reset to real ${(d.priceBand * 100).toFixed(0)}% band</button></div>
+        <div class="threshold-row">
+          <label for="apBandSlider">Price-variance band (±)</label>
+          <input type="range" id="apBandSlider" min="0.01" max="0.50" step="0.01" value="${apPriceBandPct === null ? d.priceBand : apPriceBandPct}">
+          <span class="threshold-value${(apPriceBandPct === null ? d.priceBand : apPriceBandPct) === d.priceBand ? " at-real" : ""}" id="apBandValue">${((apPriceBandPct === null ? d.priceBand : apPriceBandPct) * 100).toFixed(0)}%</span>
+        </div>
+      </div>
       <table>
-        <thead><tr><th>PO</th><th>Item</th><th class="num">PO price</th><th class="num">Invoiced price</th><th class="num">Deviation</th></tr></thead>
-        <tbody>${priceRows}</tbody>
+        <thead><tr><th>PO</th><th>Item</th><th class="num">PO price</th><th class="num">Invoiced price</th><th class="num">Deviation</th><th>Status</th></tr></thead>
+        <tbody id="apPriceRowsBody"></tbody>
       </table>
     </div>
     <div class="card">
       <h2>Qty overbill</h2>
       <div class="desc"><strong>One-directional</strong> — under-invoicing (normal partial billing) never flags; only invoiced qty exceeding received qty beyond the band does.</div>
+      <div class="threshold-panel">
+        <div class="threshold-panel-title">Try it — drag the overbill band<button type="button" class="threshold-reset" id="apQtyBandReset">Reset to real ${(d.qtyOverbillBand * 100).toFixed(0)}% band</button></div>
+        <div class="threshold-row">
+          <label for="apQtyBandSlider">Qty-overbill band (over received)</label>
+          <input type="range" id="apQtyBandSlider" min="0" max="0.30" step="0.01" value="${apQtyBandPct === null ? d.qtyOverbillBand : apQtyBandPct}">
+          <span class="threshold-value${(apQtyBandPct === null ? d.qtyOverbillBand : apQtyBandPct) === d.qtyOverbillBand ? " at-real" : ""}" id="apQtyBandValue">${((apQtyBandPct === null ? d.qtyOverbillBand : apQtyBandPct) * 100).toFixed(0)}%</span>
+        </div>
+      </div>
       <table>
-        <thead><tr><th>PO</th><th>Item</th><th class="num">Qty received</th><th class="num">Qty invoiced</th><th class="num">Deviation</th></tr></thead>
-        <tbody>${qtyRows}</tbody>
+        <thead><tr><th>PO</th><th>Item</th><th class="num">Qty received</th><th class="num">Qty invoiced</th><th class="num">Deviation</th><th>Status</th></tr></thead>
+        <tbody id="apQtyRowsBody"></tbody>
       </table>
     </div>
     <div class="card">
@@ -1949,6 +2297,38 @@ function renderAp() {
       </table>
     </div>
   `;
+  const apSlider = document.getElementById("apBandSlider");
+  const apValue = document.getElementById("apBandValue");
+  apSlider.addEventListener("input", () => {
+    apPriceBandPct = parseFloat(apSlider.value);
+    apValue.textContent = `${(apPriceBandPct * 100).toFixed(0)}%`;
+    apValue.classList.toggle("at-real", apPriceBandPct === d.priceBand);
+    renderApPriceRows();
+  });
+  document.getElementById("apBandReset").addEventListener("click", () => {
+    apPriceBandPct = d.priceBand;
+    apSlider.value = apPriceBandPct;
+    apValue.textContent = `${(apPriceBandPct * 100).toFixed(0)}%`;
+    apValue.classList.add("at-real");
+    renderApPriceRows();
+  });
+  renderApPriceRows();
+  const apQtySlider = document.getElementById("apQtyBandSlider");
+  const apQtyValue = document.getElementById("apQtyBandValue");
+  apQtySlider.addEventListener("input", () => {
+    apQtyBandPct = parseFloat(apQtySlider.value);
+    apQtyValue.textContent = `${(apQtyBandPct * 100).toFixed(0)}%`;
+    apQtyValue.classList.toggle("at-real", apQtyBandPct === d.qtyOverbillBand);
+    renderApQtyRows();
+  });
+  document.getElementById("apQtyBandReset").addEventListener("click", () => {
+    apQtyBandPct = d.qtyOverbillBand;
+    apQtySlider.value = apQtyBandPct;
+    apQtyValue.textContent = `${(apQtyBandPct * 100).toFixed(0)}%`;
+    apQtyValue.classList.add("at-real");
+    renderApQtyRows();
+  });
+  renderApQtyRows();
 }
 
 /* ---------- Standard-Cost Monte Carlo Audit ---------- */
@@ -2002,10 +2382,34 @@ function renderCostSim() {
 }
 
 /* ---------- Yield/Mix Variance Analyzer ---------- */
-function renderYieldMix() {
+const YIELDMIX_REAL_BAND = 0.05;
+let yieldMixBandPct = null; // null until first render sets it from the real KPI value
+// A run is structurally flagged (always, regardless of the slider) when it has no computable
+// deviation (no baseline / no recipe) or used an unplanned material -- neither condition is a
+// magnitude comparison, so a materiality slider must never be able to un-flag them. PR-3002 is
+// the case that makes this an OR rather than just "deviation === null": it has a computable
+// deviation of exactly 0.0 (well within any real band) but is still flagged for the unplanned
+// material alone.
+function yieldMixStructurallyFlagged(r) {
+  return r.deviation === null || r.unplanned.length > 0;
+}
+// Recomputed from raw usageVar/standardCost (matching shared/flagging_engine.py's
+// check_cost_baseline_materiality: deviation = abs(variance) / baseline), never trusting the
+// DATA object's own (possibly display-rounded) `deviation` field for the live band comparison
+// -- the same float-precision discipline the AP price-variance slider established.
+function yieldMixTrueDeviation(r) {
+  return r.deviation === null ? null : Math.abs(r.usageVar) / r.standardCost;
+}
+function renderYieldMixRows() {
   const d = DATA.yieldMix;
-  const flaggedRows = d.runs.filter(r => r.flagged).map(r => `<tr><td>${r.runId}</td><td>${r.outputProduct}</td><td>${statusPill("critical", "Flagged")}</td><td style="color:var(--text-secondary)">${r.reason}</td></tr>`).join("");
-  const passRows = d.runs.filter(r => !r.flagged).map(r => `
+  const band = yieldMixBandPct === null ? YIELDMIX_REAL_BAND : yieldMixBandPct;
+  const flaggedBody = document.getElementById("yieldMixFlaggedBody");
+  const passBody = document.getElementById("yieldMixPassBody");
+  if (!flaggedBody || !passBody) return;
+  const flagged = d.runs.filter(r => yieldMixStructurallyFlagged(r) || yieldMixTrueDeviation(r) > band);
+  const passing = d.runs.filter(r => !(yieldMixStructurallyFlagged(r) || yieldMixTrueDeviation(r) > band));
+  flaggedBody.innerHTML = flagged.map(r => `<tr><td>${r.runId}</td><td>${r.outputProduct}</td><td>${statusPill("critical", "Flagged")}</td><td style="color:var(--text-secondary)">${r.reason}</td></tr>`).join("") || '<tr><td colspan="4" style="color:var(--text-muted)">—</td></tr>';
+  passBody.innerHTML = passing.map(r => `
     <tr>
       <td>${r.runId}</td>
       <td>${r.outputProduct}</td>
@@ -2013,30 +2417,40 @@ function renderYieldMix() {
       <td class="num">${fmt$$(r.yieldVar)}</td>
       <td class="num">${fmt$$(r.mixVar)}</td>
       <td class="num">${fmt$$(r.standardCost)}</td>
-      <td class="num">${fmtPct(r.deviation)}</td>
+      <td class="num">${fmtPct(yieldMixTrueDeviation(r))}</td>
       <td>${statusPill("good", "Within band")}</td>
-    </tr>`).join("");
+    </tr>`).join("") || '<tr><td colspan="8" style="color:var(--text-muted)">—</td></tr>';
+}
+function renderYieldMix() {
+  const d = DATA.yieldMix;
   const unplannedRows = d.runs.filter(r => r.unplanned.length).flatMap(r => r.unplanned.map(u => `<tr><td>${r.runId}</td><td>${r.outputProduct}</td><td>${u.rawMaterial}</td><td class="num">${u.qty}</td></tr>`)).join("");
 
   document.getElementById("panel-yieldmix").innerHTML = `
     <div class="card">
       <h2>Material yield/mix variance</h2>
-      <div class="desc">Decomposes material USAGE variance (not purchase price — that's cost_roll_validator/cost_roll_simulator's territory) into <strong>yield</strong> variance (raw-to-finished loss) and <strong>mix</strong> variance (blend-ratio deviation), via the standard weighted-average method. Joins a standards/recipe table against production runs and material usage — one formula handles single-material runs (mix = exactly $0.00) and multi-material blend runs (a real split) identically. Materiality band: ${(d.materialityBand * 100).toFixed(0)}%.</div>
+      <div class="desc">Decomposes material USAGE variance (not purchase price — that's cost_roll_validator/cost_roll_simulator's territory) into <strong>yield</strong> variance (raw-to-finished loss) and <strong>mix</strong> variance (blend-ratio deviation), via the standard weighted-average method. Joins a standards/recipe table against production runs and material usage — one formula handles single-material runs (mix = exactly $0.00) and multi-material blend runs (a real split) identically.</div>
     </div>
     <div class="card">
       <h2>Flagged runs</h2>
-      <div class="desc">A real materiality breach, an unplanned material (used but absent from the output product's standard recipe — always flagged regardless of dollar impact), or a data-quality condition (no standard recipe on file, a total-loss run).</div>
+      <div class="desc">A real materiality breach, an unplanned material (used but absent from the output product's standard recipe — always flagged regardless of dollar impact), or a data-quality condition (no standard recipe on file, a total-loss run). The latter two never un-flag, no matter where the slider sits.</div>
+      <div class="threshold-panel">
+        <div class="threshold-panel-title">Try it — drag the materiality band<button type="button" class="threshold-reset" id="yieldMixBandReset">Reset to real ${(YIELDMIX_REAL_BAND * 100).toFixed(0)}% band</button></div>
+        <div class="threshold-row">
+          <label for="yieldMixBandSlider">Materiality band (of standard material cost)</label>
+          <input type="range" id="yieldMixBandSlider" min="0" max="0.3" step="0.01" value="${yieldMixBandPct === null ? YIELDMIX_REAL_BAND : yieldMixBandPct}">
+          <span class="threshold-value${(yieldMixBandPct === null ? YIELDMIX_REAL_BAND : yieldMixBandPct) === YIELDMIX_REAL_BAND ? " at-real" : ""}" id="yieldMixBandValue">${((yieldMixBandPct === null ? YIELDMIX_REAL_BAND : yieldMixBandPct) * 100).toFixed(0)}%</span>
+        </div>
+      </div>
       <table>
         <thead><tr><th>Run</th><th>Output product</th><th>Status</th><th>Reason</th></tr></thead>
-        <tbody>${flaggedRows}</tbody>
+        <tbody id="yieldMixFlaggedBody"></tbody>
       </table>
     </div>
     <div class="card">
       <h2>Within band — yield + mix sum exactly to usage variance</h2>
-      <div class="desc">${passRows ? "" : "No runs fell within band on this fixture — every run below is flagged for a different, real reason (see above)."}</div>
       <table>
         <thead><tr><th>Run</th><th>Output product</th><th class="num">Usage Var</th><th class="num">Yield Var</th><th class="num">Mix Var</th><th class="num">Std. Material Cost</th><th class="num">Deviation</th><th>Status</th></tr></thead>
-        <tbody>${passRows || '<tr><td colspan="8" style="color:var(--text-muted)">—</td></tr>'}</tbody>
+        <tbody id="yieldMixPassBody"></tbody>
       </table>
     </div>
     <div class="card">
@@ -2048,13 +2462,44 @@ function renderYieldMix() {
       </table>
     </div>
   `;
+  const slider = document.getElementById("yieldMixBandSlider");
+  const value = document.getElementById("yieldMixBandValue");
+  slider.addEventListener("input", () => {
+    yieldMixBandPct = parseFloat(slider.value);
+    value.textContent = `${(yieldMixBandPct * 100).toFixed(0)}%`;
+    value.classList.toggle("at-real", yieldMixBandPct === YIELDMIX_REAL_BAND);
+    renderYieldMixRows();
+  });
+  document.getElementById("yieldMixBandReset").addEventListener("click", () => {
+    yieldMixBandPct = YIELDMIX_REAL_BAND;
+    slider.value = yieldMixBandPct;
+    value.textContent = `${(yieldMixBandPct * 100).toFixed(0)}%`;
+    value.classList.add("at-real");
+    renderYieldMixRows();
+  });
+  renderYieldMixRows();
 }
 
 /* ---------- Energy Variance Analyzer ---------- */
-function renderEnergyVariance() {
+const ENERGYVAR_REAL_BAND = 0.05;
+let energyVarBandPct = null; // null until first render sets it from the real KPI value
+// Same structural-override convention as yield/mix: a null deviation means no computable
+// baseline (idle hold, missing metering, no rate card) -- always flagged, slider can't touch it.
+// Recomputed from raw totalVar/standardEnergyCost, never the DATA object's own rounded
+// `deviation` field -- same float-precision discipline as AP's price-variance slider.
+function energyVarTrueDeviation(p) {
+  return p.deviation === null ? null : Math.abs(p.totalVar) / p.standardEnergyCost;
+}
+function renderEnergyVarRows() {
   const d = DATA.energyVariance;
-  const flaggedRows = d.periods.filter(p => p.flagged).map(p => `<tr><td>${p.periodId}</td><td>${p.outputProduct} / ${p.refrigerationMethod}</td><td>${statusPill("critical", "Flagged")}</td><td style="color:var(--text-secondary)">${p.reason}</td></tr>`).join("");
-  const passRows = d.periods.filter(p => !p.flagged).map(p => `
+  const band = energyVarBandPct === null ? ENERGYVAR_REAL_BAND : energyVarBandPct;
+  const flaggedBody = document.getElementById("energyVarFlaggedBody");
+  const passBody = document.getElementById("energyVarPassBody");
+  if (!flaggedBody || !passBody) return;
+  const flagged = d.periods.filter(p => p.deviation === null || energyVarTrueDeviation(p) > band);
+  const passing = d.periods.filter(p => !(p.deviation === null || energyVarTrueDeviation(p) > band));
+  flaggedBody.innerHTML = flagged.map(p => `<tr><td>${p.periodId}</td><td>${p.outputProduct} / ${p.refrigerationMethod}</td><td>${statusPill("critical", "Flagged")}</td><td style="color:var(--text-secondary)">${p.reason}</td></tr>`).join("") || '<tr><td colspan="4" style="color:var(--text-muted)">—</td></tr>';
+  passBody.innerHTML = passing.map(p => `
     <tr>
       <td>${p.periodId}</td>
       <td>${p.outputProduct} / ${p.refrigerationMethod}</td>
@@ -2062,39 +2507,81 @@ function renderEnergyVariance() {
       <td class="num">${fmt$$(p.efficiencyVar)}</td>
       <td class="num">${fmt$$(p.totalVar)}</td>
       <td class="num">${fmt$$(p.standardEnergyCost)}</td>
-      <td class="num">${fmtPct(p.deviation)}</td>
+      <td class="num">${fmtPct(energyVarTrueDeviation(p))}</td>
       <td>${statusPill("good", "Within band")}</td>
-    </tr>`).join("");
+    </tr>`).join("") || '<tr><td colspan="8" style="color:var(--text-muted)">—</td></tr>';
+}
+function renderEnergyVariance() {
+  const d = DATA.energyVariance;
 
   document.getElementById("panel-energyvar").innerHTML = `
     <div class="card">
       <h2>Refrigeration/freezing energy variance</h2>
-      <div class="desc">Decomposes energy variance for a metered period into <strong>rate</strong> variance (paid the right $/kWh?) and <strong>efficiency</strong> variance (used the right kWh for the lbs frozen?) — the same textbook price/quantity split every other variance in this repo uses, applied to a first-order food-specific cost driver. Materiality band: ${(d.materialityBand * 100).toFixed(0)}%. Data-confidence note: the underlying $/kWh rates and ammonia-vs-cryogenic efficiency figures in this repo's source research are vendor-quote-sourced — illustrative of the mechanic, not a claimed real rate card.</div>
+      <div class="desc">Decomposes energy variance for a metered period into <strong>rate</strong> variance (paid the right $/kWh?) and <strong>efficiency</strong> variance (used the right kWh for the lbs frozen?) — the same textbook price/quantity split every other variance in this repo uses, applied to a first-order food-specific cost driver. Data-confidence note: the underlying $/kWh rates and ammonia-vs-cryogenic efficiency figures in this repo's source research are vendor-quote-sourced — illustrative of the mechanic, not a claimed real rate card.</div>
     </div>
     <div class="card">
       <h2>Flagged periods</h2>
-      <div class="desc">A real materiality breach, or a data-quality condition (no metered kWh despite production, no energy standard on file for the product/refrigeration-method pair).</div>
+      <div class="desc">A real materiality breach, or a data-quality condition (no metered kWh despite production, no energy standard on file for the product/refrigeration-method pair) — the latter never un-flags, no matter where the slider sits.</div>
+      <div class="threshold-panel">
+        <div class="threshold-panel-title">Try it — drag the materiality band<button type="button" class="threshold-reset" id="energyVarBandReset">Reset to real ${(ENERGYVAR_REAL_BAND * 100).toFixed(0)}% band</button></div>
+        <div class="threshold-row">
+          <label for="energyVarBandSlider">Materiality band (of standard energy cost)</label>
+          <input type="range" id="energyVarBandSlider" min="0" max="0.5" step="0.01" value="${energyVarBandPct === null ? ENERGYVAR_REAL_BAND : energyVarBandPct}">
+          <span class="threshold-value${(energyVarBandPct === null ? ENERGYVAR_REAL_BAND : energyVarBandPct) === ENERGYVAR_REAL_BAND ? " at-real" : ""}" id="energyVarBandValue">${((energyVarBandPct === null ? ENERGYVAR_REAL_BAND : energyVarBandPct) * 100).toFixed(0)}%</span>
+        </div>
+      </div>
       <table>
         <thead><tr><th>Period</th><th>Product / method</th><th>Status</th><th>Reason</th></tr></thead>
-        <tbody>${flaggedRows}</tbody>
+        <tbody id="energyVarFlaggedBody"></tbody>
       </table>
     </div>
     <div class="card">
       <h2>Within band — rate + efficiency sum exactly to total variance</h2>
-      <div class="desc">${passRows ? "" : "No periods fell within band on this fixture — every period below is flagged for a different, real reason (see above)."}</div>
       <table>
         <thead><tr><th>Period</th><th>Product / method</th><th class="num">Rate Var</th><th class="num">Efficiency Var</th><th class="num">Total Var</th><th class="num">Std. Energy Cost</th><th class="num">Deviation</th><th>Status</th></tr></thead>
-        <tbody>${passRows || '<tr><td colspan="8" style="color:var(--text-muted)">—</td></tr>'}</tbody>
+        <tbody id="energyVarPassBody"></tbody>
       </table>
     </div>
   `;
+  const slider = document.getElementById("energyVarBandSlider");
+  const value = document.getElementById("energyVarBandValue");
+  slider.addEventListener("input", () => {
+    energyVarBandPct = parseFloat(slider.value);
+    value.textContent = `${(energyVarBandPct * 100).toFixed(0)}%`;
+    value.classList.toggle("at-real", energyVarBandPct === ENERGYVAR_REAL_BAND);
+    renderEnergyVarRows();
+  });
+  document.getElementById("energyVarBandReset").addEventListener("click", () => {
+    energyVarBandPct = ENERGYVAR_REAL_BAND;
+    slider.value = energyVarBandPct;
+    value.textContent = `${(energyVarBandPct * 100).toFixed(0)}%`;
+    value.classList.add("at-real");
+    renderEnergyVarRows();
+  });
+  renderEnergyVarRows();
 }
 
 /* ---------- Labor Efficiency Analyzer ---------- */
-function renderLaborEfficiency() {
+const LABOREFF_REAL_BAND = 0.05;
+let laborEffBandPct = null; // null until first render sets it from the real KPI value
+// Recomputed from raw totalVar/standardLaborCost, never the DATA object's own rounded
+// `deviation` field -- same float-precision discipline as AP's price-variance slider. This
+// matters here specifically: LP-2001's stored deviation (0.026) rounds a true value of
+// 0.026455... -- harmless at this fixture's magnitude/step size, but the AP-price bug this
+// pattern was built to prevent looked identical before it was found.
+function laborEffTrueDeviation(p) {
+  return p.deviation === null ? null : Math.abs(p.totalVar) / p.standardLaborCost;
+}
+function renderLaborEffRows() {
   const d = DATA.laborEfficiency;
-  const flaggedRows = d.periods.filter(p => p.flagged).map(p => `<tr><td>${p.periodId}</td><td>${p.outputProduct} / ${p.laborCategory}</td><td>${statusPill("critical", "Flagged")}</td><td style="color:var(--text-secondary)">${p.reason}</td></tr>`).join("");
-  const passRows = d.periods.filter(p => !p.flagged).map(p => `
+  const band = laborEffBandPct === null ? LABOREFF_REAL_BAND : laborEffBandPct;
+  const flaggedBody = document.getElementById("laborEffFlaggedBody");
+  const passBody = document.getElementById("laborEffPassBody");
+  if (!flaggedBody || !passBody) return;
+  const flagged = d.periods.filter(p => p.deviation === null || laborEffTrueDeviation(p) > band);
+  const passing = d.periods.filter(p => !(p.deviation === null || laborEffTrueDeviation(p) > band));
+  flaggedBody.innerHTML = flagged.map(p => `<tr><td>${p.periodId}</td><td>${p.outputProduct} / ${p.laborCategory}</td><td>${statusPill("critical", "Flagged")}</td><td style="color:var(--text-secondary)">${p.reason}</td></tr>`).join("") || '<tr><td colspan="4" style="color:var(--text-muted)">—</td></tr>';
+  passBody.innerHTML = passing.map(p => `
     <tr>
       <td>${p.periodId}</td>
       <td>${p.outputProduct} / ${p.laborCategory}</td>
@@ -2102,32 +2589,58 @@ function renderLaborEfficiency() {
       <td class="num">${fmt$$(p.efficiencyVar)}</td>
       <td class="num">${fmt$$(p.totalVar)}</td>
       <td class="num">${fmt$$(p.standardLaborCost)}</td>
-      <td class="num">${fmtPct(p.deviation)}</td>
+      <td class="num">${fmtPct(laborEffTrueDeviation(p))}</td>
       <td>${statusPill("good", "Within band")}</td>
-    </tr>`).join("");
+    </tr>`).join("") || '<tr><td colspan="8" style="color:var(--text-muted)">—</td></tr>';
+}
+function renderLaborEfficiency() {
+  const d = DATA.laborEfficiency;
 
   document.getElementById("panel-laboreff").innerHTML = `
     <div class="card">
       <h2>Labor rate/efficiency dollar-variance decomposition</h2>
-      <div class="desc">Decomposes labor variance for a period into <strong>rate</strong> variance (paid the right $/hr?) and <strong>efficiency</strong> variance (used the right hours for the output actually produced?) — the same textbook price/quantity split every other variance in this repo uses, applied to labor for the first time as a literal dollar decomposition (complementing <a data-goto="opsmonitor" href="#opsmonitor">Operations Monitor</a>'s trend/ratio angle on the same "present but secondary" labor-efficiency story). Materiality band: ${(d.materialityBand * 100).toFixed(0)}%. Known limitation, stated not hidden: actual_labor_cost / actual_hours_worked blends straight-time and overtime into one blended rate — a real pack-season overtime spike shows up as an unfavorable Rate Variance even at an on-standard base wage. Data-confidence note: a stronger caveat than energy_variance_analyzer's own — zero labor/headcount/wage data model exists anywhere in this repo's source research, so the underlying hours-per-lb and $/hr figures are illustrative of the mechanic only, with no external grounding.</div>
+      <div class="desc">Decomposes labor variance for a period into <strong>rate</strong> variance (paid the right $/hr?) and <strong>efficiency</strong> variance (used the right hours for the output actually produced?) — the same textbook price/quantity split every other variance in this repo uses, applied to labor for the first time as a literal dollar decomposition (complementing <a data-goto="opsmonitor" href="#opsmonitor">Operations Monitor</a>'s trend/ratio angle on the same "present but secondary" labor-efficiency story). Known limitation, stated not hidden: actual_labor_cost / actual_hours_worked blends straight-time and overtime into one blended rate — a real pack-season overtime spike shows up as an unfavorable Rate Variance even at an on-standard base wage. Data-confidence note: a stronger caveat than energy_variance_analyzer's own — zero labor/headcount/wage data model exists anywhere in this repo's source research, so the underlying hours-per-lb and $/hr figures are illustrative of the mechanic only, with no external grounding.</div>
     </div>
     <div class="card">
       <h2>Flagged periods</h2>
-      <div class="desc">A real materiality breach, or a data-quality condition (no hours worked despite production, no labor standard on file for the product/labor-category pair).</div>
+      <div class="desc">A real materiality breach, or a data-quality condition (no hours worked despite production, no labor standard on file for the product/labor-category pair) — the latter never un-flags, no matter where the slider sits.</div>
+      <div class="threshold-panel">
+        <div class="threshold-panel-title">Try it — drag the materiality band<button type="button" class="threshold-reset" id="laborEffBandReset">Reset to real ${(LABOREFF_REAL_BAND * 100).toFixed(0)}% band</button></div>
+        <div class="threshold-row">
+          <label for="laborEffBandSlider">Materiality band (of standard labor cost)</label>
+          <input type="range" id="laborEffBandSlider" min="0" max="0.5" step="0.01" value="${laborEffBandPct === null ? LABOREFF_REAL_BAND : laborEffBandPct}">
+          <span class="threshold-value${(laborEffBandPct === null ? LABOREFF_REAL_BAND : laborEffBandPct) === LABOREFF_REAL_BAND ? " at-real" : ""}" id="laborEffBandValue">${((laborEffBandPct === null ? LABOREFF_REAL_BAND : laborEffBandPct) * 100).toFixed(0)}%</span>
+        </div>
+      </div>
       <table>
         <thead><tr><th>Period</th><th>Product / category</th><th>Status</th><th>Reason</th></tr></thead>
-        <tbody>${flaggedRows}</tbody>
+        <tbody id="laborEffFlaggedBody"></tbody>
       </table>
     </div>
     <div class="card">
       <h2>Within band — rate + efficiency sum exactly to total variance</h2>
-      <div class="desc">${passRows ? "" : "No periods fell within band on this fixture — every period below is flagged for a different, real reason (see above)."}</div>
       <table>
         <thead><tr><th>Period</th><th>Product / category</th><th class="num">Rate Var</th><th class="num">Efficiency Var</th><th class="num">Total Var</th><th class="num">Std. Labor Cost</th><th class="num">Deviation</th><th>Status</th></tr></thead>
-        <tbody>${passRows || '<tr><td colspan="8" style="color:var(--text-muted)">—</td></tr>'}</tbody>
+        <tbody id="laborEffPassBody"></tbody>
       </table>
     </div>
   `;
+  const slider = document.getElementById("laborEffBandSlider");
+  const value = document.getElementById("laborEffBandValue");
+  slider.addEventListener("input", () => {
+    laborEffBandPct = parseFloat(slider.value);
+    value.textContent = `${(laborEffBandPct * 100).toFixed(0)}%`;
+    value.classList.toggle("at-real", laborEffBandPct === LABOREFF_REAL_BAND);
+    renderLaborEffRows();
+  });
+  document.getElementById("laborEffBandReset").addEventListener("click", () => {
+    laborEffBandPct = LABOREFF_REAL_BAND;
+    slider.value = laborEffBandPct;
+    value.textContent = `${(laborEffBandPct * 100).toFixed(0)}%`;
+    value.classList.add("at-real");
+    renderLaborEffRows();
+  });
+  renderLaborEffRows();
 }
 
 /* ---------- BBC Inventory Eligibility Checker ---------- */
@@ -2218,49 +2731,455 @@ function renderTimePhasedPnl() {
 }
 
 /* ---------- Vendor Performance Scorecard ---------- */
+const VS_REAL_FLOOR = 0.85, VS_REAL_CEILING = 0.20;
+let vsOnTimeFloor = null, vsPriceCeiling = null; // null until first render sets them from the real KPI values
+function renderVendorScorecardTables() {
+  const d = DATA.vendorScorecard;
+  const floor = vsOnTimeFloor === null ? VS_REAL_FLOOR : vsOnTimeFloor;
+  const ceiling = vsPriceCeiling === null ? VS_REAL_CEILING : vsPriceCeiling;
+  const withLive = d.vendors.map(v => {
+    const onTimeFails = v.onTimeEligibleLines >= 3 && v.onTimeRate < floor;
+    const priceFails = v.pricedEligibleLines > 0 && v.priceVarianceRate > ceiling;
+    return { ...v, liveFlagged: v.nonRateFlagged || onTimeFails || priceFails };
+  });
+  const rowHtml = (v, flagged) => `
+    <tr>
+      <td>${v.vendor}</td>
+      <td class="num">${fmtRate(v.onTimeRate)} (${v.onTimeLines}/${v.onTimeEligibleLines})</td>
+      <td class="num">${fmtRate(v.priceVarianceRate)} (${v.priceVarianceFlaggedLines}/${v.pricedEligibleLines})</td>
+      <td class="num">${fmt$$(v.totalImpact)}</td>
+      <td>${flagged ? statusPill("critical", "Flagged") : statusPill("good", "Clean")}</td>
+      ${flagged ? `<td style="color:var(--text-secondary)">${v.reason || "below the current on-time/price-variance threshold"}</td>` : ""}
+    </tr>`;
+  const flaggedRows = withLive.filter(v => v.liveFlagged).map(v => rowHtml(v, true)).join("");
+  const cleanRows = withLive.filter(v => !v.liveFlagged).map(v => rowHtml(v, false)).join("");
+  document.getElementById("vsFlaggedBody").innerHTML = flaggedRows || '<tr><td colspan="6" style="color:var(--text-muted)">—</td></tr>';
+  document.getElementById("vsCleanBody").innerHTML = cleanRows || '<tr><td colspan="5" style="color:var(--text-muted)">—</td></tr>';
+  const cleanDesc = document.getElementById("vsCleanDesc");
+  if (cleanDesc) cleanDesc.textContent = cleanRows ? "" : "Every vendor above is flagged for a different, real reason (see above) — none clear at the current thresholds.";
+}
 function renderVendorScorecard() {
   const d = DATA.vendorScorecard;
   const totalImpact = d.vendors.reduce((sum, v) => sum + v.totalImpact, 0);
-  const flaggedRows = d.vendors.filter(v => v.flagged).map(v => `
-    <tr>
-      <td>${v.vendor}</td>
-      <td class="num">${fmtRate(v.onTimeRate)} (${v.onTimeLines}/${v.onTimeEligibleLines})</td>
-      <td class="num">${fmtRate(v.priceVarianceRate)} (${v.priceVarianceFlaggedLines}/${v.pricedEligibleLines})</td>
-      <td class="num">${fmt$$(v.totalImpact)}</td>
-      <td>${statusPill("critical", "Flagged")}</td>
-      <td style="color:var(--text-secondary)">${v.reason}</td>
-    </tr>`).join("");
-  const cleanRows = d.vendors.filter(v => !v.flagged).map(v => `
-    <tr>
-      <td>${v.vendor}</td>
-      <td class="num">${fmtRate(v.onTimeRate)} (${v.onTimeLines}/${v.onTimeEligibleLines})</td>
-      <td class="num">${fmtRate(v.priceVarianceRate)} (${v.priceVarianceFlaggedLines}/${v.pricedEligibleLines})</td>
-      <td class="num">${fmt$$(v.totalImpact)}</td>
-      <td>${statusPill("good", "Clean")}</td>
-    </tr>`).join("");
 
   document.getElementById("panel-vendorscorecard").innerHTML = `
     <div class="card">
       <h2>Vendor performance scorecard</h2>
       <div class="desc">Builds on <code>ap_three_way_match/</code>'s PO/receipt/invoice data model to answer a question that tool never asks: how reliable is each vendor, and what does an unreliable vendor cost internally? Per line, two independent evaluations — <span${tip("promised_delivery_date")}>on-time delivery</span> (a new <code>promised_delivery_date</code> field compared to the actual receipt date) and price variance (reuses <code>check_band</code> exactly as AP's own check does) — rolled up per <strong>vendor</strong>, the first vendor-level aggregation in this repo. For each late delivery, an illustrative internal-process-impact figure: <span${tip("criticality_dollars_per_day")}>days late × criticality $/day rate</span> — an early delivery contributes exactly $0, never a negative credit. Total estimated internal-process impact across all vendors: <strong>${fmt$$(totalImpact)}</strong>. <strong>Data-confidence note (no fabrication) — the strongest caveat in this repo:</strong> the criticality $/day figures are illustrative of the MECHANIC only — no real TCF internal-process-cost study, downtime model, or customer-penalty schedule exists in this repo's source research. <strong>Scope note:</strong> Duty #7 (Grower Accounting) was considered for the JD-duty tag and rejected — this repo's own discovery docs already flag Duty #7 as having no transferable analog from the author's background; Duty #8 (extending <code>ap_three_way_match</code>'s own precedent) is used instead. ${d.unattributableReceiptCount} unattributable receipt(s) and ${d.unattributableInvoiceCount} unattributable invoice(s) (no matching PO) excluded from every vendor's rollup.</div>
+      <div class="threshold-panel">
+        <div class="threshold-panel-title">Try it — drag both thresholds<button type="button" class="threshold-reset" id="vsReset">Reset to real ${(VS_REAL_FLOOR * 100).toFixed(0)}% / ${(VS_REAL_CEILING * 100).toFixed(0)}%</button></div>
+        <div class="threshold-row">
+          <label for="vsFloorSlider">On-time-delivery floor (≥)</label>
+          <input type="range" id="vsFloorSlider" min="0" max="1" step="0.01" value="${vsOnTimeFloor === null ? VS_REAL_FLOOR : vsOnTimeFloor}">
+          <span class="threshold-value${(vsOnTimeFloor === null ? VS_REAL_FLOOR : vsOnTimeFloor) === VS_REAL_FLOOR ? " at-real" : ""}" id="vsFloorValue">${((vsOnTimeFloor === null ? VS_REAL_FLOOR : vsOnTimeFloor) * 100).toFixed(0)}%</span>
+        </div>
+        <div class="threshold-row">
+          <label for="vsCeilingSlider">Price-variance ceiling (≤)</label>
+          <input type="range" id="vsCeilingSlider" min="0" max="1" step="0.01" value="${vsPriceCeiling === null ? VS_REAL_CEILING : vsPriceCeiling}">
+          <span class="threshold-value${(vsPriceCeiling === null ? VS_REAL_CEILING : vsPriceCeiling) === VS_REAL_CEILING ? " at-real" : ""}" id="vsCeilingValue">${((vsPriceCeiling === null ? VS_REAL_CEILING : vsPriceCeiling) * 100).toFixed(0)}%</span>
+        </div>
+        <div style="font-size:11.5px;color:var(--text-muted);margin-top:6px">Vendors flagged for a different reason (missing criticality rate, missing promised-delivery-date, or too few evaluable lines) stay flagged regardless of these two sliders — only the rate-based checks respond live.</div>
+      </div>
     </div>
     <div class="card">
       <h2>Flagged vendors — completeness, delivery, price, or impact</h2>
-      <div class="desc">An on-time-delivery rate below the 85% floor, a price-variance rate above the 20% ceiling, real dollars of estimated late-delivery impact, a criticality rate missing for a late item, a promised-delivery-date gap, or too few evaluable lines to trust the rate.</div>
+      <div class="desc">An on-time-delivery rate below the floor, a price-variance rate above the ceiling, real dollars of estimated late-delivery impact, a criticality rate missing for a late item, a promised-delivery-date gap, or too few evaluable lines to trust the rate.</div>
       <table>
         <thead><tr><th>Vendor</th><th class="num">On-Time Rate</th><th class="num">Price-Variance Rate</th><th class="num">Impact $</th><th>Status</th><th>Reason</th></tr></thead>
-        <tbody>${flaggedRows}</tbody>
+        <tbody id="vsFlaggedBody"></tbody>
       </table>
     </div>
     <div class="card">
       <h2>Clean vendors — within band on every check</h2>
-      <div class="desc">${cleanRows ? "" : "Every vendor above is flagged for a different, real reason (see above) — none were fully clean on this fixture."}</div>
+      <div class="desc" id="vsCleanDesc"></div>
       <table>
         <thead><tr><th>Vendor</th><th class="num">On-Time Rate</th><th class="num">Price-Variance Rate</th><th class="num">Impact $</th><th>Status</th></tr></thead>
-        <tbody>${cleanRows || '<tr><td colspan="5" style="color:var(--text-muted)">—</td></tr>'}</tbody>
+        <tbody id="vsCleanBody"></tbody>
       </table>
     </div>
   `;
+  const floorSlider = document.getElementById("vsFloorSlider"), floorValue = document.getElementById("vsFloorValue");
+  const ceilingSlider = document.getElementById("vsCeilingSlider"), ceilingValue = document.getElementById("vsCeilingValue");
+  floorSlider.addEventListener("input", () => {
+    vsOnTimeFloor = parseFloat(floorSlider.value);
+    floorValue.textContent = `${(vsOnTimeFloor * 100).toFixed(0)}%`;
+    floorValue.classList.toggle("at-real", vsOnTimeFloor === VS_REAL_FLOOR);
+    renderVendorScorecardTables();
+  });
+  ceilingSlider.addEventListener("input", () => {
+    vsPriceCeiling = parseFloat(ceilingSlider.value);
+    ceilingValue.textContent = `${(vsPriceCeiling * 100).toFixed(0)}%`;
+    ceilingValue.classList.toggle("at-real", vsPriceCeiling === VS_REAL_CEILING);
+    renderVendorScorecardTables();
+  });
+  document.getElementById("vsReset").addEventListener("click", () => {
+    vsOnTimeFloor = VS_REAL_FLOOR; vsPriceCeiling = VS_REAL_CEILING;
+    floorSlider.value = vsOnTimeFloor; ceilingSlider.value = vsPriceCeiling;
+    floorValue.textContent = `${(vsOnTimeFloor * 100).toFixed(0)}%`; floorValue.classList.add("at-real");
+    ceilingValue.textContent = `${(vsPriceCeiling * 100).toFixed(0)}%`; ceilingValue.classList.add("at-real");
+    renderVendorScorecardTables();
+  });
+  renderVendorScorecardTables();
+}
+
+/* ---------- Cross-Tool Insight Synthesizer ---------- */
+// ---- Guardrail sandbox: a live, hand-built hypothetical recommendation run through the
+// SAME logic as cross_tool_insight_synthesizer/synthesizer.py's run_guardrails() (mirrored
+// here, not reimplemented from scratch -- see the SEVERITY_RANK constant and the exact
+// `if top_ranks and ...` short-circuit below, both copied from the real source). Only the
+// guardrails run live here -- the narrative/recommendations table above stays illustrative
+// model output, matching every other AI-narration tool's posture in this repo.
+const SANDBOX_SEVERITY_RANK = { critical: 3, serious: 2, warning: 1, good: 0 };
+let sandboxSelected = new Set();
+let sandboxUrgency = "immediate";
+let sandboxTopRank = false;
+let sandboxCustomId = "";
+
+function ctsGuardrailCheck() {
+  const d = DATA.crossToolSynthesis;
+  const byId = {}; d.findings.forEach(f => { byId[f.id] = f; });
+  const validIds = new Set(d.findings.map(f => f.id));
+  const criticalIds = d.findings.filter(f => f.severity === "critical").map(f => f.id);
+  const refs = [...sandboxSelected];
+  if (sandboxCustomId.trim()) refs.push(sandboxCustomId.trim());
+  const knownRefs = refs.filter(r => validIds.has(r));
+  const checks = [];
+
+  // Schema -- includes the real Python's duplicate-ref check (`len(refs) != len(set(refs))`).
+  // Reachable here: selecting a finding's checkbox AND typing that same id into the free-text
+  // field builds a duplicate ref the checkbox UI alone could never produce on its own.
+  const hasDuplicates = new Set(refs).size !== refs.length;
+  if (refs.length === 0) {
+    checks.push({ name: "Schema", pass: false, msg: "A recommendation citing nothing can't be judged by any guardrail below." });
+  } else if (hasDuplicates) {
+    checks.push({ name: "Schema", pass: false, msg: `finding_refs contains duplicates: ${refs.map(esc).join(", ")}.` });
+  } else {
+    checks.push({ name: "Schema", pass: true, msg: `finding_refs has ${refs.length} entr${refs.length === 1 ? "y" : "ies"}.` });
+  }
+
+  // Hallucination -- refs/unknown can contain the free-typed custom id verbatim, so escape
+  // before it ever reaches innerHTML (renderSandbox() writes these messages unescaped).
+  const unknown = refs.filter(r => !validIds.has(r));
+  if (unknown.length) {
+    checks.push({ name: "Hallucination", pass: false, msg: `References unknown finding_id(s): ${unknown.map(esc).join(", ")}.` });
+  } else if (refs.length) {
+    checks.push({ name: "Hallucination", pass: true, msg: "Every finding_refs value exists in the real feed." });
+  } else {
+    checks.push({ name: "Hallucination", pass: null, msg: "N/A — no finding_refs to check." });
+  }
+
+  // Coverage -- feed-wide in the real tool (checked across ALL recommendations); framed
+  // honestly here as "if this were your only recommendation," on BOTH the pass and fail
+  // message so the caveat shows up on the very state (Coverage FAIL) most users see first.
+  const missing = criticalIds.filter(id => !knownRefs.includes(id));
+  if (missing.length === 0) {
+    checks.push({ name: "Coverage", pass: true, msg: "Every critical finding is referenced (as your only recommendation)." });
+  } else {
+    checks.push({ name: "Coverage", pass: false, msg: `Critical findings not addressed (as your only recommendation): ${missing.join(", ")}.` });
+  }
+
+  // Priority-consistency, part 1: good-only + urgent label
+  const sevs = knownRefs.map(r => byId[r].severity);
+  const allGood = sevs.length > 0 && sevs.every(s => s === "good");
+  if (allGood && (sandboxUrgency === "immediate" || sandboxUrgency === "this_week")) {
+    checks.push({ name: "Priority-consistency (urgency)", pass: false, msg: `Cites only "good" findings (${knownRefs.join(", ")}) but claims urgency "${sandboxUrgency}".` });
+  } else if (sevs.length) {
+    checks.push({ name: "Priority-consistency (urgency)", pass: true, msg: "Not an urgent label on a good-only recommendation." });
+  } else {
+    checks.push({ name: "Priority-consistency (urgency)", pass: null, msg: "N/A — no known findings selected." });
+  }
+
+  // Priority-consistency, part 2: top-ranked recommendation must match the feed's max severity.
+  // The real Python is `if top_ranks and max(top_ranks) < max_rank:` -- an EMPTY top_ranks list
+  // is falsy, so it silently does NOT fire this guardrail. Mirrored exactly, not idealized.
+  const maxRank = Math.max(...d.findings.map(f => SANDBOX_SEVERITY_RANK[f.severity]));
+  const rankNames = { 3: "critical", 2: "serious", 1: "warning", 0: "good" };
+  if (!sandboxTopRank) {
+    checks.push({ name: "Priority-consistency (top-rank)", pass: null, msg: "N/A — not being tested as the top-ranked recommendation." });
+  } else {
+    const topRanks = knownRefs.map(r => SANDBOX_SEVERITY_RANK[byId[r].severity]);
+    if (topRanks.length === 0) {
+      checks.push({ name: "Priority-consistency (top-rank)", pass: true, msg: "No known findings referenced — the real check's `if top_ranks and …` short-circuits here and never fires." });
+    } else if (Math.max(...topRanks) < maxRank) {
+      checks.push({ name: "Priority-consistency (top-rank)", pass: false, msg: `Best-cited severity is "${rankNames[Math.max(...topRanks)]}", but the feed's own worst severity is "${rankNames[maxRank]}".` });
+    } else {
+      checks.push({ name: "Priority-consistency (top-rank)", pass: true, msg: "References a finding at the feed's own max severity." });
+    }
+  }
+
+  return checks;
+}
+
+function renderSandbox() {
+  const checksEl = document.getElementById("sandboxChecks");
+  const verdictEl = document.getElementById("sandboxVerdict");
+  if (!checksEl || !verdictEl) return;
+  const checks = ctsGuardrailCheck();
+  checksEl.innerHTML = checks.map(c => `
+    <div class="sandbox-check-row">
+      ${c.pass === null ? statusPill("warning", "N/A") : c.pass ? statusPill("good", "Pass") : statusPill("critical", "Fail")}
+      <span class="sandbox-check-name">${c.name}</span>
+      <span class="sandbox-check-msg">${c.msg}</span>
+    </div>`).join("");
+  const failed = checks.some(c => c.pass === false);
+  verdictEl.className = `sandbox-verdict ${failed ? "reject" : "ship"}`;
+  verdictEl.textContent = failed ? "REJECTED — this recommendation would not ship." : "Would ship — every applicable guardrail passes.";
+}
+
+function renderCrossToolSynthesis() {
+  const d = DATA.crossToolSynthesis;
+  const findingRows = d.findings.map(f => `
+    <tr>
+      <td>${f.id}</td>
+      <td>${f.tool}</td>
+      <td>${severityPill(f.severity)}</td>
+      <td class="num">${f.dollarImpact === null ? "n/a" : fmt$(f.dollarImpact)}</td>
+      <td>${f.jdDuty}</td>
+      <td style="color:var(--text-secondary)">${f.text}</td>
+    </tr>`).join("");
+  const recRows = d.recommendations.map(r => `
+    <tr>
+      <td>${urgencyPill(r.urgency)}</td>
+      <td>${r.findingRefs.join(", ")}</td>
+      <td>${r.action}</td>
+      <td style="color:var(--text-secondary)">${r.rationale}</td>
+    </tr>`).join("");
+
+  document.getElementById("panel-crosstool").innerHTML = `
+    <div class="card">
+      <h2>Cross-tool synthesis</h2>
+      <div class="desc">The 15th tool, and a different shape from the other 14 — instead of one domain's own data, it reads a findings feed spanning the OTHER 14 tools' already-verified results and uses the same forced-tool-calling AI pattern as the Variance Narrator to produce one prioritized, guardrailed action list. The findings feed below is a hand-curated snapshot of findings this repo's other 14 tools have already, independently verified elsewhere on this page — it is NOT the output of a live cross-tool aggregator (no such adapter exists across all 14 tools' disparate entry points and result shapes — a separate, larger integration project, out of scope here and stated as such). Model-drafted prose below is illustrative only (a live Claude API call produces it; shown here as an example, not a claim of a live run) — the finding data beneath it is always code-computed, never model output.</div>
+      <div class="narrative">${d.narrative}</div>
+    </div>
+    <div class="card">
+      <h2>Input findings — the fixture feed</h2>
+      <div class="desc">Ten findings, six tools, every figure traced to a real assertion already made elsewhere in this repo. One finding's free-text field (COSTROLL-Q1) carries a live prompt-injection attempt — sanitized and wrapped as untrusted content before it ever reaches the model, and independently caught by the priority-consistency guardrail below even if it weren't.</div>
+      <table>
+        <thead><tr><th>ID</th><th>Tool</th><th>Severity</th><th class="num">$ Impact</th><th>JD Duty</th><th>Finding</th></tr></thead>
+        <tbody>${findingRows}</tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h2>Prioritized recommendations</h2>
+      <div class="desc">Ranked by urgency, not by input order — coverage and priority-consistency guardrails (below) reject a response that buries a critical finding or promotes a "good"-severity one.</div>
+      <table>
+        <thead><tr><th>Urgency</th><th>Findings</th><th>Recommended action</th><th>Rationale</th></tr></thead>
+        <tbody>${recRows}</tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h2>Guardrail sandbox</h2>
+      <div class="desc">Try it — build a hypothetical recommendation and run it through the SAME guardrail logic the real tool's <code>run_guardrails()</code> runs (mirrored 1:1, not simplified). Pick findings, an urgency, and optionally whether this is the top-ranked recommendation; type a fake ID to see the hallucination guardrail fire. This is the one part of the panel that's genuinely live-computed, not illustrative — the AI narrative/recommendations above stay a fixed example, matching every other AI-narration tool in this repo.</div>
+      <div class="sandbox-panel">
+        <div class="sandbox-label">Finding refs — click to select</div>
+        <div class="sandbox-findings">${d.findings.map(f => `<label class="sandbox-finding-chip${sandboxSelected.has(f.id) ? " selected" : ""}" data-sandbox-chip="${f.id}"><input type="checkbox" data-sandbox-id="${f.id}"${sandboxSelected.has(f.id) ? " checked" : ""}><span class="dot ${f.severity}" aria-hidden="true"></span>${f.id}<span class="sandbox-chip-sev">${f.severity}</span></label>`).join("")}</div>
+        <div class="sandbox-label">Recommendation shape</div>
+        <div class="sandbox-controls">
+          <label for="sandboxUrgencySelect">Urgency
+            <select id="sandboxUrgencySelect">
+              <option value="immediate"${sandboxUrgency === "immediate" ? " selected" : ""}>Immediate</option>
+              <option value="this_week"${sandboxUrgency === "this_week" ? " selected" : ""}>This Week</option>
+              <option value="this_month"${sandboxUrgency === "this_month" ? " selected" : ""}>This Month</option>
+              <option value="monitor"${sandboxUrgency === "monitor" ? " selected" : ""}>Monitor</option>
+            </select>
+          </label>
+          <label><input type="checkbox" id="sandboxTopRankCheck"${sandboxTopRank ? " checked" : ""}> Treat as the top-ranked recommendation</label>
+          <label for="sandboxCustomIdInput">Unknown finding_id (optional) <input type="text" id="sandboxCustomIdInput" placeholder="e.g. MARGIN-999" value="${esc(sandboxCustomId)}" size="14"></label>
+        </div>
+        <div id="sandboxVerdict" class="sandbox-verdict"></div>
+        <div id="sandboxChecks" class="sandbox-checks"></div>
+      </div>
+    </div>
+    <div class="callout info">Guardrails active on this run: hallucination (every finding_refs value must exist in the real input), coverage (every critical-severity finding referenced by at least one recommendation), priority-consistency (no recommendation citing only "good"-severity findings may carry urgent labels, and the top-ranked recommendation must reference a finding at the feed's own max severity), and injection-resistant handling on every finding's free-text field.</div>
+  `;
+  document.querySelectorAll("[data-sandbox-chip]").forEach(chip => {
+    // "change" on the checkbox itself, not "click" on the wrapping <label> -- a label click
+    // forwards to its control and then bubbles back through the label, firing a label-level
+    // click listener twice per user click; "change" fires exactly once per real state change
+    // and isn't rAF-suspended when the tab is backgrounded.
+    const id = chip.dataset.sandboxChip;
+    chip.querySelector("input").addEventListener("change", (e) => {
+      const checked = e.target.checked;
+      if (checked) sandboxSelected.add(id); else sandboxSelected.delete(id);
+      chip.classList.toggle("selected", checked);
+      renderSandbox();
+    });
+  });
+  document.getElementById("sandboxUrgencySelect").addEventListener("change", (e) => { sandboxUrgency = e.target.value; renderSandbox(); });
+  document.getElementById("sandboxTopRankCheck").addEventListener("change", (e) => { sandboxTopRank = e.target.checked; renderSandbox(); });
+  document.getElementById("sandboxCustomIdInput").addEventListener("input", (e) => { sandboxCustomId = e.target.value; renderSandbox(); });
+  renderSandbox();
+}
+
+/* ---------- Glossary ---------- */
+const glossarySlug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+
+// One-line summary shown in the collapsed <summary> row -- the def's first clause, so
+// browsing collapsed still tells you roughly what a term means without opening it.
+const glossaryOneLiner = (def) => {
+  const cut = def.search(/[.—]/);
+  const head = cut > 0 ? def.slice(0, cut) : def.slice(0, 70);
+  return head.length < def.length ? head + "…" : head;
+};
+
+const GLOSSARY_CALC_MARKUP = {
+  weightedavg: `
+    <div class="glossary-calc" data-calc="weightedavg">
+      <div class="glossary-calc-title">Try it — edit the purchases<button type="button" class="glossary-calc-reset" data-reset>Reset to real example</button></div>
+      <div class="glossary-calc-rows">
+        <div class="glossary-calc-row"><label>Purchase 1</label><input type="number" data-f="qty0" value="6000" step="1" aria-label="Purchase 1 quantity"><input type="number" data-f="cost0" value="0.54" step="0.01" aria-label="Purchase 1 unit cost"></div>
+        <div class="glossary-calc-row"><label>Purchase 2</label><input type="number" data-f="qty1" value="10000" step="1" aria-label="Purchase 2 quantity"><input type="number" data-f="cost1" value="0.55" step="0.01" aria-label="Purchase 2 unit cost"></div>
+        <div class="glossary-calc-row"><label>Purchase 3</label><input type="number" data-f="qty2" value="8000" step="1" aria-label="Purchase 3 quantity"><input type="number" data-f="cost2" value="0.56" step="0.01" aria-label="Purchase 3 unit cost"></div>
+        <div class="glossary-calc-row single"><label for="calc-wa-standard">Standard cost</label><input id="calc-wa-standard" type="number" data-f="standard" value="0.50" step="0.01"></div>
+      </div>
+      <div class="glossary-calc-out" data-out></div>
+    </div>`,
+  zscore: `
+    <div class="glossary-calc" data-calc="zscore">
+      <div class="glossary-calc-title">Try it — edit the sample<button type="button" class="glossary-calc-reset" data-reset>Reset to real example</button></div>
+      <div class="glossary-calc-rows">
+        <div class="glossary-calc-row single"><label for="calc-z-values">Sample values (comma-separated)</label><input id="calc-z-values" type="text" data-f="values" value="1.18, 1.22, 1.19, 12.00"></div>
+        <div class="glossary-calc-row single"><label for="calc-z-threshold">Flag threshold (|z| ≥)</label><input id="calc-z-threshold" type="number" data-f="threshold" value="3.0" step="0.1"></div>
+      </div>
+      <div class="glossary-calc-out" data-out></div>
+    </div>`,
+  overhead: `
+    <div class="glossary-calc" data-calc="overhead">
+      <div class="glossary-calc-title">Try it — edit the volumes<button type="button" class="glossary-calc-reset" data-reset>Reset to real example</button></div>
+      <div class="glossary-calc-rows">
+        <div class="glossary-calc-row single"><label for="calc-oh-phased">Phased budgeted volume (lbs)</label><input id="calc-oh-phased" type="number" data-f="phased" value="120000" step="1000"></div>
+        <div class="glossary-calc-row single"><label for="calc-oh-latest">Latest-estimate volume (lbs)</label><input id="calc-oh-latest" type="number" data-f="latest" value="0" step="1000"></div>
+        <div class="glossary-calc-row single"><label for="calc-oh-rate">Budgeted fixed overhead rate ($/lb)</label><input id="calc-oh-rate" type="number" data-f="rate" value="0.05" step="0.01"></div>
+      </div>
+      <div class="glossary-calc-out" data-out></div>
+    </div>`,
+};
+
+function computeGlossaryCalc(kind, calcEl) {
+  const val = (f) => parseFloat(calcEl.querySelector(`[data-f="${f}"]`).value);
+  const out = calcEl.querySelector("[data-out]");
+  if (kind === "weightedavg") {
+    const attempted = [0, 1, 2].map(i => ({ qty: val(`qty${i}`), cost: val(`cost${i}`) }));
+    const filledAttempts = attempted.filter(r => Number.isFinite(r.qty) || Number.isFinite(r.cost));
+    const rows = attempted.filter(r => Number.isFinite(r.qty) && Number.isFinite(r.cost) && r.qty > 0 && r.cost > 0);
+    const standard = val("standard");
+    if (!rows.length) { out.innerHTML = `<span style="color:var(--text-muted)">Enter at least one purchase (positive quantity and cost).</span>`; return; }
+    const ignored = filledAttempts.length - rows.length;
+    const totalQty = rows.reduce((s, r) => s + r.qty, 0);
+    const avg = rows.reduce((s, r) => s + r.qty * r.cost, 0) / totalQty;
+    const dev = Number.isFinite(standard) && standard !== 0 ? (avg - standard) / standard : null;
+    const flagged = dev !== null && Math.abs(dev) > 0.10;
+    out.innerHTML = `Weighted-average: <span class="num">$${avg.toFixed(3)}</span>` +
+      (dev !== null ? ` — <span class="num ${flagged ? "flag-bad" : "flag-ok"}">${fmtPct(dev)}</span> vs. standard ${fmt$$(standard)} (±10% band)` : "") +
+      (ignored > 0 ? `<div style="color:var(--text-muted);font-size:11.5px;margin-top:4px">${ignored} row(s) ignored — quantity and cost must both be positive numbers.</div>` : "");
+  } else if (kind === "zscore") {
+    const raw = calcEl.querySelector('[data-f="values"]').value;
+    const values = raw.split(",").map(s => parseFloat(s.trim())).filter(Number.isFinite);
+    let threshold = val("threshold");
+    const thresholdInvalid = !Number.isFinite(threshold);
+    if (thresholdInvalid) threshold = 3.0;
+    if (values.length < 2) { out.innerHTML = `<span style="color:var(--text-muted)">Enter at least 2 sample values.</span>`; return; }
+    const mean = values.reduce((a, b) => a + b, 0) / values.length;
+    const variance = values.reduce((s, v) => s + (v - mean) ** 2, 0) / (values.length - 1);
+    const stdev = Math.sqrt(variance);
+    const items = values.map(v => {
+      const z = stdev === 0 ? 0 : (v - mean) / stdev;
+      const flagged = stdev !== 0 && Math.abs(z) >= threshold;
+      return `<span class="glossary-calc-zscore-item ${flagged ? "flag-bad" : ""}">${v} → z=${z.toFixed(2)}</span>`;
+    }).join("");
+    out.innerHTML = `Mean <span class="num">${mean.toFixed(3)}</span> · stdev <span class="num">${stdev.toFixed(3)}</span>` +
+      `<div class="glossary-calc-zscore-list">${items}</div>` +
+      (thresholdInvalid ? `<div style="color:var(--text-muted);font-size:11.5px;margin-top:4px">Threshold ignored (not a number) — using the default 3.0.</div>` : "");
+  } else if (kind === "overhead") {
+    const phased = val("phased"), latest = val("latest"), rate = val("rate");
+    if (![phased, latest, rate].every(Number.isFinite)) { out.innerHTML = `<span style="color:var(--text-muted)">Enter all three values.</span>`; return; }
+    if (phased < 0 || latest < 0 || rate < 0) { out.innerHTML = `<span style="color:var(--text-muted)">Volumes and the rate should be zero or positive — a negative amount isn't a real production volume or rate.</span>`; return; }
+    const phasedDollar = phased * rate, latestDollar = latest * rate;
+    const varianceDollar = latestDollar - phasedDollar;
+    const pct = phasedDollar !== 0 ? varianceDollar / phasedDollar : null;
+    const flagged = pct !== null ? Math.abs(pct) > 0.05 : varianceDollar !== 0;
+    out.innerHTML = `Phased ${fmt$(phasedDollar)} → Latest estimate ${fmt$(latestDollar)}: variance <span class="num ${flagged ? "flag-bad" : "flag-ok"}">${fmt$(varianceDollar)}</span>` +
+      (pct !== null ? ` (${fmtPct(pct)} of phased plan, ±5% band)` : (varianceDollar !== 0 ? ` (no phased baseline to compare against — any nonzero spend is flagged)` : ""));
+  }
+}
+
+function wireGlossaryCalc(calcEl) {
+  const kind = calcEl.dataset.calc;
+  computeGlossaryCalc(kind, calcEl);
+  calcEl.querySelectorAll("input").forEach(inp => inp.addEventListener("input", () => computeGlossaryCalc(kind, calcEl)));
+  const resetBtn = calcEl.querySelector("[data-reset]");
+  const defaults = {};
+  calcEl.querySelectorAll("input").forEach(inp => { defaults[inp.dataset.f] = inp.value; });
+  resetBtn.addEventListener("click", () => {
+    calcEl.querySelectorAll("input").forEach(inp => { inp.value = defaults[inp.dataset.f]; });
+    computeGlossaryCalc(kind, calcEl);
+  });
+}
+
+function renderGlossary() {
+  const totalTerms = DATA.glossaryGroups.reduce((s, g) => s + g.terms.length, 0);
+  const chips = DATA.glossaryGroups.map(g => `<button class="feed-chip" data-goto-group="${glossarySlug(g.title)}">${g.title.split(",")[0].split("&")[0].trim()}</button>`).join("");
+  const groups = DATA.glossaryGroups.map(g => `
+    <div class="card glossary-group" id="glossary-group-${glossarySlug(g.title)}" data-group="${esc(g.title.toLowerCase())}">
+      <h2>${g.title}</h2>
+      ${g.terms.map((t, i) => `
+        <details class="glossary-term" data-search="${esc((t.term + " " + t.def + " " + (t.example || "")).toLowerCase())}"${i === 0 ? " open" : ""}>
+          <summary><h3>${t.term}</h3><span class="glossary-oneliner">${esc(glossaryOneLiner(t.def))}</span></summary>
+          <div class="glossary-term-body">
+            <p style="color:var(--text-secondary)">${t.def}</p>
+            ${t.formula ? `<p><code>${esc(t.formula)}</code></p>` : ""}
+            ${t.example ? `<p style="color:var(--text-muted)"><strong>Example:</strong> ${t.example}</p>` : ""}
+            ${t.calc ? GLOSSARY_CALC_MARKUP[t.calc] : ""}
+          </div>
+        </details>`).join("")}
+    </div>`).join("");
+
+  document.getElementById("panel-glossary").innerHTML = `
+    <div class="card">
+      <h2>Plain language, real numbers</h2>
+      <div class="desc">Same discipline as everywhere else in this repo: every example below is a real number from a real run of the tool it describes — nothing invented for this page. The 3 formula terms have a live calculator: change the numbers and watch the result recompute. The full write-up, with more context per term, lives in <code>GLOSSARY.md</code> at the repo root.</div>
+      <div class="glossary-toolbar">
+        <div class="glossary-search-wrap"><i class="ph ph-magnifying-glass"></i><input type="text" class="glossary-search" placeholder="Search ${totalTerms} terms…" aria-label="Search glossary terms"></div>
+        <div class="glossary-chips">${chips}</div>
+      </div>
+      <div class="glossary-status" aria-live="polite">Showing all ${totalTerms} terms</div>
+    </div>
+    ${groups}
+  `;
+
+  const panel = document.getElementById("panel-glossary");
+  panel.querySelectorAll(".glossary-calc").forEach(wireGlossaryCalc);
+
+  const searchInput = panel.querySelector(".glossary-search");
+  const status = panel.querySelector(".glossary-status");
+  const allTerms = Array.from(panel.querySelectorAll(".glossary-term"));
+  searchInput.addEventListener("input", () => {
+    const q = searchInput.value.trim().toLowerCase();
+    let shown = 0;
+    panel.querySelectorAll(".glossary-group").forEach(group => {
+      let groupShown = 0;
+      group.querySelectorAll(".glossary-term").forEach(term => {
+        const match = !q || term.dataset.search.includes(q);
+        term.style.display = match ? "" : "none";
+        if (match && q && !term.open) { term.open = true; term.dataset.searchOpened = "1"; }
+        if ((!match || !q) && term.dataset.searchOpened) { term.open = false; delete term.dataset.searchOpened; }
+        if (match) { groupShown++; shown++; }
+      });
+      group.style.display = groupShown ? "" : "none";
+    });
+    status.textContent = q ? `Showing ${shown} of ${allTerms.length} terms matching “${searchInput.value.trim()}”` : `Showing all ${allTerms.length} terms`;
+    let empty = panel.querySelector(".glossary-empty");
+    if (!shown) {
+      if (!empty) { empty = document.createElement("div"); empty.className = "card glossary-empty"; panel.appendChild(empty); }
+      empty.textContent = `No terms match “${searchInput.value.trim()}”.`;
+    } else if (empty) {
+      empty.remove();
+    }
+  });
+
+  panel.querySelectorAll("[data-goto-group]").forEach(chip => chip.addEventListener("click", () => {
+    document.getElementById(`glossary-group-${chip.dataset.gotoGroup}`).scrollIntoView({ behavior: "smooth", block: "start" });
+  }));
 }
 
 /* ---------- FSMA Traceability Checker ---------- */
@@ -2387,8 +3306,8 @@ function renderDbtPipeline() {
 
   document.getElementById("panel-dbt").innerHTML = `
     <div class="card">
-      <h2>dbt-core + Postgres: a transformation layer in front of the 14 data tools</h2>
-      <div class="desc">Right now the 14 data tools each read a hand-shaped sample file directly. This is what a real "raw export → tested transformation → analysis" pipeline in front of them looks like: 29 raw seeds (exact mirrors of the existing sample data, messy fields intact) → dbt staging models (a malformed value becomes NULL and gets flagged, never crashes the load — Postgres has no native TRY_CAST, so this uses a small safe-cast helper) → mart models shaped exactly like each tool's existing input. Every eligible tool gained an optional <code>--source postgres</code> flag, plus a third <code>--source postgres-airbyte</code> choice (see below); the file-based default is completely unchanged.</div>
+      <h2>dbt-core + Postgres: a transformation layer in front of the 15 data tools</h2>
+      <div class="desc">Right now the 15 data tools each read a hand-shaped sample file directly. This is what a real "raw export → tested transformation → analysis" pipeline in front of them looks like: 31 raw seeds (exact mirrors of the existing sample data, messy fields intact) → dbt staging models (a malformed value becomes NULL and gets flagged, never crashes the load — Postgres has no native TRY_CAST, so this uses a small safe-cast helper) → mart models shaped exactly like each tool's existing input. Every eligible tool gained an optional <code>--source postgres</code> flag, plus a third <code>--source postgres-airbyte</code> choice (see below); the file-based default is completely unchanged.</div>
     </div>
     <div class="kpi-grid">
       <div class="kpi" style="border-top:3px solid var(--series-7)">
@@ -2467,39 +3386,82 @@ function renderArchitecture() {
   ];
   const colW = 160, srcY = 20, srcH = 66, dbtY = 106, dbtH = 50, toolY = 176, toolH = 92, sharedY = 292, sharedH = 100, outY = 412, outH = 54, vh = 482;
 
+  // Every traceable element gets a class="arch-el" + data-arch-group="col0 col1 ..." listing
+  // every column whose data-flow actually passes through it. Clicking a source box or a
+  // shared-layer box highlights every element sharing ANY group with the clicked target and
+  // dims the rest (see traceArch() below) -- the group lists ARE the architecture, not a
+  // second description of it, so they can't silently drift from the boxes/arrows they tag.
+  const ALL_COLS = cols.map((_, i) => `col${i}`).join(" ");
+  const SHARED_COLS = "col0 col1 col2 col3"; // every column except Infra (col4, bypasses shared)
+
+  // Boxes are emitted in visual row order (source row, then dbt, then tool row, then shared,
+  // then outputs) rather than interleaved per-column -- Tab order follows DOM order for these
+  // absolutely-positioned foreignObjects, and interleaving source_i/tool_i per column meant a
+  // keyboard user hunting for the 7 trace triggers had to step over an unrelated tool-nav
+  // button between every pair of them (verified: Tab order was source0,tool0,source1,tool1,...
+  // instead of grouping the triggers together). This ordering also happens to match true
+  // top-to-bottom reading order of the diagram, which real Tab order should follow anyway.
   let boxes = "";
   let arrows = "";
   cols.forEach((c, i) => {
-    boxes += `<foreignObject x="${c.x}" y="${srcY}" width="${colW}" height="${srcH}"><div xmlns="http://www.w3.org/1999/xhtml" class="arch-box source"><p>${c.source}</p></div></foreignObject>`;
-    boxes += `<foreignObject x="${c.x}" y="${toolY}" width="${colW}" height="${toolH}"><button xmlns="http://www.w3.org/1999/xhtml" type="button" class="arch-box" data-goto="${c.tab}" style="--accent:${c.accent}"><h4>${c.tool}</h4><p>${c.toolNote}</p></button></foreignObject>`;
-    const cx = c.x + colW / 2;
-    arrows += `<line class="flow-arrow" x1="${cx}" y1="${srcY + srcH}" x2="${cx}" y2="${dbtY}" marker-end="url(#arrow)"/>`;
-    arrows += `<line class="flow-arrow" x1="${cx}" y1="${dbtY + dbtH}" x2="${cx}" y2="${toolY}" marker-end="url(#arrow)"/>`;
-    if (i < 4) {
-      arrows += `<line class="flow-arrow" x1="${cx}" y1="${toolY + toolH}" x2="${cx}" y2="${sharedY}" marker-end="url(#arrow)"/>`;
-    }
+    const g = `col${i}`;
+    boxes += `<foreignObject x="${c.x}" y="${srcY}" width="${colW}" height="${srcH}"><button xmlns="http://www.w3.org/1999/xhtml" type="button" class="arch-box source arch-el" data-arch-group="${g}" data-arch-trace="${g}" aria-pressed="false" aria-describedby="archTraceHint" style="--accent:${c.accent}"><p>${c.source}</p></button></foreignObject>`;
   });
   // A single dbt_pipeline box spans all 5 columns -- unlike the tool row, this is ONE
   // component processing all 5 sources, not 5 distinct tools, so it's drawn as one wide
   // band (same pattern as the shared-layer/outputs boxes below) rather than 5 copies of
-  // the same box.
-  boxes += `<foreignObject x="20" y="${dbtY}" width="860" height="${dbtH}"><button xmlns="http://www.w3.org/1999/xhtml" type="button" class="arch-box arch-outputs-box" data-goto="dbt" style="--accent:var(--series-7)"><p><strong>dbt_pipeline</strong> — staging + mart models, one table per source above (160/160 dbt tests) — plus a parallel Airbyte-fed sibling layer wired into every eligible tool, and a deep-audit verification layer</p></button></foreignObject>`;
+  // the same box. Belongs to every column's group -- every traced column's path runs through it.
+  boxes += `<foreignObject x="20" y="${dbtY}" width="860" height="${dbtH}"><button xmlns="http://www.w3.org/1999/xhtml" type="button" class="arch-box arch-outputs-box arch-el" data-arch-group="${ALL_COLS}" data-goto="dbt" style="--accent:var(--series-7)"><p><strong>dbt_pipeline</strong> — staging + mart models, one table per source above (164/164 dbt tests) — plus a parallel Airbyte-fed sibling layer wired into every eligible tool, and a deep-audit verification layer</p></button></foreignObject>`;
+  cols.forEach((c, i) => {
+    const g = `col${i}`;
+    boxes += `<foreignObject x="${c.x}" y="${toolY}" width="${colW}" height="${toolH}"><button xmlns="http://www.w3.org/1999/xhtml" type="button" class="arch-box arch-el" data-arch-group="${g}" data-goto="${c.tab}" style="--accent:${c.accent}"><h4>${c.tool}</h4><p>${c.toolNote}</p></button></foreignObject>`;
+  });
+  // Arrows aren't focusable, so their DOM position doesn't affect Tab order -- built in the
+  // original per-column loop for clarity. Each carries its OWN column's --accent (not the
+  // global theme accent) so a traced arrow visually matches the color of the box it connects,
+  // rather than every column's arrows lighting up in one unrelated shared hue.
+  cols.forEach((c, i) => {
+    const g = `col${i}`;
+    const cx = c.x + colW / 2;
+    arrows += `<line class="flow-arrow arch-el" data-arch-group="${g}" style="--accent:${c.accent}" x1="${cx}" y1="${srcY + srcH}" x2="${cx}" y2="${dbtY}" marker-end="url(#arrow)"/>`;
+    arrows += `<line class="flow-arrow arch-el" data-arch-group="${g}" style="--accent:${c.accent}" x1="${cx}" y1="${dbtY + dbtH}" x2="${cx}" y2="${toolY}" marker-end="url(#arrow)"/>`;
+    if (i < 4) {
+      arrows += `<line class="flow-arrow arch-el" data-arch-group="${g}" style="--accent:${c.accent}" x1="${cx}" y1="${toolY + toolH}" x2="${cx}" y2="${sharedY}" marker-end="url(#arrow)"/>`;
+    }
+  });
 
   // Infra bypasses the shared layer entirely (deliberate — see assessor.py's DOMAIN_WEIGHTS
   // comment): its arrow runs down the right margin, clear of the shared-layer box, straight to Outputs.
   const infraCx = cols[4].x + colW / 2;
   const bypassX = infraCx + 40;
-  arrows += `<path class="flow-arrow" d="M${infraCx},${toolY + toolH} L${infraCx},${toolY + toolH + 14} L${bypassX},${toolY + toolH + 14} L${bypassX},${outY}" fill="none" marker-end="url(#arrow)"/>`;
+  arrows += `<path class="flow-arrow arch-el" data-arch-group="col4" style="--accent:${cols[4].accent}" d="M${infraCx},${toolY + toolH} L${infraCx},${toolY + toolH + 14} L${bypassX},${toolY + toolH + 14} L${bypassX},${outY}" fill="none" marker-end="url(#arrow)"/>`;
 
+  // --active-accent gives these two a real, visible highlight color when traced -- their
+  // default --accent is deliberately the neutral --text-secondary (not tied to any one
+  // column's series color, since they're shared infrastructure), but that same neutral value
+  // would otherwise make .arch-active's ring/border read as washed-out gray on exactly the
+  // 2 elements a user clicked to trigger it. --series-1 is never locally overridden anywhere
+  // else in this diagram and equals the theme's real accent in both light and dark. The same
+  // --active-accent also backs the :focus-visible outline (not just .arch-active) -- tabbing
+  // to either of these two boxes previously showed the washed-out default outline color even
+  // when the box was simultaneously part of an active trace.
   boxes += `<foreignObject x="20" y="${sharedY}" width="720" height="${sharedH}"><div xmlns="http://www.w3.org/1999/xhtml" class="arch-shared-wrap">
-    <div class="arch-box" style="--accent:var(--text-secondary)"><h4>shared/kpi_registry.py</h4><p>27 thresholds tagged to a JD Duty. All 14 tools pull their defaults from here — one source of truth.</p></div>
-    <div class="arch-box" style="--accent:var(--text-secondary)"><h4>shared/flagging_engine.py</h4><p>9 generic checks: threshold, band, missing-data, timing-adjacency, cost-baseline-materiality, z-score, trend-break, flatline, period-gap. 12 of the 14 tools delegate real logic here, not just parameters.</p></div>
+    <button type="button" class="arch-box arch-el" data-arch-group="${SHARED_COLS}" data-arch-trace="${SHARED_COLS}" aria-pressed="false" aria-describedby="archTraceHint" style="--accent:var(--text-secondary); --active-accent:var(--series-1)"><h4>shared/kpi_registry.py</h4><p>28 thresholds tagged to a JD Duty. All 15 tools pull their defaults from here — one source of truth.</p></button>
+    <button type="button" class="arch-box arch-el" data-arch-group="${SHARED_COLS}" data-arch-trace="${SHARED_COLS}" aria-pressed="false" aria-describedby="archTraceHint" style="--accent:var(--text-secondary); --active-accent:var(--series-1)"><h4>shared/flagging_engine.py</h4><p>9 generic checks: threshold, band, missing-data, timing-adjacency, cost-baseline-materiality, z-score, trend-break, flatline, period-gap. 12 of the 15 tools delegate real logic here, not just parameters.</p></button>
   </div></foreignObject>`;
-  arrows += `<line class="flow-arrow" x1="380" y1="${sharedY + sharedH}" x2="380" y2="${outY}" marker-end="url(#arrow)"/>`;
+  arrows += `<line class="flow-arrow arch-el" data-arch-group="${SHARED_COLS}" style="--accent:var(--series-1)" x1="380" y1="${sharedY + sharedH}" x2="380" y2="${outY}" marker-end="url(#arrow)"/>`;
 
-  boxes += `<foreignObject x="20" y="${outY}" width="860" height="${outH}"><div xmlns="http://www.w3.org/1999/xhtml" class="arch-box arch-outputs-box" style="--accent:var(--series-1)"><p><strong>Outputs</strong> — this dashboard (18 tabs) · KPI_REGISTRY.md · TWIN_CITY_MAPPING.md · COST_ACCOUNTING_DEFENSE_VS_FOOD.md</p></div></foreignObject>`;
+  boxes += `<foreignObject x="20" y="${outY}" width="860" height="${outH}"><div xmlns="http://www.w3.org/1999/xhtml" class="arch-box arch-outputs-box arch-el" data-arch-group="${ALL_COLS}" style="--accent:var(--series-1)"><p><strong>Outputs</strong> — this dashboard (20 tabs) · KPI_REGISTRY.md · TWIN_CITY_MAPPING.md · COST_ACCOUNTING_DEFENSE_VS_FOOD.md</p></div></foreignObject>`;
 
-  const svg = `<svg viewBox="0 0 900 ${vh}" width="100%" height="${vh}" class="arch-diagram" role="img" aria-label="Pipeline architecture: data sources feed dbt_pipeline's staging and mart models, which feed 5 representative tools (14 total, see the tool cards above), 4 of these 5 sharing a KPI registry and flagging engine, all producing this dashboard">
+  // viewBox is 906 wide (not 900) purely to give col4's box -- whose right edge sits exactly
+  // flush at x=900 -- room for its 2px active box-shadow and 2px focus outline to render
+  // without being clipped by the SVG's default overflow:hidden. No box position changed.
+  // role="group" (not "img"): this SVG contains 7 real interactive buttons now, not just a
+  // decorative picture -- role="img" tells assistive tech to flatten the whole subtree into
+  // one opaque image, which would hide every trace-trigger button (and its aria-pressed state)
+  // from screen-reader users entirely. "group" keeps the aria-label while leaving descendants
+  // in the accessibility tree.
+  const svg = `<svg viewBox="0 0 906 ${vh}" width="100%" height="${vh}" class="arch-diagram" id="archDiagram" role="group" aria-label="Pipeline architecture: data sources feed dbt_pipeline's staging and mart models, which feed 5 representative tools (15 total, see the tool cards above), 4 of these 5 sharing a KPI registry and flagging engine, all producing this dashboard. Click any source box or shared-layer box to trace its data-flow path.">
     <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="var(--text-muted)"/></marker></defs>
     <g stroke="var(--text-muted)" stroke-width="1.5">${arrows}</g>
     ${boxes}
@@ -2508,20 +3470,75 @@ function renderArchitecture() {
   document.getElementById("panel-architecture").innerHTML = `
     <div class="card">
       <h2>How the pipeline is wired</h2>
-      <div class="desc">Data sources feed <code>dbt_pipeline</code>'s staging/mart models, which feed the 14 tools (each also still readable directly from a file — dbt is an optional <code>--source postgres</code> path, not a required hop); all 14 pull from the shared KPI registry, and 12 of them also share the flagging engine (variance_narrator's guardrails and fsma_traceability_checker's completeness checks are different-shaped problems it doesn't cover); everything lands in this dashboard. The infra maturity assessor deliberately bypasses both shared modules — a coarser, whole-domain weighting concept, not an oversight (see the comment in <code>assessor.py</code>).</div>
+      <div class="desc">Data sources feed <code>dbt_pipeline</code>'s staging/mart models, which feed the 15 tools (each also still readable directly from a file — dbt is an optional <code>--source postgres</code> path, not a required hop); all 15 pull from the shared KPI registry, and 12 of them also share the flagging engine (variance_narrator's guardrails and fsma_traceability_checker's completeness checks are different-shaped problems it doesn't cover); everything lands in this dashboard. The infra maturity assessor deliberately bypasses both shared modules — a coarser, whole-domain weighting concept, not an oversight (see the comment in <code>assessor.py</code>).</div>
+      <div class="arch-trace-hint" id="archTraceHint">Try it — click a source box (top row) or a shared-layer box to trace its data-flow path through the diagram.<button type="button" class="threshold-reset" id="archTraceReset" hidden>Show full pipeline</button></div>
       ${svg}
+      <div class="arch-trace-caption" id="archTraceCaption" aria-live="polite"></div>
       <div class="arch-bypass-note">The line on the right margin (Infra Maturity Assessor → Outputs) skips the shared KPI registry / flagging engine layer on purpose — that's the bypass, not a rendering gap.</div>
     </div>
   `;
+
+  const svgEl = document.getElementById("archDiagram");
+  const captionEl = document.getElementById("archTraceCaption");
+  const resetBtn = document.getElementById("archTraceReset");
+  const triggers = [...svgEl.querySelectorAll("[data-arch-trace]")];
+  // Tracked by the CLICKED ELEMENT, not its data-arch-trace string -- the two shared-layer
+  // boxes deliberately trace the same 4 columns and so share an identical trace string; keying
+  // toggle-off on the string alone means clicking one right after the other reads as "the same
+  // trace clicked again" and silently clears instead of switching, even though a different box
+  // was clicked. Element identity is the only thing that's actually unique per trigger.
+  let activeTriggerEl = null;
+
+  function clearTrace() {
+    activeTriggerEl = null;
+    svgEl.classList.remove("tracing");
+    svgEl.querySelectorAll(".arch-active").forEach(el => el.classList.remove("arch-active"));
+    triggers.forEach(t => t.setAttribute("aria-pressed", "false"));
+    captionEl.textContent = "";
+    resetBtn.hidden = true;
+  }
+  function applyTrace(triggerEl, groupList, caption) {
+    activeTriggerEl = triggerEl;
+    const active = new Set(groupList.split(" "));
+    svgEl.classList.add("tracing");
+    svgEl.querySelectorAll("[data-arch-group]").forEach(el => {
+      const mine = el.dataset.archGroup.split(" ");
+      el.classList.toggle("arch-active", mine.some(g => active.has(g)));
+    });
+    triggers.forEach(t => t.setAttribute("aria-pressed", String(t === triggerEl)));
+    captionEl.textContent = caption;
+    resetBtn.hidden = false;
+  }
+  triggers.forEach(el => {
+    el.addEventListener("click", () => {
+      if (activeTriggerEl === el) { clearTrace(); return; } // click-to-toggle-off
+      const groupList = el.dataset.archTrace;
+      if (groupList === SHARED_COLS) {
+        // Built from THIS button's own h4/p, not a generic "shared layer" string -- otherwise
+        // kpi_registry.py and flagging_engine.py (same trace string, different content) would
+        // announce byte-identical captions and a user couldn't tell which one they clicked.
+        const label = el.querySelector("h4").textContent;
+        const desc = el.querySelector("p").textContent;
+        const names = cols.slice(0, 4).map(c => c.tool).join(", ");
+        applyTrace(el, groupList, `${label} — ${desc} Used by: ${names} — not Infra Maturity Assessor, which bypasses this layer (see the note below the diagram).`);
+      } else {
+        const i = Number(groupList.replace("col", ""));
+        const c = cols[i];
+        const tail = i === 4 ? "bypasses the shared layer, straight to Outputs" : "shared/kpi_registry.py + shared/flagging_engine.py, then Outputs";
+        applyTrace(el, groupList, `${c.source} → dbt_pipeline → ${c.tool} → ${tail}. ${c.toolNote}`);
+      }
+    });
+  });
+  resetBtn.addEventListener("click", clearTrace);
 }
 
-/* ---------- Navigation (scroll-based — all 8 sections render in one continuous document
+/* ---------- Navigation (scroll-based — all 20 sections render in one continuous document
    now, replacing the old show-one-panel-at-a-time tab model) ---------- */
-const VALID_TABS = ["overview", "architecture", "dbt", "narrator", "recon", "costroll", "margin", "infra", "ap", "costsim", "yieldmix", "energyvar", "fsma", "opsmonitor", "laboreff", "bbcinv", "timephasedpnl", "vendorscorecard"];
+const VALID_TABS = ["overview", "architecture", "dbt", "narrator", "recon", "costroll", "margin", "infra", "ap", "costsim", "yieldmix", "energyvar", "fsma", "opsmonitor", "laboreff", "bbcinv", "timephasedpnl", "vendorscorecard", "crosstool", "glossary"];
 
 function setActiveSidebarLink(name) {
   // Interview Mode hides every non-demo sidebar link via CSS; don't silently drop the
-  // visible highlight onto a hidden link while the reader scrolls through one of the 13
+  // visible highlight onto a hidden link while the reader scrolls through one of the 15
   // sections outside the demo path — leave the last visible demo link active instead.
   if (document.documentElement.getAttribute("data-view") === "interview") {
     const link = document.querySelector(`.sidebar a[data-tab="${name}"]`);
@@ -2696,6 +3713,13 @@ function applyMode(name) {
     }
   }
 }
+// Mirror each demo sidebar link's marker onto its matching section, so Interview Mode's
+// CSS can hide the actual content (not just the nav link) via the same attribute --
+// derived from the sidebar's own markup rather than a second list that could drift.
+document.querySelectorAll(".sidebar a[data-demo]").forEach(a => {
+  const section = document.getElementById(`section-${a.dataset.tab}`);
+  if (section) section.setAttribute("data-demo", "");
+});
 try {
   const savedMode = localStorage.getItem(MODE_KEY);
   applyMode(MODES.includes(savedMode) ? savedMode : "Full");
@@ -2751,6 +3775,71 @@ function buildFeed() {
   // data-goto here re-uses wireGotoButtons()'s own selector ([data-goto]), wired once,
   // last — see wireGotoButtons()'s comment on why per-render binding would miss this.
 }
+
+/* ---------- Guided tour ----------
+   4 stops in the exact order INTERVIEW_TALKING_POINTS.md's "lead with these 4" controller
+   section recommends -- captions paraphrase that file's own already-verified numbers, nothing
+   invented here. Reuses scrollToSection (the same nav function the sidebar/cmdk use) rather
+   than a separate scroll mechanism. */
+const TOUR_STEPS = [
+  { tab: "costroll", title: "The flat-average problem", caption: "Corn - Sweet's flat annual average looks fine: −4.2% vs. the $0.50 standard, inside the ±10% band. Broken into seasons it's a different story — Q1 +10.2%, Q3 −19.9%, Q4 +17.7% — three real cost swings the flat number was hiding until the season was already over." },
+  { tab: "margin", title: "$20,150 in unrecovered margin", caption: "Freight underpriced, Storage never invoiced, Brokerage a small gap, Cash Discount underpriced — split cleanly by unbilled vs. underpriced because those need different fixes. Two customers, Distributor B ($10,250) and Regional Grocer A ($9,900), account for the entire total." },
+  { tab: "vendorscorecard", title: "Vendor accountability, quantified", caption: "Highline Ag Supply: 0% on-time delivery this period, and an estimated $6,000 in internal-process impact from those late deliveries — not just a delivery-rate percentage, a real dollar translation of what being late cost internally." },
+  { tab: "bbcinv", title: "PACA trust exposure", caption: "A borrowing-base line gets $12,000 carved out of its eligible collateral value because of unpaid-grower PACA trust exposure — a real statutory risk specific to buying from growers, and something a generic finance candidate almost never knows to model." },
+];
+let tourStep = 0;
+function tourHighlightTarget() {
+  document.querySelectorAll(".tour-highlight").forEach(el => el.classList.remove("tour-highlight"));
+  const section = document.getElementById("section-" + TOUR_STEPS[tourStep].tab);
+  const card = section && section.querySelector(".card");
+  if (card) card.classList.add("tour-highlight");
+}
+function renderTourCard() {
+  let el = document.getElementById("tourCard");
+  if (!el) {
+    el = document.createElement("div");
+    el.id = "tourCard"; el.className = "tour-card"; el.hidden = true;
+    document.body.appendChild(el);
+  }
+  const step = TOUR_STEPS[tourStep];
+  const dots = TOUR_STEPS.map((_, i) => `<span class="tour-dot${i === tourStep ? " current" : ""}"></span>`).join("");
+  el.innerHTML = `
+    <div class="tour-step-label"><span>Tour ${tourStep + 1} of ${TOUR_STEPS.length}</span><button type="button" class="tour-close" id="tourExit" aria-label="Exit tour">&times;</button></div>
+    <h3>${step.title}</h3>
+    <p>${step.caption}</p>
+    <div class="tour-nav">
+      <div class="tour-dots">${dots}</div>
+      <div style="display:flex;gap:6px">
+        <button type="button" class="tour-btn" id="tourPrev"${tourStep === 0 ? " disabled" : ""}>Prev</button>
+        <button type="button" class="tour-btn primary" id="tourNext">${tourStep === TOUR_STEPS.length - 1 ? "Finish" : "Next"}</button>
+      </div>
+    </div>`;
+  el.hidden = false;
+  el.querySelector("#tourExit").addEventListener("click", exitTour);
+  el.querySelector("#tourPrev").addEventListener("click", () => { if (tourStep > 0) { tourStep--; goToTourStep(); } });
+  el.querySelector("#tourNext").addEventListener("click", () => {
+    if (tourStep === TOUR_STEPS.length - 1) { exitTour(); return; }
+    tourStep++; goToTourStep();
+  });
+}
+function goToTourStep() {
+  scrollToSection(TOUR_STEPS[tourStep].tab);
+  renderTourCard();
+  setTimeout(tourHighlightTarget, 350);
+}
+function startTour() {
+  tourStep = 0;
+  goToTourStep();
+}
+function exitTour() {
+  document.querySelectorAll(".tour-highlight").forEach(el => el.classList.remove("tour-highlight"));
+  const el = document.getElementById("tourCard");
+  if (el) el.hidden = true;
+}
+document.getElementById("tourStart").addEventListener("click", startTour);
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && document.getElementById("tourCard") && !document.getElementById("tourCard").hidden) exitTour();
+});
 
 /* ---------- Command palette (⌘K) ----------
    Items = every sidebar tool + every current finding. Navigates via scrollToSection (the
@@ -2881,7 +3970,7 @@ function revealOnScroll() {
   // after a fixed delay isn't a "harmless no-op" here the way it is for a number that's
   // already finished animating: on a normal FOREGROUND load it would force-reveal every
   // card/KPI still below the fold before the reader ever scrolls to it, silently disabling
-  // the progressive reveal-on-scroll motion for most of an 18-section page (confirmed as a
+  // the progressive reveal-on-scroll motion for most of a 20-section page (confirmed as a
   // real regression, not hypothetical, by independent review). Only fire the fallback if
   // the tab is still genuinely hidden at that moment -- the exact failure mode this exists
   // to cover, nothing broader.
@@ -2933,6 +4022,8 @@ renderLaborEfficiency();
 renderBbcInventory();
 renderTimePhasedPnl();
 renderVendorScorecard();
+renderCrossToolSynthesis();
+renderGlossary();
 makeSortable(document.getElementById("kpiRegistryTable"));
 makeSortable(document.getElementById("dbtSeedsTable"));
 
