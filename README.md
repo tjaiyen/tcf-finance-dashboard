@@ -41,4 +41,7 @@ searches across all tools and findings.
 
 This is a standalone snapshot published for sharing — it does not include the underlying Python
 tools, tests, dbt pipeline, or any other project documentation. All data shown is synthetic
-sample data, disclosed as such in the page's own footer.
+sample data, disclosed as such in the page's own footer. The source repo (`tcf-engine-prep`,
+private) currently has 20 tools; 2 of the newest (`gl_variance_tie_out`, a sub-ledger-to-GL
+reconciliation, and `carbon_adjusted_throughput_analyzer`, a bounded research pilot) don't have
+a dashboard tab yet — a named follow-up, not an oversight.
