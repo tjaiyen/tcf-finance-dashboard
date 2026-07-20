@@ -2,7 +2,7 @@
 
 **Live: https://tjaiyen.github.io/tcf-finance-dashboard/**
 
-A single, self-contained operations dashboard covering 15 cost-accounting and finance-automation
+A single, self-contained operations dashboard covering 18 cost-accounting and finance-automation
 tools built for food/beverage manufacturing — seasonal standard-cost validation, margin-leak
 recovery, vendor performance scoring, borrowing-base inventory eligibility, FSMA traceability,
 a cross-tool AI insight synthesizer, and more, all backed by a shared KPI registry and a common
@@ -25,7 +25,7 @@ searches across all tools and findings.
 - **Dark-first UI** with a live palette (Nocturne/Vivid/Mono) and density (Comfortable/Compact)
   switcher, a command palette (`⌘K`) that jumps to any tool or finding, and an **Interview
   Mode** toggle that collapses the view down to a short guided walkthrough.
-- **15 tools** spanning cost accounting, AP/procurement, compliance, and operational readiness —
+- **18 tools** spanning cost accounting, AP/procurement, compliance, and operational readiness —
   reachable from the sidebar, with an Overview panel that rolls every tool's status up into one
   screen.
 - **Live threshold sliders** on 8 of the tools — drag a materiality band or price-variance

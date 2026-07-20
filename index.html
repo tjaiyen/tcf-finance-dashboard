@@ -43,7 +43,7 @@
     --series-5:#d09a76; --series-6:#cf8fb0; --series-7:#8fc09a; --series-8:#79c2c0;
     --series-9:#c0a07f; --series-10:#8fb0e0; --series-11:#c9a06a; --series-12:#7fc0b0;
     --series-13:#b09fd6; --series-14:#d0997f; --series-15:#8090c0; --series-16:#c9b878;
-    --series-17:#8fbf9f;
+    --series-17:#8fbf9f; --series-18:#c188a8; --series-19:#7fb0a8; --series-20:#d68fa0; --series-21:#c9a878;
     --good:#5fb07a; --warning:#d6a94a; --serious:#d68a5e; --critical:#d66a63;
   }
   [data-theme="light"] {
@@ -67,7 +67,7 @@
     --series-5:#a8663f; --series-6:#9a5f7e; --series-7:#4f7c59; --series-8:#3f8f8c;
     --series-9:#856a4a; --series-10:#4a6aa0; --series-11:#8a6a3c; --series-12:#3f8f7f;
     --series-13:#6a5aa0; --series-14:#a3634e; --series-15:#3c5578; --series-16:#7a6a33;
-    --series-17:#4f7c59; --series-18:#8f5a7a;
+    --series-17:#4f7c59; --series-18:#8f5a7a; --series-19:#3f7c74; --series-20:#a8425a; --series-21:#8a6a2e;
     /* Darkened from the original #2f8f5a/#a8791e/#a8603e/#a84a44 -- those measured
        1.94-2.97:1 text-vs-pill-background contrast in this theme, below WCAG AA's 4.5:1.
        Same hue/saturation, lightness reduced until each cleared 4.5:1 (verified 4.79-4.84:1
@@ -86,6 +86,8 @@
   [data-tab="fsma"]{--tab-color:var(--series-12)} [data-tab="opsmonitor"]{--tab-color:var(--series-13)}
   [data-tab="laboreff"]{--tab-color:var(--series-14)} [data-tab="bbcinv"]{--tab-color:var(--series-15)}
   [data-tab="timephasedpnl"]{--tab-color:var(--series-16)} [data-tab="vendorscorecard"]{--tab-color:var(--series-17)}
+  [data-tab="cyclecount"]{--tab-color:var(--series-19)} [data-tab="apdisbursement"]{--tab-color:var(--series-20)}
+  [data-tab="pbcaudit"]{--tab-color:var(--series-21)}
   [data-tab="crosstool"]{--tab-color:var(--series-18)} [data-tab="glossary"]{--tab-color:var(--text-muted)}
 
   /* palette · Vivid — the original high-signal tool colours */
@@ -94,7 +96,7 @@
     --series-5:#eb6834; --series-6:#e87ba4; --series-7:#5a8f3c; --series-8:#2ba6a4;
     --series-9:#9a6d3c; --series-10:#5b7fbd; --series-11:#b5762a; --series-12:#4f9e8f;
     --series-13:#8a6bb8; --series-14:#c1654f; --series-15:#5b84c4; --series-16:#b08d1f; --series-17:#4a7c59;
-    --series-18:#3fa0c1;
+    --series-18:#3fa0c1; --series-19:#2e9e88; --series-20:#d6547a; --series-21:#c99a1f;
   }
   /* palette · Mono — every tool collapses to the one blurple accent */
   [data-palette="mono"] {
@@ -102,7 +104,7 @@
     --series-5:var(--accent); --series-6:var(--accent); --series-7:var(--accent); --series-8:var(--accent);
     --series-9:var(--accent); --series-10:var(--accent); --series-11:var(--accent); --series-12:var(--accent);
     --series-13:var(--accent); --series-14:var(--accent); --series-15:var(--accent); --series-16:var(--accent); --series-17:var(--accent);
-    --series-18:var(--accent);
+    --series-18:var(--accent); --series-19:var(--accent); --series-20:var(--accent); --series-21:var(--accent);
   }
 
   * { box-sizing: border-box; }
@@ -223,6 +225,15 @@
   .glossary-term summary .glossary-oneliner { font-size: 12.5px; color: var(--text-muted); font-weight: 400; }
   .glossary-term-body { padding: 0 0 12px 20px; }
   .glossary-term-body p { margin: 4px 0; font-size: 13.5px; line-height: 1.55; }
+  /* ---- KPI Registry inline expandable detail rows (same visual language as Glossary's
+     .glossary-term-body, applied to a <tr><td colspan> instead of a <details> body) ---- */
+  .kpi-expand-toggle { background: none; border: none; padding: 0; margin-right: 6px; cursor: pointer; color: var(--text-muted); font-size: 13px; line-height: 1; display: inline-flex; vertical-align: middle; transition: transform .15s ease; }
+  .kpi-expand-toggle::before { content: "\203A"; }
+  .kpi-expand-toggle:hover { color: var(--text-primary); }
+  .kpi-expand-toggle.open { transform: rotate(90deg); }
+  #kpiRegistryTable td.term { cursor: default; }
+  tr.kpi-detail-row > td { padding: 4px 0 14px 30px; border-top: none; background: var(--surface-2); }
+  tr.kpi-detail-row p { margin: 4px 0; font-size: 13.5px; line-height: 1.55; }
   .glossary-calc { margin-top: 10px; padding: 12px; border-radius: var(--radius-md, 8px); background: var(--surface-2); border: 1px dashed var(--border); }
   .glossary-calc-title { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; justify-content: space-between; }
   .glossary-calc-reset { font: inherit; font-size: 11px; text-transform: none; letter-spacing: 0; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--text-secondary); cursor: pointer; }
@@ -462,9 +473,9 @@
   .switcher-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
 
   /* ---- Interview Mode — declutters the default click-path down to the 5 tools the
-     live-demo walkthrough uses. The 15 non-demo sections are actually hidden below
+     live-demo walkthrough uses. The 18 non-demo sections are actually hidden below
      (display:none), not just their nav links -- a bare scroll/#hash into one of them is
-     a no-op while Interview Mode is active. The 20-stop "Take the tour" forces Full
+     a no-op while Interview Mode is active. The 23-stop "Take the tour" forces Full
      Dashboard mode before it starts (see startTour()) specifically so every stop stays
      reachable regardless of which mode the page loaded in. */
   [data-view="interview"] #cmdkOpen,
@@ -578,7 +589,7 @@
     <div>
       <div class="kicker">Finance Automation Engine</div>
       <h1>Operations Dashboard</h1>
-      <div class="sub">A live read over 15 already-built, stress-tested components + a shared KPI registry &mdash; synthetic sample data throughout, every figure from a real deterministic tool run.</div>
+      <div class="sub">A live read over 18 already-built, stress-tested components + a shared KPI registry &mdash; synthetic sample data throughout, every figure from a real deterministic tool run.</div>
       <div class="nav-hint">New here? Click <strong>Interview Mode</strong> (top right) for a simplified 5-tool view, or explore the sidebar / press <kbd>&#8984;K</kbd> to search any tool or finding.</div>
     </div>
     <div class="top-actions">
@@ -590,7 +601,7 @@
         <span class="switcher-label">Density</span>
         <button class="theme-toggle" id="densityToggle" title="Toggle layout density"><i class="ph ph-rows"></i>Comfortable</button>
       </div>
-      <button class="theme-toggle" id="tourStart" title="A guided 20-stop walkthrough covering every tool and reference tab on the dashboard, in sidebar order"><i class="ph ph-compass"></i>Take the tour</button>
+      <button class="theme-toggle" id="tourStart" title="A guided 23-stop walkthrough covering every tool and reference tab on the dashboard, in sidebar order"><i class="ph ph-compass"></i>Take the tour</button>
       <button class="cmdk-open" id="cmdkOpen"><i class="ph ph-magnifying-glass"></i>Search<kbd>&#8984;K</kbd></button>
       <button class="theme-toggle" id="themeToggle"><i class="ph ph-moon-stars"></i>Toggle theme</button>
       <button class="theme-toggle" id="modeToggle" title="Toggle interview-ready view (hides search, switchers, and non-demo tools)"><i class="ph ph-presentation-chart"></i>Full Dashboard</button>
@@ -619,17 +630,20 @@
         <a href="#yieldmix" data-tab="yieldmix"><span class="idx">11</span><span>Yield/Mix Variance</span></a>
         <a href="#energyvar" data-tab="energyvar"><span class="idx">12</span><span>Energy Variance</span></a>
         <a href="#laboreff" data-tab="laboreff"><span class="idx">15</span><span>Labor Efficiency</span></a>
+        <a href="#cyclecount" data-tab="cyclecount"><span class="idx">21</span><span>Cycle Count Reconciler</span></a>
       </div>
       <div class="nav-group">
         <div class="nav-group-label">Procurement</div>
         <a href="#ap" data-tab="ap"><span class="idx">09</span><span>AP 3-Way Match</span></a>
         <a href="#vendorscorecard" data-tab="vendorscorecard" data-demo><span class="idx">18</span><span>Vendor Scorecard</span></a>
+        <a href="#apdisbursement" data-tab="apdisbursement"><span class="idx">22</span><span>AP Disbursement</span></a>
       </div>
       <div class="nav-group">
         <div class="nav-group-label">Ops &amp; Compliance</div>
         <a href="#opsmonitor" data-tab="opsmonitor"><span class="idx">14</span><span>Operations Monitor</span></a>
         <a href="#fsma" data-tab="fsma"><span class="idx">13</span><span>FSMA Traceability</span></a>
         <a href="#bbcinv" data-tab="bbcinv" data-demo><span class="idx">16</span><span>BBC Inventory</span></a>
+        <a href="#pbcaudit" data-tab="pbcaudit"><span class="idx">23</span><span>PBC Audit Tracker</span></a>
       </div>
       <div class="nav-group">
         <div class="nav-group-label">Readiness</div>
@@ -718,6 +732,18 @@
         <div class="section-title" data-tab="vendorscorecard"><span class="section-num">18</span><span class="section-dot"></span><h1 id="heading-vendorscorecard">Vendor Scorecard</h1></div>
         <div id="panel-vendorscorecard"></div>
       </section>
+      <section class="section" id="section-cyclecount" aria-labelledby="heading-cyclecount">
+        <div class="section-title" data-tab="cyclecount"><span class="section-num">21</span><span class="section-dot"></span><h1 id="heading-cyclecount">Cycle Count Reconciler</h1></div>
+        <div id="panel-cyclecount"></div>
+      </section>
+      <section class="section" id="section-apdisbursement" aria-labelledby="heading-apdisbursement">
+        <div class="section-title" data-tab="apdisbursement"><span class="section-num">22</span><span class="section-dot"></span><h1 id="heading-apdisbursement">AP Disbursement</h1></div>
+        <div id="panel-apdisbursement"></div>
+      </section>
+      <section class="section" id="section-pbcaudit" aria-labelledby="heading-pbcaudit">
+        <div class="section-title" data-tab="pbcaudit"><span class="section-num">23</span><span class="section-dot"></span><h1 id="heading-pbcaudit">PBC Audit Tracker</h1></div>
+        <div id="panel-pbcaudit"></div>
+      </section>
       <section class="section" id="section-crosstool" aria-labelledby="heading-crosstool">
         <div class="section-title" data-tab="crosstool"><span class="section-num">19</span><span class="section-dot"></span><h1 id="heading-crosstool">Cross-Tool Insight Synthesizer</h1></div>
         <div id="panel-crosstool"></div>
@@ -803,10 +829,10 @@ const DATA = {
     remediationTarget: 4,
   },
   dbt: {
-    dbtTestsPassed: 164,
-    dbtTestsTotal: 164,
-    loaderChecksPassed: 35,
-    loaderChecksTotal: 35,
+    dbtTestsPassed: 181,
+    dbtTestsTotal: 181,
+    loaderChecksPassed: 37,
+    loaderChecksTotal: 37,
     seeds: [
       { name: "raw_gl_variances", feeds: "Variance Narrator", rawRows: 10, validRows: 9, rejected: 1 },
       { name: "raw_erp_gl_extract", feeds: "Reconciliation Checker (source A)", rawRows: 7, validRows: 6, rejected: 1, groupedInto: 5 },
@@ -1079,6 +1105,38 @@ const DATA = {
       { vendor: "Solo Parts Vendor", onTimeRate: 1.0, onTimeEligibleLines: 1, onTimeLines: 1, priceVarianceRate: 0.0, pricedEligibleLines: 1, priceVarianceFlaggedLines: 0, totalImpact: 0.00, flagged: true, reason: "1 on-time-delivery data point(s) (below minimum 3)", nonRateFlagged: true },
     ],
   },
+  cycleCount: {
+    minCoverageLines: 4,
+    lines: [
+      { countId: "CC-1001", sku: "SKU-1001", outputProduct: "Peas - Frozen", location: "Pasco WH", bookQty: 50000, countedQty: 48000, unitCost: 0.55, bookValue: 27500.00, varianceQty: -2000, varianceValue: -1100.00, flagged: false, reason: "count variance $-1,100.00 is 4.0% of book value $27,500.00 (within 5% band)" },
+      { countId: "CC-1002", sku: "SKU-1002", outputProduct: "Corn - Sweet", location: "Pasco WH", bookQty: 40000, countedQty: 36000, unitCost: 0.60, bookValue: 24000.00, varianceQty: -4000, varianceValue: -2400.00, flagged: true, reason: "count variance $-2,400.00 is 10.0% of book value $24,000.00 (exceeds 5% band)" },
+      { countId: "CC-1003", sku: "SKU-1003", outputProduct: "Green Beans - Frozen", location: "Ellensburg WH", bookQty: 20000, countedQty: 20500, unitCost: 0.70, bookValue: 14000.00, varianceQty: 500, varianceValue: 350.00, flagged: false, reason: "count variance $+350.00 is 2.5% of book value $14,000.00 (within 5% band)" },
+      { countId: "CC-1004", sku: "SKU-1004", outputProduct: "Carrots - Frozen", location: "Pasco WH", bookQty: 0, countedQty: 1200, unitCost: 0.45, bookValue: 0.00, varianceQty: 1200, varianceValue: 540.00, flagged: true, reason: "no book value baseline for SKU-1004 (Pasco WH) ($0.00) -- nonzero count variance $540.00" },
+      { countId: "CC-1005", sku: "SKU-1005", outputProduct: "Baby Lima Beans - Frozen", location: "Ellensburg WH", bookQty: 15000, countedQty: 9000, unitCost: 0.65, bookValue: 9750.00, varianceQty: -6000, varianceValue: -3900.00, flagged: true, reason: "count variance $-3,900.00 is 40.0% of book value $9,750.00 (exceeds 5% band)" },
+    ],
+  },
+  apDisbursement: {
+    invoices: [
+      { invoiceId: "INV-P001", vendor: "Cascade Packaging", amount: 50000.00, dueDate: "2026-07-01", paymentDate: "2026-06-10", discountCaptured: true, discountAmount: 1000.00, late: false, daysLate: 0, premature: false, flagged: false, reason: "clean, $1,000.00 discount captured" },
+      { invoiceId: "INV-P002", vendor: "Rimrock Produce Co-op", amount: 30000.00, dueDate: "2026-07-01", paymentDate: "2026-06-25", discountCaptured: false, discountAmount: 0.00, late: false, daysLate: 0, premature: false, flagged: true, reason: "missed 2% discount window (deadline 2026-06-11), $600.00 left on the table" },
+      { invoiceId: "INV-P003", vendor: "Highline Ag Supply", amount: 20000.00, dueDate: "2026-06-20", paymentDate: "2026-07-05", discountCaptured: false, discountAmount: 0.00, late: true, daysLate: 15, premature: false, flagged: true, reason: "paid 15d after due date 2026-06-20" },
+      { invoiceId: "INV-P004", vendor: "Boxelder Film & Packaging", amount: 40000.00, dueDate: "2026-07-15", paymentDate: "2026-06-20", discountCaptured: false, discountAmount: 0.00, late: false, daysLate: 0, premature: true, flagged: true, reason: "paid 25d earlier than necessary vs 2026-07-15, no discount reason" },
+      { invoiceId: "INV-P005", vendor: "Cascade Cold Storage", amount: 60000.00, dueDate: "2026-06-30", paymentDate: "2026-06-16", discountCaptured: true, discountAmount: 600.00, late: false, daysLate: 0, premature: false, flagged: false, reason: "clean, $600.00 discount captured" },
+    ],
+  },
+  pbcAudit: {
+    asOf: "2026-07-20",
+    atRiskDays: 5,
+    minTrackedItems: 4,
+    items: [
+      { itemId: "PBC-001", category: "Cash", description: "Bank reconciliations - all accounts through June 2026", dueDate: "2026-07-15", status: "cleared", submittedDate: "2026-07-10", overdue: false, atRisk: false, flagged: false, reason: "on track (cleared)" },
+      { itemId: "PBC-002", category: "AR", description: "AR aging detail as of 2026-06-30", dueDate: "2026-07-25", status: "in_progress", submittedDate: null, overdue: false, atRisk: false, flagged: false, reason: "on track (in progress)" },
+      { itemId: "PBC-003", category: "Inventory", description: "Physical inventory count sheets - Pasco/Ellensburg FY26", dueDate: "2026-07-22", status: "not_started", submittedDate: null, overdue: false, atRisk: true, flagged: true, reason: "at risk -- due 2026-07-22 in 2d, not yet started" },
+      { itemId: "PBC-004", category: "Fixed Assets", description: "Fixed asset roll-forward + additions/disposals detail FY26", dueDate: "2026-07-10", status: "in_progress", submittedDate: null, overdue: true, atRisk: false, flagged: true, reason: "overdue -- due 2026-07-10, 10d past due, still in progress" },
+      { itemId: "PBC-005", category: "Debt", description: "Borrowing base certificates - trailing 12 months FY26", dueDate: "2026-08-01", status: "not_started", submittedDate: null, overdue: false, atRisk: false, flagged: false, reason: "on track (not started)" },
+      { itemId: "PBC-006", category: "Equity", description: "Shareholder ownership computation + cap table FY26", dueDate: "2026-07-18", status: "submitted", submittedDate: "2026-07-17", overdue: false, atRisk: false, flagged: false, reason: "on track (submitted)" },
+    ],
+  },
   crossToolSynthesis: {
     // Fixture story (cross_tool_insight_synthesizer/sample_data/cross_tool_findings.csv) --
     // every id/severity/$ here is a hand-transcribed copy of a finding this repo's OTHER 14
@@ -1213,10 +1271,255 @@ const GLOSSARY = [
   ["vendor_scorecard_on_time_delivery_rate_floor", "Minimum acceptable share of a vendor's receipts landing on or before the promised_delivery_date before the vendor itself is flagged for delivery performance review — a policy choice, not a claimed real TCF SLA target."],
   ["vendor_scorecard_price_variance_band", "The line-level %-deviation band (invoiced price vs. PO price) this tool's own check_band call uses — the same 5% policy value already applied to ap_price_variance_band and every other materiality band in this repo."],
   ["vendor_scorecard_price_variance_rate_ceiling", "A genuinely new question ap_three_way_match never asks: how much of a vendor's OWN book of business running over-band before the vendor's pattern itself — not just one line — is a review-worthy signal."],
+  ["cross_tool_synthesis_min_findings_required", "Below this many findings across the other 14 tools, a 'prioritized synthesis' isn't meaningfully different from just reading the raw list — the synthesizer refuses to call the model at all rather than produce a rolled-up judgment on too little input."],
+  ["cycle_count_variance_materiality_band", "How far a SKU/location's count variance value may run as a fraction of its book value before flagged for review — the same 5% policy band reused from every other materiality-band KPI in this registry. A $0 book value with any nonzero count is always flagged, regardless of this band — a record-integrity signal, not a dollar-materiality one."],
+  ["cycle_count_min_coverage_lines", "Below this many SKU/location lines physically counted in a cycle, the cycle-count PROGRAM itself hasn't covered enough of the book to be meaningful — independent of whether any individual counted line's variance was clean."],
+  ["ap_disbursement_premature_pay_threshold_days", "How many days early an invoice may be paid, with no discount reason, before it's flagged as premature — cash tied up with no benefit is the other half of 'disbursement controls,' not just paying late."],
+  ["pbc_at_risk_days_threshold", "A not_started PBC item due this many days or fewer from the as-of date is flagged at-risk — deliberately excludes in_progress items, since work already underway is a different risk profile than untouched work."],
+  ["pbc_min_tracked_items", "Below this many PBC items on the tracked list, the audit-prep completeness read isn't meaningful — independent of whether any individual tracked item is overdue or at-risk."],
 ];
 const GDEF = {};
 GLOSSARY.forEach(([term, def]) => { GDEF[term.toLowerCase()] = def; });
 const tip = (key) => { const d = GDEF[String(key).toLowerCase()]; return d ? ` class="term" title="${esc(d)}"` : ""; };
+
+/* Deep-dive content for the KPI Registry tab's expandable detail rows -- hand-populated
+   from the same source content as shared/kpi_registry.py's explanation/purpose/insight/
+   formula/example fields (kept in sync by hand, same as this table's data has always been
+   a hand-written duplicate of the Python source, not generated from it). Keyed by the same
+   snake_case KPI names GLOSSARY/tip() already use. */
+const KPI_DETAILS = {
+  variance_materiality_threshold: {
+    explanation: "The size a period-over-period variance has to reach, as a fraction of the prior period's value, before it's worth writing a CFO-facing narrative about.",
+    purpose: "Matches the JD's “variance explanations/insight to CFO 'beyond the numbers'” language — this is the threshold for what counts as beyond the numbers, so the narrator doesn't burn CFO attention on routine noise.",
+    insight: "A flagged account moved enough, relative to its own recent history, to warrant an explanation rather than a shrug — the narrator only writes commentary once this line is crossed.",
+    formula: "check_threshold(value, threshold): flagged = abs(value) >= threshold",
+    example: "Freight Expense moved $38,000 unfavorable — a 31.7% swing, well above 5%, so it gets written up. A $200 move on a $500,000 account (0.04%) would not.",
+  },
+  reconciliation_tolerance: {
+    explanation: "How close the same account/period/entity's amount has to be between two systems' exports (e.g. the GL vs. a planning system) before it counts as “the same,” rather than a real discrepancy.",
+    purpose: "Absorbs float/rounding dust between two systems' exports without flagging noise as a real discrepancy — a real Adage/Planful tie-out needs a nonzero tolerance for exactly this reason.",
+    insight: "A line that clears this tolerance is genuinely tied out; a line that doesn't is a real gap between the two systems' books, not rounding.",
+    formula: "diff = round(source_a_amount - source_b_amount, 2); flagged = abs(diff) > tolerance",
+    example: "Direct Labor showed $42,000 in one system and $42,500 in the other — a real $500 gap, above the $0.01 tolerance, flagged as a genuine mismatch.",
+  },
+  reconciliation_timing_adjacency_months: {
+    explanation: "How many months apart a matching-amount entry can appear in the two systems and still be treated as a benign cutoff/timing difference rather than a real discrepancy.",
+    purpose: "A cutoff/timing difference is inherently a neighboring-period phenomenon — two entries further apart than this with a coincidentally equal amount are treated as a real discrepancy, not benign timing.",
+    insight: "A matched pair within this window is almost certainly the same real entry that landed in adjacent periods, not two independent, coincidentally-equal numbers.",
+    formula: "linearize each YYYY-MM to (year*12+month); flagged-as-timing if abs(linear_a - linear_b) <= max_months",
+    example: "Utility Accrual was $4,000 in both systems, but one recorded it in May and the other in June — one month apart — recognized as a timing difference, not a real exception.",
+  },
+  cost_roll_validation_band: {
+    explanation: "How far a trailing weighted-average cost may drift from the current standard cost, as a fraction of that standard, before it's flagged for review.",
+    purpose: "Below this band, a standard is still assumed valid; at or beyond it, the standard itself is treated as stale and worth a look, rather than assumed still correct.",
+    insight: "A flagged item's standard cost no longer reflects what's actually being paid — either the standard needs updating or the purchasing pattern needs explaining.",
+    formula: "check_band(weighted_avg_cost, standard_cost, band): deviation = (weighted_avg_cost - standard_cost) / standard_cost; flagged = abs(deviation) > band",
+    example: "Corn - Sweet's Q3 weighted-average cost ran -19.9% vs. the $0.50 standard — well outside the 10% band, flagged. The flat ANNUAL average, -4.2%, is inside the band and would not have caught any of this.",
+  },
+  cost_roll_min_data_points: {
+    explanation: "The minimum number of purchase-order lines an item needs before its weighted-average cost is trusted as a real, representative number at all.",
+    purpose: "Below this many purchase-order lines, a weighted average isn't a reliable 'typical' cost — flagged as insufficient data (also the threshold below which outlier detection is skipped entirely, since a median of 1-2 points isn't a real center).",
+    insight: "A flagged item hasn't been purchased often enough this period for its own average to mean anything yet — treat any cost-roll finding on it as provisional, not final.",
+    formula: "check_missing_data(po_line_count, min_data_points): flagged = po_line_count < min_data_points",
+    example: "Steel Cans has only 2 PO lines on file this period, below the minimum of 3 — flagged as insufficient data, and its outlier-detection step is skipped entirely.",
+  },
+  cost_roll_outlier_multiple: {
+    explanation: "How many times above OR below an item's own median PO price a single line can be priced before it's treated as a likely data-entry error — bidirectional, so an abnormally cheap line is caught too, not just an abnormally expensive one.",
+    purpose: "A PO line priced beyond this multiple of the item's median, in either direction, is treated as a likely data-entry error and surfaced for human review, never silently averaged in.",
+    insight: "A flagged line is probably a typo (a misplaced decimal, an extra zero) — worth confirming with AP/purchasing before it's allowed to distort the item's real cost.",
+    formula: "outlier if po_line_price > item_median_price * outlier_multiple or po_line_price < item_median_price / outlier_multiple",
+    example: "Packaging Film was billed at $12.00/unit against a $1.21 median for that item — roughly 9.9x the median, well past the 3.0x threshold — flagged and excluded from the weighted-average calculation.",
+  },
+  cost_roll_simulation_draws: {
+    explanation: "How many random draws the simulator takes from an item's fitted triangular cost distribution to build its plausible-cost band.",
+    purpose: "Large enough that seeded sample percentiles land within a fraction of a cent of the analytic closed-form value on this repo's own fixtures, small enough to run instantly with pure stdlib random, no numpy needed.",
+    insight: "The resulting percentile band isn't a guess — it's a 10,000-draw empirical distribution close enough to the closed-form math that either can be trusted.",
+    formula: "for _ in range(draws): draw = rng.triangular(low, high, mode) — Python's real triangular() signature is (low, high, mode), not (low, mode, high); normalized internally to avoid that bug — then take the 5th/95th percentile of the sorted sample",
+    example: "For Corn - Sweet, 10,000 draws from the item's own purchase-history-fitted triangle produced a plausible-cost band of $0.4205–$0.5643/lb.",
+  },
+  cost_roll_simulation_percentile_band_width: {
+    explanation: "How wide a central slice of the simulated cost distribution counts as 'plausible' — a 0.90 width means the central 90%, i.e. the 5th to 95th percentile.",
+    purpose: "The standard cost is flagged if it falls outside the central 5th-95th percentile of the item's simulated plausible-cost distribution — one symmetric width, not separate low/high KPIs.",
+    insight: "If the current standard cost sits outside this band, there's a real (not hand-waved) probability — read directly off the simulation — that it's no longer plausible given the item's actual purchase history.",
+    formula: "band = [percentile(draws, 5), percentile(draws, 95)] for width=0.90",
+    example: "Corn - Sweet's simulated band ($0.4205–$0.5643/lb) carries a 9.8% chance the real cost lands above the top and a 19.3% chance it lands below the bottom — both read directly from where the $0.50 standard falls in the distribution.",
+  },
+  cost_roll_simulation_seed: {
+    explanation: "The base random-number-generator seed the simulation reseeds from, per item, so every run is reproducible.",
+    purpose: "Fixed default seed makes every Monte Carlo run reproducible byte-for-byte — the RNG is reseeded PER ITEM as f'{seed}:{item}', not once globally, so adding/removing an unrelated item never perturbs another item's numbers.",
+    insight: "Two runs of this tool against the same data will always produce the exact same percentile band for the exact same item — an auditor re-running the tool gets an identical result.",
+    formula: "item_rng = random.Random(f'{seed}:{item}')",
+    example: "Re-running the tool against the same Corn - Sweet purchase history with seed 1337 reproduces the identical $0.4205–$0.5643/lb band every time.",
+  },
+  trend_break_window: {
+    explanation: "How many trailing periods form the baseline a new period is compared against when checking for a mid-series spike or drop.",
+    purpose: "Moving-average window for detecting a real trend break (e.g. a mid-period spike a simple first-vs-last comparison would miss) — directly answers the JD's “track vs. break-even targets” language.",
+    insight: "A flagged period broke away from its own recent trailing pattern — something a naive first-vs-last comparison would have completely missed if the series recovered afterward.",
+    formula: "check_trend_break(series, window, threshold_stddev): compare each point to the median + median-absolute-deviation of the trailing `window` points",
+    example: "ops_monitor uses this same shared KPI: Peas - Frozen ran ~1,000 hours/week for five straight weeks, then jumped to 3,000 for one week before returning to ~1,000 — flagged as a trend break. Honest limit: margin_leak_analyzer's own sample data currently has only 2 periods per category, one short of the 3-period window this KPI needs, so this hasn't yet fired inside margin_leak_analyzer's own demo output.",
+  },
+  trend_break_threshold_stddev: {
+    explanation: "How far a period must deviate from its trailing window's baseline, measured in median-absolute-deviation units (labeled 'standard deviations' for readability), before it counts as a real break.",
+    purpose: "How far a period must deviate from the trailing moving average before it counts as a real break rather than normal noise.",
+    insight: "A flagged break is a genuinely unusual point relative to its own recent history — large enough (2.0 MAD units) to rule out routine noise.",
+    formula: "scaled_mad = median_abs_deviation * 1.4826; deviation_units = abs((point - trailing_median) / scaled_mad); flagged if deviation_units >= threshold_stddev",
+    example: "Same ops_monitor example as trend_break_window: the 3,000-hour spike deviated far more than 2.0 MAD units from its ~1,000-hour trailing baseline, clearing the threshold.",
+  },
+  ap_price_variance_band: {
+    explanation: "How far an invoiced unit price may deviate from the purchase order's agreed unit price before the line needs AP review instead of automatic payment.",
+    purpose: "How far an invoiced unit price may deviate from the PO's agreed price before AP review rather than automatic payment.",
+    insight: "A flagged line means the vendor billed a materially different price than what was agreed on the PO — worth resolving before payment, not after.",
+    formula: "check_band(invoiced_unit_price, po_unit_price, band): deviation = (invoiced_unit_price - po_unit_price) / po_unit_price; flagged = abs(deviation) > band",
+    example: "PO-1004 (Corn - Sweet): ordered at $0.54/lb, invoiced at $0.675/lb — a 25% price increase, well above the 5% band. Flagged before payment.",
+  },
+  ap_qty_overbill_band: {
+    explanation: "How much MORE than the quantity actually received a vendor may invoice for before it's flagged as a genuine over-billing exception.",
+    purpose: "Deliberately ASYMMETRIC: under-invoicing (partial billing) is normal AP behavior and is never flagged — only qty_invoiced exceeding qty_received by more than this band fires.",
+    insight: "A flagged line means the vendor is billing for units that were never actually received — a real overpayment risk.",
+    formula: "overbill_pct = (qty_invoiced - qty_received) / qty_received; flagged = overbill_pct > qty_overbill_band",
+    example: "PO-1002 (Packaging Film): 3,600 units received across two deliveries, but invoiced for 4,000 — an 11.1% overbill, above the 2% tolerance.",
+  },
+  ap_duplicate_invoice_lookback_days: {
+    explanation: "How many days apart two invoices against the same vendor+PO, for the same computed amount, can appear and still count as a likely double-submission.",
+    purpose: "Window within which two DIFFERENT invoice numbers against the same vendor+PO for the same computed amount are treated as a likely double-submission rather than two coincidentally-equal legitimate invoices.",
+    insight: "A flagged pair is almost certainly the same charge submitted twice — a real double-payment risk if it clears AP unreviewed.",
+    formula: "two invoices, different invoice_number, same vendor+PO+computed amount: flagged if gap between invoice dates <= lookback_days",
+    example: "PO-1008 (Steel Cans): INV-5009 ($1,050.00, dated 2026-06-14) and INV-5010 ($1,050.00, dated 2026-06-25) are 11 days apart — different invoice numbers, identical vendor/PO/amount, within the 30-day window — flagged as a likely duplicate.",
+  },
+  yield_mix_variance_materiality_band: {
+    explanation: "How large a production run's total material usage variance (yield + mix combined) may run, as a fraction of that run's standard material cost, before it's flagged.",
+    purpose: "An unplanned material (used but absent from the standard recipe) is always flagged regardless of this band — that's a structural/control condition, not a dollar-materiality one.",
+    insight: "A flagged run used or lost real material dollars, not just a rounding-scale amount — worth digging into whether it's a yield problem, a mix problem, or both.",
+    formula: "check_cost_baseline_materiality(usage_variance, standard_material_cost, band): deviation = abs(usage_variance) / standard_material_cost; flagged = deviation > band",
+    example: "Run PR-2001 (Peas - Frozen): usage variance +$600.00 is 12.0% of the run's $5,000.00 standard material cost — well above the 5% band, flagged.",
+  },
+  energy_variance_materiality_band: {
+    explanation: "How large a period's total refrigeration/freezing energy variance (rate + efficiency combined) may run, as a fraction of that period's standard energy cost, before it's flagged.",
+    purpose: "The same 5% policy band already applied to yield_mix/ap price-variance, reused for consistency. NOTE: the underlying $/kWh and kWh-per-lb figures are vendor-quote-sourced, not primary-source-verified — a policy choice, not a claim about TCF's real rates.",
+    insight: "A flagged period spent real energy dollars beyond plan — the rate/efficiency split tells you whether it's a pricing problem or a usage problem.",
+    formula: "check_cost_baseline_materiality(total_energy_variance, standard_energy_cost, band): deviation = abs(total_energy_variance) / standard_energy_cost; flagged = deviation > band",
+    example: "Period EP-1001 (Peas - Frozen/Ammonia): total variance +$235.00 is 29.4% of the period's $800.00 standard energy cost — far above the 5% band, flagged.",
+  },
+  fsma_records_response_window_hours: {
+    explanation: "The number of hours the FSMA Food Traceability Rule gives a firm to produce complete traceability records once FDA requests them.",
+    purpose: "A lot this tool flags as not fully traceable (a missing CTE, an incomplete KDE, or an impossible event date) is exactly a lot that would NOT survive that real 24-hour window. Narrative context, not itself a flagging threshold. NOTE: the specific CTE/KDE field set this tool models is a representative synthetic model for demo purposes, not a verbatim transcription of the rule's real per-CTE KDE table, which this repo's research pass did not independently pull row-by-row.",
+    insight: "A flagged lot is a real regulatory exposure, not just an internal data-quality nit — it's the exact lot that would fail a genuine FDA records request.",
+    formula: "completeness per lot = every required CTE has ≥1 event with all required KDEs and no impossibly-dated event",
+    example: "LOT-5001 (Baby Lima Beans - Frozen) has zero tracking events on file — missing all 5 required CTEs. This lot would not survive a real 24-hour FDA records request.",
+  },
+  ops_monitor_flatline_min_consecutive: {
+    explanation: "How many exactly-equal consecutive readings (labor hours or production output) in a row before the series is treated as a stuck sensor or copy-pasted row.",
+    purpose: "Two or three identical periods in a row is unremarkable for a real process; four+ is implausible without a data-capture problem — a blind spot check_trend_break's own trailing-MAD design structurally cannot see.",
+    insight: "A flagged series didn't just hold steady — it's suspiciously, mechanically identical for too long, a data-capture red flag a trend-break check cannot see on its own.",
+    formula: "check_flatline(series, min_consecutive): flags the min_consecutive-th value onward in any run of exactly-equal consecutive values",
+    example: "Corn - Frozen's actual_hours_worked read exactly 500 for four consecutive weekly periods (OM-2001–OM-2004) — flagged as flatlined.",
+  },
+  ops_monitor_period_gap_multiple: {
+    explanation: "How much larger than a product's own typical period-to-period reporting gap a real gap has to be before it's treated as a silent hole in the data.",
+    purpose: "Measured against each product's OWN observed cadence (the median of its own consecutive gaps), not a single hardcoded interval every product would have to share.",
+    insight: "A flagged gap means a period was likely never recorded at all — not just reported a few days late — and the reporting process itself may need a look.",
+    formula: "check_period_gap(dates, expected_interval_days, gap_multiple): flagged if gap_days > expected_interval_days * gap_multiple",
+    example: "Mixed Vegetables reported weekly through 2026-05-18, then skipped ahead to 2026-06-08 — almost 3x the normal 1-week cadence — flagged as a missing-period gap.",
+  },
+  labor_efficiency_variance_materiality_band: {
+    explanation: "How large a period's total labor variance (rate + efficiency combined) may run, as a fraction of that period's standard labor cost, before it's flagged.",
+    purpose: "NOTE: unlike energy (vendor-quote-sourced), NO labor/headcount/hours data model exists anywhere in this repo's source research — the underlying standards are illustrative of the MECHANIC only, zero external grounding.",
+    insight: "A flagged period cost real labor dollars beyond plan — the rate/efficiency split tells you pay-rate issue vs. productivity issue, but treat the underlying standards as illustrative, not TCF-verified.",
+    formula: "check_cost_baseline_materiality(total_labor_variance, standard_labor_cost, band): deviation = abs(total_labor_variance) / standard_labor_cost; flagged = deviation > band",
+    example: "Period LP-1001 (Peas - Frozen/Direct-Pack): total variance +$360.00 is 25.0% of the period's $1,440.00 standard labor cost — far above the 5% band, flagged.",
+  },
+  bbc_inventory_min_expected_lines: {
+    explanation: "The minimum number of inventory lines a weekly borrowing-base snapshot needs before the build itself is trusted as complete.",
+    purpose: "Below this many inventory lines in a week's snapshot, the certificate is more likely an incomplete BBC build than a genuinely small inventory position — answers the JD's “ensure Controller maintains an auditable build” language.",
+    insight: "A snapshot that clears this floor is a structurally complete build — any remaining findings (aging, PACA exposure, ineligible categories) are real eligibility issues, not evidence the build was rushed.",
+    formula: "check_missing_data(line_count, min_expected_lines): flagged = line_count < min_expected_lines",
+    example: "A weekly snapshot with 6 evaluable inventory lines meets the 4-line minimum, even though 5 of those 6 lines go on to get flagged for other reasons (aging, PACA exposure, an ineligible category, a consigned line).",
+  },
+  time_phased_pnl_materiality_band: {
+    explanation: "How large a latest-estimate variance may run, as a fraction of the phased plan (checked at both the single-period AND cumulative year-to-date level), before it's flagged.",
+    purpose: "The same 5% policy band applied at BOTH the period and cumulative (YTD) level via the same check call rather than two separate KPIs — no evidence yet justifies an asymmetric YTD tolerance.",
+    insight: "A flagged line item is running materially off its phased plan — checking both the period AND the YTD cumulative catches both a one-time spike and a slow drift.",
+    formula: "check_cost_baseline_materiality(latest_estimate_variance, phased_plan_baseline, band) — called once for the period, once for the cumulative YTD",
+    example: "Line item overhead_absorption_peas_line, period 2026-01: latest-estimate variance -$6,000.00 is 100.0% of the $6,000.00 phased plan — both checks fire, since production hadn't started yet against a fully phased plan.",
+  },
+  time_phased_pnl_curve_sum_tolerance: {
+    explanation: "How far a phasing curve's 12 monthly weights may sum away from exactly 1.0 before the whole curve is rejected outright.",
+    purpose: "A curve failing this tolerance is REJECTED at load, not silently renormalized, so a real data-entry typo (e.g. .15 instead of .015) surfaces as 'no phasing curve on file' rather than silently producing a slightly-wrong phased plan.",
+    insight: "Every line item using an accepted curve is phasing off a table that's been load-time verified to actually sum to 1.0 — a typo fails loud, not silent.",
+    formula: "total = sum(curve's 12 monthly weights); rejected if abs(total - 1.0) > curve_sum_tolerance",
+    example: "This repo's two real phasing curves, straight_line and seasonal, both sum to exactly 1.0000 — 0.0 deviation, comfortably inside the 0.5% tolerance, so both load successfully.",
+  },
+  vendor_scorecard_min_evaluable_lines: {
+    explanation: "The minimum number of PO-and-receipt-matched lines a vendor needs before its on-time-delivery rate is treated as statistically meaningful at all.",
+    purpose: "Below this many evaluable lines, a vendor's on-time-delivery rate isn't statistically meaningful — same reasoning as cost_roll_min_data_points and bbc_inventory_min_expected_lines.",
+    insight: "A flagged vendor hasn't had enough matched deliveries this period for its own on-time rate to mean anything yet.",
+    formula: "check_missing_data(on_time_eligible_lines, min_evaluable_lines, subject=\"on-time-delivery\"): flagged = count < min",
+    example: "Solo Parts Vendor has only 1 on-time-delivery data point on file this period, below the minimum of 3 — flagged as insufficient data before any on-time rate is even computed.",
+  },
+  vendor_scorecard_on_time_delivery_rate_floor: {
+    explanation: "The minimum share of a vendor's promised-date-bearing receipts that must arrive on or before that date before the vendor is treated as meeting delivery expectations.",
+    purpose: "Minimum acceptable share of a vendor's receipts landing on or before the promised_delivery_date before the vendor is flagged for delivery performance review — a policy choice, not a claimed TCF SLA target.",
+    insight: "A flagged vendor is missing its own promised delivery dates often enough to be a real operational risk, not just an occasional late shipment.",
+    formula: "on_time_rate = on_time_deliveries / on_time_eligible_receipts; flagged = on_time_rate < rate_floor",
+    example: "Highline Ag Supply's on-time rate this period was 0.0% (every delivery was late), well below the 85% floor — flagged, with an estimated $6,000.00 internal-process impact.",
+  },
+  vendor_scorecard_price_variance_band: {
+    explanation: "How far an individual invoiced line's unit price may deviate from its own PO's agreed price before that single line is flagged.",
+    purpose: "The same 5% policy band already applied to ap_price_variance_band and every other materiality band in this repo, reused here since this tool's own check_band call is genuinely its own line-level check.",
+    insight: "A single flagged line is a one-off pricing exception on that vendor — worth seeing alongside vendor_scorecard_price_variance_rate_ceiling, which asks whether flagged lines are becoming a pattern.",
+    formula: "check_band(invoiced_unit_price, po_unit_price, price_band)",
+    example: "PO-9201 (Rimrock Produce Co-op, Green Beans - Frozen): PO price $0.40/lb, invoiced at $0.45/lb — a 12.5% deviation, above the 5% band, flagged.",
+  },
+  vendor_scorecard_price_variance_rate_ceiling: {
+    explanation: "What share of a vendor's OWN priced lines may run over the price-variance band before the vendor's overall pricing PATTERN is flagged, not just the individual line.",
+    purpose: "A genuinely new policy question ap_three_way_match never asks: how much of a vendor's OWN book of business running over-band before the vendor's pattern itself is a review-worthy signal. Data-confidence note (no fabrication): the criticality_dollars_per_day figures used elsewhere on this vendor's impact estimate are illustrative of the MECHANIC only — no real TCF internal-process-cost study, downtime model, or customer-penalty schedule exists, a stronger caveat than even labor_efficiency_analyzer's own.",
+    insight: "A flagged vendor isn't just having one bad invoice — a meaningful share of its OWN priced lines are running over-band, a vendor-level pricing pattern worth a real conversation.",
+    formula: "price_variance_rate = flagged_priced_lines / total_priced_lines; flagged = price_variance_rate > rate_ceiling",
+    example: "Rimrock Produce Co-op's price-variance rate was 66.7% (2 of its 3 priced lines ran over the 5% line-level band) — far above the 20% ceiling, flagged as a vendor-level pattern.",
+  },
+  cross_tool_synthesis_min_findings_required: {
+    explanation: "The minimum number of findings across the other 14 tools' outputs required before this tool will attempt a prioritized cross-tool synthesis at all.",
+    purpose: "Below this many findings, a 'prioritized synthesis' isn't meaningfully different from just reading the raw list — flagged BEFORE the model call, not silently produced after it.",
+    insight: "A run that never even reaches the model call because it's below this floor is a deliberate refusal, not a missing feature — too little input for synthesis to add value.",
+    formula: "refuse synthesis (never call the model) if len(findings) < min_findings_required",
+    example: "This repo's own findings fixture has 10 real findings across the other 14 tools — well above the 3-finding minimum, so synthesis proceeds. Fewer than 3 would return “Insufficient data” before ever calling the model.",
+  },
+  cycle_count_variance_materiality_band: {
+    explanation: "How large a physical-count-vs-book quantity variance may run, as a fraction of that SKU/location's book dollar value, before it's flagged for review.",
+    purpose: "The same 5% policy band already applied across this registry's other materiality checks, reused here for consistency rather than picking a new number with no evidence to justify a different one — a real cycle-count program's own investigate-threshold would be set by policy, not derived from this repo's synthetic data.",
+    insight: "A flagged SKU's book balance no longer reflects what's physically on the shelf — shrinkage, an unrecorded transaction, or a miscount, worth investigating before the book value is trusted for the next cost roll or borrowing-base build.",
+    formula: "check_cost_baseline_materiality(variance_value, book_value, band): deviation = abs(variance_value) / book_value; flagged = deviation > band",
+    example: "SKU-1005 (Baby Lima Beans - Frozen, Ellensburg WH): book quantity 15,000 lbs, physical count 9,000 lbs — a 6,000 lb / $3,900.00 shortfall against a $9,750.00 book value, 40.0% deviation, far above the 5% band, flagged.",
+  },
+  cycle_count_min_coverage_lines: {
+    explanation: "The minimum number of SKU/location physical counts a cycle needs before the cycle-count PROGRAM itself (not any one count) is treated as having meaningful coverage this period.",
+    purpose: "A materiality check on the lines that WERE counted says nothing about whether enough of the SKU book got counted this cycle at all — reuses check_missing_data at the same whole-dataset structural level cost_roll_simulator/bbc_inventory_eligibility_checker/vendor_performance_scorecard already established.",
+    insight: "A cycle clearing this floor had a genuinely evaluated program this period; a cycle below it may be under-executing its own counting cadence, a control gap distinct from any individual SKU's variance finding.",
+    formula: "check_missing_data(count_lines, min_coverage_lines): flagged = count_lines < min_coverage_lines",
+    example: "This repo's own fixture evaluates 5 SKU/location counts this cycle, above the minimum of 4 — 'cycle coverage: 5 cycle-count data point(s) (meets minimum 4)'.",
+  },
+  ap_disbursement_premature_pay_threshold_days: {
+    explanation: "How many days before the date that actually mattered (the early-pay discount deadline if one was captured, otherwise the invoice's own due date) a payment may land before it's flagged as needlessly early.",
+    purpose: "Paying early with no discount reason forfeits the use of that cash for no benefit — a real disbursement-control question the JD names explicitly, distinct from ap_three_way_match's own pre-payment correctness check. A policy choice, not a claim about a real TCF payment-run cadence.",
+    insight: "A flagged invoice paid cash out the door well before it had to, with no discount captured to justify the timing — a process/scheduling gap, not a vendor or invoice-correctness problem.",
+    formula: "target_date = discount_deadline if discount_captured else due_date; days_early = (target_date - payment_date).days; premature = not late and not discount_captured and days_early > threshold_days",
+    example: "INV-P004: due 2026-07-15, no discount offered, paid 2026-06-20 — 25 days before the due date with no discount reason, far past the 10-day threshold, flagged as a premature disbursement.",
+  },
+  pbc_at_risk_days_threshold: {
+    explanation: "How close to its due date a PBC (Prepared By Client) item may sit, while still having no work started on it at all, before it's flagged as a leading-indicator risk rather than merely tracked.",
+    purpose: "Catches a problem before it becomes one: an item already IN PROGRESS due soon is normal and not flagged, but a not_started item this close to its due date is a real signal the PBC calendar itself needs escalation before it becomes an OVERDUE, fieldwork-stalling item. A policy choice, no real TCF audit-firm cadence exists in this repo's source research.",
+    insight: "A flagged item hasn't been started with its deadline closing in — worth surfacing to the responsible owner now, while there's still runway to act, rather than waiting for it to go overdue.",
+    formula: "days_until_due = (due_date - as_of_date).days; at_risk = not overdue and status == 'not_started' and days_until_due <= at_risk_days_threshold",
+    example: "PBC-003 (Inventory, \"physical inventory count sheets\"): due 2026-07-22, not started, evaluated as of 2026-07-20 — 2 days until due, within the 5-day threshold, flagged at risk.",
+  },
+  pbc_min_tracked_items: {
+    explanation: "The minimum number of items a PBC calendar needs to hold before the calendar itself (not any one item) is treated as a genuinely complete tracking list.",
+    purpose: "A PBC calendar with too few items tracked at all is itself a real risk — it can look 'clean' on every individual item while silently missing whole categories of audit requests. Reuses check_missing_data at the same whole-dataset structural level cost_roll_simulator/bbc_inventory_eligibility_checker/vendor_performance_scorecard/cycle_count_reconciler already established.",
+    insight: "A calendar clearing this floor is a genuinely populated tracking list; a calendar below it may be missing whole audit-request categories, a control gap distinct from any individual item's deadline finding.",
+    formula: "check_missing_data(item_count, min_tracked_items): flagged = item_count < min_tracked_items",
+    example: "This repo's own fixture tracks 6 PBC items, above the minimum of 4 — 'calendar coverage: 6 PBC data point(s) (meets minimum 4)'.",
+  },
+};
 
 const fmt$ = (n) => (n < 0 ? "-$" : "$") + Math.abs(n).toLocaleString(undefined, { maximumFractionDigits: 0 });
 const fmt$$ = (n) => (n < 0 ? "-$" : "$") + Math.abs(n).toFixed(2);
@@ -1343,6 +1646,9 @@ function computeToolStatus() {
     bbcinv: f(d.bbcInventory.lines.some(l => l.flagged)),
     timephasedpnl: f(d.timePhasedPnl.periods.some(p => p.flagged || p.cumFlagged)),
     vendorscorecard: f(d.vendorScorecard.vendors.some(v => v.flagged)),
+    cyclecount: f(d.cycleCount.lines.some(l => l.flagged)),
+    apdisbursement: f(d.apDisbursement.invoices.some(i => i.flagged)),
+    pbcaudit: f(d.pbcAudit.items.some(i => i.flagged)),
     crosstool: f(d.crossToolSynthesis.recommendations.some(r => r.urgency === "immediate" || r.urgency === "this_week")),
     glossary: "na",
   };
@@ -1373,6 +1679,9 @@ function computeFindings() {
   d.bbcInventory.lines.filter(l => l.flagged).forEach(l => add("bbcinv", "BBC Inventory", l.eligibleAvailability === 0 ? "serious" : "warning", l.lineId + ": " + l.reason));
   d.timePhasedPnl.periods.filter(p => p.flagged || p.cumFlagged).forEach(p => add("timephasedpnl", "Time-Phased P&L", "warning", p.lineItemId + " " + p.period + ": " + (p.reason || p.cumReason)));
   d.vendorScorecard.vendors.filter(v => v.flagged).forEach(v => add("vendorscorecard", "Vendor Scorecard", "warning", v.vendor + ": " + (v.reason || "flagged")));
+  d.cycleCount.lines.filter(l => l.flagged).forEach(l => add("cyclecount", "Cycle Count", l.bookValue === 0 ? "serious" : "warning", l.sku + " (" + l.location + "): " + l.reason));
+  d.apDisbursement.invoices.filter(i => i.flagged).forEach(i => add("apdisbursement", "AP Disbursement", i.late ? "serious" : "warning", i.invoiceId + " (" + i.vendor + "): " + i.reason));
+  d.pbcAudit.items.filter(i => i.flagged).forEach(i => add("pbcaudit", "PBC Tracker", i.overdue ? "serious" : "warning", i.itemId + " (" + i.category + "): " + i.reason));
   const URGENCY_SEV = { immediate: "critical", this_week: "serious", this_month: "warning", monitor: "good" };
   d.crossToolSynthesis.recommendations.forEach(r => add("crosstool", "Cross-Tool Synthesis", URGENCY_SEV[r.urgency] || "warning", r.action));
   return out;
@@ -1383,6 +1692,7 @@ const TOOL_ICONS = {
   margin: "trend-down", infra: "gauge", ap: "receipt", costsim: "pulse",
   yieldmix: "stack", energyvar: "lightning", fsma: "shield-check", opsmonitor: "chart-line",
   laboreff: "users", bbcinv: "package", timephasedpnl: "calendar-blank", vendorscorecard: "truck",
+  cyclecount: "list-checks", apdisbursement: "credit-card", pbcaudit: "clipboard-text",
   crosstool: "brain", glossary: "book-open",
 };
 function setSectionIcons() {
@@ -1437,7 +1747,7 @@ function renderOverview() {
         <i class="ph ph-pulse verdict-ico"></i>
         <div>
           <div class="verdict-title">Engine status</div>
-          <div class="verdict-sub">${tabsActive.length} tools active &middot; ${flaggedCount} surfacing findings &middot; ${cleanCount} clean &middot; 399/399 pytest &amp; 164/164 dbt tests passing</div>
+          <div class="verdict-sub">${tabsActive.length} tools active &middot; ${flaggedCount} surfacing findings &middot; ${cleanCount} clean &middot; 454/454 pytest &amp; 181/181 dbt tests passing</div>
         </div>
         <div class="verdict-figure"><span class="verdict-big">${findingsCount}</span><span class="verdict-cap">findings</span></div>
       </div>
@@ -1468,7 +1778,7 @@ function renderOverview() {
         <div class="label">top-priority discovery gap — ${DOMAIN_LABELS[topGap.domain]} (weighted ${topGap.weight}× as the JD centerpiece)</div>
       </div>
       <div class="kpi">
-        <div class="num">399/399</div>
+        <div class="num">454/454</div>
         <div class="label">pytest cases passing across every component — edge cases included, not just the happy path</div>
       </div>
       <div class="kpi">
@@ -1539,7 +1849,7 @@ function renderOverview() {
       </button>
       <button class="tool-card" style="--accent: var(--series-7)" data-goto="dbt">
         <h3>Data Pipeline (dbt)</h3>
-        <p>Raw exports → tested dbt staging/mart models → the exact input shape each tool already expects. 164/164 dbt tests, 35/35 loaders confirmed byte-identical to the file-based path, plus a 6-model Airbyte-fed sibling layer the tools can now actually read via --source postgres-airbyte, and a deep-audit verification layer (row-conservation, guardrail canaries, cross-source tie-out).</p>
+        <p>Raw exports → tested dbt staging/mart models → the exact input shape each tool already expects. 181/181 dbt tests, 37/37 loaders confirmed byte-identical to the file-based path, plus a 6-model Airbyte-fed sibling layer the tools can now actually read via --source postgres-airbyte, and a deep-audit verification layer (row-conservation, guardrail canaries, cross-source tie-out).</p>
       </button>
       <button class="tool-card" style="--accent: var(--series-8)" data-goto="ap">
         <h3>AP 3-Way Match</h3>
@@ -1581,6 +1891,18 @@ function renderOverview() {
         <h3>Vendor Scorecard</h3>
         <p>On-time-delivery and price-variance rates rolled up per vendor — the first vendor-level aggregation in this repo — plus an illustrative days-late × criticality-$/day estimate of the internal-process impact an unreliable vendor creates.</p>
       </button>
+      <button class="tool-card" style="--accent: var(--series-19)" data-goto="cyclecount">
+        <h3>Cycle Count Reconciler</h3>
+        <p>Physical-count vs. book-quantity variance — the QUANTITY-integrity question a cycle count exists to catch, distinct from this repo's other Duty #3 tools which all answer a COST question. Plus a second, independent cycle-coverage completeness control.</p>
+      </button>
+      <button class="tool-card" style="--accent: var(--series-20)" data-goto="apdisbursement">
+        <h3>AP Disbursement</h3>
+        <p>AP payment-run timing — the second Duty #2 tool: late payments, missed early-pay discount windows (a literal dollar figure), and premature payments with no discount reason, all evaluated independently per invoice.</p>
+      </button>
+      <button class="tool-card" style="--accent: var(--series-21)" data-goto="pbcaudit">
+        <h3>PBC Audit Tracker</h3>
+        <p>The first tool for Duty #5 (Audit, tax interface & compliance) — tracks PBC (prepared-by-client) audit request completeness as of an explicit fieldwork date: overdue vs. at-risk, plus a list-coverage completeness control.</p>
+      </button>
       <button class="tool-card" style="--accent: var(--series-18)" data-goto="crosstool">
         <h3>Cross-Tool Insight Synthesizer</h3>
         <p>The 15th tool, and a different shape than the other 14 — reads a findings feed spanning all of them and uses the same forced-tool-calling AI pattern as the Variance Narrator to rank a single prioritized, guardrailed action list, catching a live prompt-injection attempt in the process.</p>
@@ -1592,7 +1914,7 @@ function renderOverview() {
     </div>
     <div class="card" style="margin-top:16px">
       <h2>Shared KPI registry</h2>
-      <div class="desc">Every threshold behind the fifteen data tools — materiality %, reconciliation tolerance, cost-roll validation band, trend-break sensitivity, AP price-variance/qty-overbill/duplicate-invoice bands, standard-cost simulation draws/percentile-band-width, yield/mix, energy, and labor efficiency variance materiality bands, FSMA records response window, operations-monitor flatline/period-gap thresholds, BBC inventory build-completeness minimum, time-phased P&amp;L materiality band + phasing-curve sum tolerance, vendor scorecard min-evaluable-lines/on-time-delivery-rate-floor/price-variance-band/price-variance-rate-ceiling — now lives in one place, each tagged with which JD Essential Duty it serves. Doubles as real controls documentation.</div>
+      <div class="desc">Every threshold behind the eighteen data tools — materiality %, reconciliation tolerance, cost-roll validation band, trend-break sensitivity, AP price-variance/qty-overbill/duplicate-invoice bands, standard-cost simulation draws/percentile-band-width, yield/mix, energy, and labor efficiency variance materiality bands, FSMA records response window, operations-monitor flatline/period-gap thresholds, BBC inventory build-completeness minimum, time-phased P&amp;L materiality band + phasing-curve sum tolerance, vendor scorecard min-evaluable-lines/on-time-delivery-rate-floor/price-variance-band/price-variance-rate-ceiling, cycle-count variance materiality band + coverage minimum, AP disbursement premature-pay threshold, PBC at-risk threshold + coverage minimum — now lives in one place, each tagged with which JD Essential Duty it serves. Doubles as real controls documentation.</div>
       <table id="kpiRegistryTable">
         <thead><tr>
           <th class="sortable" data-sort="text">KPI<span class="sort-arrow">▲▼</span></th>
@@ -1601,36 +1923,42 @@ function renderOverview() {
           <th class="sortable" data-sort="text">JD Duty<span class="sort-arrow">▲▼</span></th>
         </tr></thead>
         <tbody>
-          <tr><td${tip("variance_materiality_threshold")}>variance_materiality_threshold</td><td class="num">5%</td><td>variance_narrator</td><td>Duty #1</td></tr>
-          <tr><td${tip("reconciliation_tolerance")}>reconciliation_tolerance</td><td class="num">$0.01</td><td>reconciliation_checker</td><td>Duty #8</td></tr>
-          <tr><td${tip("reconciliation_timing_adjacency_months")}>reconciliation_timing_adjacency_months</td><td class="num">1 mo</td><td>reconciliation_checker</td><td>Duty #8</td></tr>
-          <tr><td${tip("cost_roll_validation_band")}>cost_roll_validation_band</td><td class="num">10%</td><td>cost_roll_validator</td><td>Duty #3</td></tr>
-          <tr><td${tip("cost_roll_min_data_points")}>cost_roll_min_data_points</td><td class="num">3</td><td>cost_roll_validator</td><td>Duty #3</td></tr>
-          <tr><td${tip("cost_roll_outlier_multiple")}>cost_roll_outlier_multiple</td><td class="num">3.0×</td><td>cost_roll_validator</td><td>Duty #3</td></tr>
-          <tr><td${tip("trend_break_window")}>trend_break_window</td><td class="num">3</td><td>margin_leak_analyzer</td><td>Duty #4</td></tr>
-          <tr><td${tip("trend_break_threshold_stddev")}>trend_break_threshold_stddev</td><td class="num">2.0</td><td>margin_leak_analyzer</td><td>Duty #4</td></tr>
-          <tr><td${tip("ap_price_variance_band")}>ap_price_variance_band</td><td class="num">5%</td><td>ap_three_way_match</td><td>Duty #8</td></tr>
-          <tr><td${tip("ap_qty_overbill_band")}>ap_qty_overbill_band</td><td class="num">2%</td><td>ap_three_way_match</td><td>Duty #8</td></tr>
-          <tr><td${tip("ap_duplicate_invoice_lookback_days")}>ap_duplicate_invoice_lookback_days</td><td class="num">30 days</td><td>ap_three_way_match</td><td>Duty #8</td></tr>
-          <tr><td${tip("cost_roll_simulation_draws")}>cost_roll_simulation_draws</td><td class="num">10,000</td><td>cost_roll_simulator</td><td>Duty #3</td></tr>
-          <tr><td${tip("cost_roll_simulation_percentile_band_width")}>cost_roll_simulation_percentile_band_width</td><td class="num">90%</td><td>cost_roll_simulator</td><td>Duty #3</td></tr>
-          <tr><td${tip("cost_roll_simulation_seed")}>cost_roll_simulation_seed</td><td class="num">1337</td><td>cost_roll_simulator</td><td>Duty #3</td></tr>
-          <tr><td${tip("yield_mix_variance_materiality_band")}>yield_mix_variance_materiality_band</td><td class="num">5%</td><td>yield_mix_analyzer</td><td>Duty #3</td></tr>
-          <tr><td${tip("energy_variance_materiality_band")}>energy_variance_materiality_band</td><td class="num">5%</td><td>energy_variance_analyzer</td><td>Duty #3</td></tr>
-          <tr><td${tip("fsma_records_response_window_hours")}>fsma_records_response_window_hours</td><td class="num">24 hrs</td><td>fsma_traceability_checker</td><td>Duty #8</td></tr>
-          <tr><td${tip("ops_monitor_flatline_min_consecutive")}>ops_monitor_flatline_min_consecutive</td><td class="num">4 periods</td><td>ops_monitor</td><td>Duty #8</td></tr>
-          <tr><td${tip("ops_monitor_period_gap_multiple")}>ops_monitor_period_gap_multiple</td><td class="num">1.5×</td><td>ops_monitor</td><td>Duty #8</td></tr>
-          <tr><td${tip("labor_efficiency_variance_materiality_band")}>labor_efficiency_variance_materiality_band</td><td class="num">5%</td><td>labor_efficiency_analyzer</td><td>Duty #3</td></tr>
-          <tr><td${tip("bbc_inventory_min_expected_lines")}>bbc_inventory_min_expected_lines</td><td class="num">4 lines</td><td>bbc_inventory_eligibility_checker</td><td>Duty #2</td></tr>
-          <tr><td${tip("time_phased_pnl_materiality_band")}>time_phased_pnl_materiality_band</td><td class="num">5%</td><td>time_phased_pnl_analyzer</td><td>Duty #3</td></tr>
-          <tr><td${tip("time_phased_pnl_curve_sum_tolerance")}>time_phased_pnl_curve_sum_tolerance</td><td class="num">0.5%</td><td>time_phased_pnl_analyzer</td><td>Duty #3</td></tr>
-          <tr><td${tip("vendor_scorecard_min_evaluable_lines")}>vendor_scorecard_min_evaluable_lines</td><td class="num">3 lines</td><td>vendor_performance_scorecard</td><td>Duty #8</td></tr>
-          <tr><td${tip("vendor_scorecard_on_time_delivery_rate_floor")}>vendor_scorecard_on_time_delivery_rate_floor</td><td class="num">85%</td><td>vendor_performance_scorecard</td><td>Duty #8</td></tr>
-          <tr><td${tip("vendor_scorecard_price_variance_band")}>vendor_scorecard_price_variance_band</td><td class="num">5%</td><td>vendor_performance_scorecard</td><td>Duty #8</td></tr>
-          <tr><td${tip("vendor_scorecard_price_variance_rate_ceiling")}>vendor_scorecard_price_variance_rate_ceiling</td><td class="num">20%</td><td>vendor_performance_scorecard</td><td>Duty #8</td></tr>
+          <tr data-kpi="variance_materiality_threshold"><td${tip("variance_materiality_threshold")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for variance_materiality_threshold"></button>variance_materiality_threshold</td><td class="num">5%</td><td>variance_narrator</td><td>Duty #1</td></tr>
+          <tr data-kpi="reconciliation_tolerance"><td${tip("reconciliation_tolerance")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for reconciliation_tolerance"></button>reconciliation_tolerance</td><td class="num">$0.01</td><td>reconciliation_checker</td><td>Duty #8</td></tr>
+          <tr data-kpi="reconciliation_timing_adjacency_months"><td${tip("reconciliation_timing_adjacency_months")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for reconciliation_timing_adjacency_months"></button>reconciliation_timing_adjacency_months</td><td class="num">1 mo</td><td>reconciliation_checker</td><td>Duty #8</td></tr>
+          <tr data-kpi="cost_roll_validation_band"><td${tip("cost_roll_validation_band")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for cost_roll_validation_band"></button>cost_roll_validation_band</td><td class="num">10%</td><td>cost_roll_validator</td><td>Duty #3</td></tr>
+          <tr data-kpi="cost_roll_min_data_points"><td${tip("cost_roll_min_data_points")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for cost_roll_min_data_points"></button>cost_roll_min_data_points</td><td class="num">3</td><td>cost_roll_validator</td><td>Duty #3</td></tr>
+          <tr data-kpi="cost_roll_outlier_multiple"><td${tip("cost_roll_outlier_multiple")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for cost_roll_outlier_multiple"></button>cost_roll_outlier_multiple</td><td class="num">3.0×</td><td>cost_roll_validator</td><td>Duty #3</td></tr>
+          <tr data-kpi="trend_break_window"><td${tip("trend_break_window")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for trend_break_window"></button>trend_break_window</td><td class="num">3</td><td>margin_leak_analyzer</td><td>Duty #4</td></tr>
+          <tr data-kpi="trend_break_threshold_stddev"><td${tip("trend_break_threshold_stddev")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for trend_break_threshold_stddev"></button>trend_break_threshold_stddev</td><td class="num">2.0</td><td>margin_leak_analyzer</td><td>Duty #4</td></tr>
+          <tr data-kpi="ap_price_variance_band"><td${tip("ap_price_variance_band")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for ap_price_variance_band"></button>ap_price_variance_band</td><td class="num">5%</td><td>ap_three_way_match</td><td>Duty #8</td></tr>
+          <tr data-kpi="ap_qty_overbill_band"><td${tip("ap_qty_overbill_band")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for ap_qty_overbill_band"></button>ap_qty_overbill_band</td><td class="num">2%</td><td>ap_three_way_match</td><td>Duty #8</td></tr>
+          <tr data-kpi="ap_duplicate_invoice_lookback_days"><td${tip("ap_duplicate_invoice_lookback_days")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for ap_duplicate_invoice_lookback_days"></button>ap_duplicate_invoice_lookback_days</td><td class="num">30 days</td><td>ap_three_way_match</td><td>Duty #8</td></tr>
+          <tr data-kpi="cost_roll_simulation_draws"><td${tip("cost_roll_simulation_draws")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for cost_roll_simulation_draws"></button>cost_roll_simulation_draws</td><td class="num">10,000</td><td>cost_roll_simulator</td><td>Duty #3</td></tr>
+          <tr data-kpi="cost_roll_simulation_percentile_band_width"><td${tip("cost_roll_simulation_percentile_band_width")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for cost_roll_simulation_percentile_band_width"></button>cost_roll_simulation_percentile_band_width</td><td class="num">90%</td><td>cost_roll_simulator</td><td>Duty #3</td></tr>
+          <tr data-kpi="cost_roll_simulation_seed"><td${tip("cost_roll_simulation_seed")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for cost_roll_simulation_seed"></button>cost_roll_simulation_seed</td><td class="num">1337</td><td>cost_roll_simulator</td><td>Duty #3</td></tr>
+          <tr data-kpi="yield_mix_variance_materiality_band"><td${tip("yield_mix_variance_materiality_band")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for yield_mix_variance_materiality_band"></button>yield_mix_variance_materiality_band</td><td class="num">5%</td><td>yield_mix_analyzer</td><td>Duty #3</td></tr>
+          <tr data-kpi="energy_variance_materiality_band"><td${tip("energy_variance_materiality_band")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for energy_variance_materiality_band"></button>energy_variance_materiality_band</td><td class="num">5%</td><td>energy_variance_analyzer</td><td>Duty #3</td></tr>
+          <tr data-kpi="fsma_records_response_window_hours"><td${tip("fsma_records_response_window_hours")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for fsma_records_response_window_hours"></button>fsma_records_response_window_hours</td><td class="num">24 hrs</td><td>fsma_traceability_checker</td><td>Duty #8</td></tr>
+          <tr data-kpi="ops_monitor_flatline_min_consecutive"><td${tip("ops_monitor_flatline_min_consecutive")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for ops_monitor_flatline_min_consecutive"></button>ops_monitor_flatline_min_consecutive</td><td class="num">4 periods</td><td>ops_monitor</td><td>Duty #8</td></tr>
+          <tr data-kpi="ops_monitor_period_gap_multiple"><td${tip("ops_monitor_period_gap_multiple")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for ops_monitor_period_gap_multiple"></button>ops_monitor_period_gap_multiple</td><td class="num">1.5×</td><td>ops_monitor</td><td>Duty #8</td></tr>
+          <tr data-kpi="labor_efficiency_variance_materiality_band"><td${tip("labor_efficiency_variance_materiality_band")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for labor_efficiency_variance_materiality_band"></button>labor_efficiency_variance_materiality_band</td><td class="num">5%</td><td>labor_efficiency_analyzer</td><td>Duty #3</td></tr>
+          <tr data-kpi="bbc_inventory_min_expected_lines"><td${tip("bbc_inventory_min_expected_lines")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for bbc_inventory_min_expected_lines"></button>bbc_inventory_min_expected_lines</td><td class="num">4 lines</td><td>bbc_inventory_eligibility_checker</td><td>Duty #2</td></tr>
+          <tr data-kpi="time_phased_pnl_materiality_band"><td${tip("time_phased_pnl_materiality_band")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for time_phased_pnl_materiality_band"></button>time_phased_pnl_materiality_band</td><td class="num">5%</td><td>time_phased_pnl_analyzer</td><td>Duty #3</td></tr>
+          <tr data-kpi="time_phased_pnl_curve_sum_tolerance"><td${tip("time_phased_pnl_curve_sum_tolerance")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for time_phased_pnl_curve_sum_tolerance"></button>time_phased_pnl_curve_sum_tolerance</td><td class="num">0.5%</td><td>time_phased_pnl_analyzer</td><td>Duty #3</td></tr>
+          <tr data-kpi="vendor_scorecard_min_evaluable_lines"><td${tip("vendor_scorecard_min_evaluable_lines")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for vendor_scorecard_min_evaluable_lines"></button>vendor_scorecard_min_evaluable_lines</td><td class="num">3 lines</td><td>vendor_performance_scorecard</td><td>Duty #8</td></tr>
+          <tr data-kpi="vendor_scorecard_on_time_delivery_rate_floor"><td${tip("vendor_scorecard_on_time_delivery_rate_floor")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for vendor_scorecard_on_time_delivery_rate_floor"></button>vendor_scorecard_on_time_delivery_rate_floor</td><td class="num">85%</td><td>vendor_performance_scorecard</td><td>Duty #8</td></tr>
+          <tr data-kpi="vendor_scorecard_price_variance_band"><td${tip("vendor_scorecard_price_variance_band")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for vendor_scorecard_price_variance_band"></button>vendor_scorecard_price_variance_band</td><td class="num">5%</td><td>vendor_performance_scorecard</td><td>Duty #8</td></tr>
+          <tr data-kpi="vendor_scorecard_price_variance_rate_ceiling"><td${tip("vendor_scorecard_price_variance_rate_ceiling")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for vendor_scorecard_price_variance_rate_ceiling"></button>vendor_scorecard_price_variance_rate_ceiling</td><td class="num">20%</td><td>vendor_performance_scorecard</td><td>Duty #8</td></tr>
+          <tr data-kpi="cross_tool_synthesis_min_findings_required"><td${tip("cross_tool_synthesis_min_findings_required")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for cross_tool_synthesis_min_findings_required"></button>cross_tool_synthesis_min_findings_required</td><td class="num">3 findings</td><td>cross_tool_insight_synthesizer</td><td>Duty #8</td></tr>
+          <tr data-kpi="cycle_count_variance_materiality_band"><td${tip("cycle_count_variance_materiality_band")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for cycle_count_variance_materiality_band"></button>cycle_count_variance_materiality_band</td><td class="num">5%</td><td>cycle_count_reconciler</td><td>Duty #3</td></tr>
+          <tr data-kpi="cycle_count_min_coverage_lines"><td${tip("cycle_count_min_coverage_lines")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for cycle_count_min_coverage_lines"></button>cycle_count_min_coverage_lines</td><td class="num">4 lines</td><td>cycle_count_reconciler</td><td>Duty #3</td></tr>
+          <tr data-kpi="ap_disbursement_premature_pay_threshold_days"><td${tip("ap_disbursement_premature_pay_threshold_days")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for ap_disbursement_premature_pay_threshold_days"></button>ap_disbursement_premature_pay_threshold_days</td><td class="num">10 days</td><td>ap_disbursement_analyzer</td><td>Duty #2</td></tr>
+          <tr data-kpi="pbc_at_risk_days_threshold"><td${tip("pbc_at_risk_days_threshold")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for pbc_at_risk_days_threshold"></button>pbc_at_risk_days_threshold</td><td class="num">5 days</td><td>pbc_audit_tracker</td><td>Duty #5</td></tr>
+          <tr data-kpi="pbc_min_tracked_items"><td${tip("pbc_min_tracked_items")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for pbc_min_tracked_items"></button>pbc_min_tracked_items</td><td class="num">4 items</td><td>pbc_audit_tracker</td><td>Duty #5</td></tr>
         </tbody>
       </table>
-      <div class="flag-note">Generated from <code>shared/kpi_registry.py</code> — see <code>KPI_REGISTRY.md</code> for the full version with rationale per KPI. Dotted terms and column headers are hoverable/sortable.</div>
+      <div class="flag-note">Generated from <code>shared/kpi_registry.py</code> — click a KPI's row to expand its explanation, purpose, insight, formula, and a real worked example inline; see <code>KPI_REGISTRY.md</code> for the same content as a standalone doc. Dotted terms and column headers are hoverable/sortable.</div>
     </div>
   `;
 }
@@ -2822,6 +3150,94 @@ function renderVendorScorecard() {
   renderVendorScorecardTables();
 }
 
+/* ---------- Cycle Count Reconciler ---------- */
+function renderCycleCount() {
+  const d = DATA.cycleCount;
+  const netVariance = d.lines.reduce((sum, l) => sum + l.varianceValue, 0);
+  const flaggedRows = d.lines.filter(l => l.flagged).map(l => `<tr><td>${l.sku}</td><td>${l.outputProduct}</td><td>${l.location}</td><td class="num">${l.bookQty.toLocaleString()}</td><td class="num">${l.countedQty.toLocaleString()}</td><td class="num">${fmt$$(l.varianceValue)}</td><td>${statusPill("serious", "Flagged")}</td><td style="color:var(--text-secondary)">${l.reason}</td></tr>`).join("");
+  const cleanRows = d.lines.filter(l => !l.flagged).map(l => `<tr><td>${l.sku}</td><td>${l.outputProduct}</td><td>${l.location}</td><td class="num">${l.bookQty.toLocaleString()}</td><td class="num">${l.countedQty.toLocaleString()}</td><td class="num">${fmt$$(l.varianceValue)}</td><td>${statusPill("good", "Clean")}</td></tr>`).join("");
+
+  document.getElementById("panel-cyclecount").innerHTML = `
+    <div class="card">
+      <h2>Physical-count vs. book-quantity variance</h2>
+      <div class="desc">Built from a brainstorm-mode JD-gap scan: Duty #3 language "oversee inventory valuation, <span${tip("cycle_count_variance_materiality_band")}>physical inventory, cycle counts</span>" was previously untouched by any of this repo's other Duty #3 tools — all of which answer a COST question. This tool answers the QUANTITY-integrity question a physical cycle count exists to catch in the first place. Per SKU/location: <code>Variance Value = (counted_qty − book_qty) × unit_cost</code>, flagged if <span${tip("cycle_count_variance_materiality_band")}>the deviation exceeds a 5% materiality band</span> against book value — a book value of $0 with any nonzero count is always flagged as a record-integrity signal. A second, independent control checks <span${tip("cycle_count_min_coverage_lines")}>cycle-coverage completeness</span>. Net count variance value this cycle: <strong>${fmt$(netVariance)}</strong>. <strong>Data-confidence note:</strong> the materiality band and coverage minimum are policy choices, not real TCF program thresholds. <strong>Out of scope:</strong> root-cause classification of a variance (theft, miscount, unrecorded receipt) and count-scheduling.</div>
+    </div>
+    <div class="card">
+      <h2>Flagged counts — material variance or no book baseline</h2>
+      <table>
+        <thead><tr><th>SKU</th><th>Product</th><th>Location</th><th class="num">Book Qty</th><th class="num">Counted Qty</th><th class="num">Variance $</th><th>Status</th><th>Reason</th></tr></thead>
+        <tbody>${flaggedRows || '<tr><td colspan="8" style="color:var(--text-muted)">—</td></tr>'}</tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h2>Clean counts — within band</h2>
+      <table>
+        <thead><tr><th>SKU</th><th>Product</th><th>Location</th><th class="num">Book Qty</th><th class="num">Counted Qty</th><th class="num">Variance $</th><th>Status</th></tr></thead>
+        <tbody>${cleanRows || '<tr><td colspan="7" style="color:var(--text-muted)">—</td></tr>'}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+/* ---------- AP Disbursement Analyzer ---------- */
+function renderApDisbursement() {
+  const d = DATA.apDisbursement;
+  const totalCaptured = d.invoices.reduce((sum, i) => sum + (i.discountCaptured ? i.discountAmount : 0), 0);
+  const flaggedRows = d.invoices.filter(i => i.flagged).map(i => `<tr><td>${i.invoiceId}</td><td>${i.vendor}</td><td class="num">${fmt$$(i.amount)}</td><td>${i.dueDate}</td><td>${i.paymentDate}</td><td>${statusPill(i.late ? "serious" : "warning", i.late ? "Late" : (i.premature ? "Premature" : "Missed Discount"))}</td><td style="color:var(--text-secondary)">${i.reason}</td></tr>`).join("");
+  const cleanRows = d.invoices.filter(i => !i.flagged).map(i => `<tr><td>${i.invoiceId}</td><td>${i.vendor}</td><td class="num">${fmt$$(i.amount)}</td><td>${i.dueDate}</td><td>${i.paymentDate}</td><td>${statusPill("good", "Clean")}</td><td style="color:var(--text-secondary)">${i.reason}</td></tr>`).join("");
+
+  document.getElementById("panel-apdisbursement").innerHTML = `
+    <div class="card">
+      <h2>AP payment-run timing &amp; disbursement controls</h2>
+      <div class="desc">Second Duty #2 tool, built from the same JD-gap scan: "oversee AP payment runs, terms, disbursement controls; evaluate automation" — distinct from <code>ap_three_way_match/</code>'s Duty #8 territory, which checks whether an invoice is CORRECT before it's paid; this tool checks WHEN it should actually be paid once it's already passed matching. Three independent, all-evaluated findings: <strong>late</strong> (vendor-relationship/covenant risk), <strong>missed discount</strong> (a literal dollar figure, not an estimate), and <span${tip("ap_disbursement_premature_pay_threshold_days")}>premature</span> (paid needlessly early with no discount reason). Discount captured this period: <strong>${fmt$$(totalCaptured)}</strong>. <strong>Data-confidence note:</strong> the 10-day premature-pay threshold is a policy choice; the missed-discount dollar figure is literal input arithmetic. <strong>Out of scope:</strong> payment-run scheduling/batching itself, and a quantified late-fee dollar cost.</div>
+    </div>
+    <div class="card">
+      <h2>Flagged invoices — late, missed discount, or premature</h2>
+      <table>
+        <thead><tr><th>Invoice</th><th>Vendor</th><th class="num">Amount</th><th>Due</th><th>Paid</th><th>Status</th><th>Reason</th></tr></thead>
+        <tbody>${flaggedRows || '<tr><td colspan="7" style="color:var(--text-muted)">—</td></tr>'}</tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h2>Clean invoices</h2>
+      <table>
+        <thead><tr><th>Invoice</th><th>Vendor</th><th class="num">Amount</th><th>Due</th><th>Paid</th><th>Status</th><th>Reason</th></tr></thead>
+        <tbody>${cleanRows || '<tr><td colspan="7" style="color:var(--text-muted)">—</td></tr>'}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+/* ---------- PBC Audit Tracker ---------- */
+function renderPbcAudit() {
+  const d = DATA.pbcAudit;
+  const clearedCount = d.items.filter(i => i.status === "submitted" || i.status === "cleared").length;
+  const completionRate = d.items.length ? clearedCount / d.items.length : 0;
+  const flaggedRows = d.items.filter(i => i.flagged).map(i => `<tr><td>${i.itemId}</td><td>${i.category}</td><td>${i.description}</td><td>${i.dueDate}</td><td>${i.status.replace("_", " ")}</td><td>${statusPill(i.overdue ? "serious" : "warning", i.overdue ? "Overdue" : "At Risk")}</td><td style="color:var(--text-secondary)">${i.reason}</td></tr>`).join("");
+  const cleanRows = d.items.filter(i => !i.flagged).map(i => `<tr><td>${i.itemId}</td><td>${i.category}</td><td>${i.description}</td><td>${i.dueDate}</td><td>${i.status.replace("_", " ")}</td><td>${statusPill("good", "Clean")}</td></tr>`).join("");
+
+  document.getElementById("panel-pbcaudit").innerHTML = `
+    <div class="card">
+      <h2>PBC (audit-prep) completeness tracker</h2>
+      <div class="desc">First tool tagged to Duty #5 (Audit, tax interface &amp; compliance) — every other duty already had at least one dedicated tool. JD language: "serve as primary interface for financial statement audit; prepare/track PBC (prepared-by-client) requests." Evaluated as of an explicit fieldwork date (${d.asOf}, never wall-clock "today"): <strong>overdue</strong> (past due date, not yet submitted/cleared) and <span${tip("pbc_at_risk_days_threshold")}>at_risk</span> (not_started with ${d.atRiskDays} or fewer days until due — deliberately excludes in_progress items). A second, independent control checks <span${tip("pbc_min_tracked_items")}>PBC-list coverage completeness</span>. Completion rate: <strong>${(completionRate * 100).toFixed(0)}%</strong> (${clearedCount} of ${d.items.length} submitted/cleared). <strong>Out of scope:</strong> the actual PBC list content an auditor would request, and tax-nexus/compliance tracking.</div>
+    </div>
+    <div class="card">
+      <h2>Flagged items — overdue or at risk</h2>
+      <table>
+        <thead><tr><th>Item</th><th>Category</th><th>Description</th><th>Due</th><th>Status</th><th>Flag</th><th>Reason</th></tr></thead>
+        <tbody>${flaggedRows || '<tr><td colspan="7" style="color:var(--text-muted)">—</td></tr>'}</tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h2>Clean items — on track</h2>
+      <table>
+        <thead><tr><th>Item</th><th>Category</th><th>Description</th><th>Due</th><th>Status</th><th>Flag</th></tr></thead>
+        <tbody>${cleanRows || '<tr><td colspan="6" style="color:var(--text-muted)">—</td></tr>'}</tbody>
+      </table>
+    </div>
+  `;
+}
+
 /* ---------- Cross-Tool Insight Synthesizer ---------- */
 // ---- Guardrail sandbox: a live, hand-built hypothetical recommendation run through the
 // SAME logic as cross_tool_insight_synthesizer/synthesizer.py's run_guardrails() (mirrored
@@ -3306,8 +3722,8 @@ function renderDbtPipeline() {
 
   document.getElementById("panel-dbt").innerHTML = `
     <div class="card">
-      <h2>dbt-core + Postgres: a transformation layer in front of the 15 data tools</h2>
-      <div class="desc">Right now the 15 data tools each read a hand-shaped sample file directly. This is what a real "raw export → tested transformation → analysis" pipeline in front of them looks like: 31 raw seeds (exact mirrors of the existing sample data, messy fields intact) → dbt staging models (a malformed value becomes NULL and gets flagged, never crashes the load — Postgres has no native TRY_CAST, so this uses a small safe-cast helper) → mart models shaped exactly like each tool's existing input. Every eligible tool gained an optional <code>--source postgres</code> flag, plus a third <code>--source postgres-airbyte</code> choice (see below); the file-based default is completely unchanged.</div>
+      <h2>dbt-core + Postgres: a transformation layer in front of the 18 data tools</h2>
+      <div class="desc">Right now the 18 data tools each read a hand-shaped sample file directly. This is what a real "raw export → tested transformation → analysis" pipeline in front of them looks like: 34 raw seeds (exact mirrors of the existing sample data, messy fields intact) → dbt staging models (a malformed value becomes NULL and gets flagged, never crashes the load — Postgres has no native TRY_CAST, so this uses a small safe-cast helper) → mart models shaped exactly like each tool's existing input. Every eligible tool gained an optional <code>--source postgres</code> flag, plus a third <code>--source postgres-airbyte</code> choice (see below); the file-based default is completely unchanged.</div>
     </div>
     <div class="kpi-grid">
       <div class="kpi" style="border-top:3px solid var(--series-7)">
@@ -3411,7 +3827,7 @@ function renderArchitecture() {
   // component processing all 5 sources, not 5 distinct tools, so it's drawn as one wide
   // band (same pattern as the shared-layer/outputs boxes below) rather than 5 copies of
   // the same box. Belongs to every column's group -- every traced column's path runs through it.
-  boxes += `<foreignObject x="20" y="${dbtY}" width="860" height="${dbtH}"><button xmlns="http://www.w3.org/1999/xhtml" type="button" class="arch-box arch-outputs-box arch-el" data-arch-group="${ALL_COLS}" data-goto="dbt" style="--accent:var(--series-7)"><p><strong>dbt_pipeline</strong> — staging + mart models, one table per source above (164/164 dbt tests) — plus a parallel Airbyte-fed sibling layer wired into every eligible tool, and a deep-audit verification layer</p></button></foreignObject>`;
+  boxes += `<foreignObject x="20" y="${dbtY}" width="860" height="${dbtH}"><button xmlns="http://www.w3.org/1999/xhtml" type="button" class="arch-box arch-outputs-box arch-el" data-arch-group="${ALL_COLS}" data-goto="dbt" style="--accent:var(--series-7)"><p><strong>dbt_pipeline</strong> — staging + mart models, one table per source above (181/181 dbt tests) — plus a parallel Airbyte-fed sibling layer wired into every eligible tool, and a deep-audit verification layer</p></button></foreignObject>`;
   cols.forEach((c, i) => {
     const g = `col${i}`;
     boxes += `<foreignObject x="${c.x}" y="${toolY}" width="${colW}" height="${toolH}"><button xmlns="http://www.w3.org/1999/xhtml" type="button" class="arch-box arch-el" data-arch-group="${g}" data-goto="${c.tab}" style="--accent:${c.accent}"><h4>${c.tool}</h4><p>${c.toolNote}</p></button></foreignObject>`;
@@ -3446,8 +3862,8 @@ function renderArchitecture() {
   // to either of these two boxes previously showed the washed-out default outline color even
   // when the box was simultaneously part of an active trace.
   boxes += `<foreignObject x="20" y="${sharedY}" width="720" height="${sharedH}"><div xmlns="http://www.w3.org/1999/xhtml" class="arch-shared-wrap">
-    <button type="button" class="arch-box arch-el" data-arch-group="${SHARED_COLS}" data-arch-trace="${SHARED_COLS}" aria-pressed="false" aria-describedby="archTraceHint" style="--accent:var(--text-secondary); --active-accent:var(--series-1)"><h4>shared/kpi_registry.py</h4><p>28 thresholds tagged to a JD Duty. All 15 tools pull their defaults from here — one source of truth.</p></button>
-    <button type="button" class="arch-box arch-el" data-arch-group="${SHARED_COLS}" data-arch-trace="${SHARED_COLS}" aria-pressed="false" aria-describedby="archTraceHint" style="--accent:var(--text-secondary); --active-accent:var(--series-1)"><h4>shared/flagging_engine.py</h4><p>9 generic checks: threshold, band, missing-data, timing-adjacency, cost-baseline-materiality, z-score, trend-break, flatline, period-gap. 12 of the 15 tools delegate real logic here, not just parameters.</p></button>
+    <button type="button" class="arch-box arch-el" data-arch-group="${SHARED_COLS}" data-arch-trace="${SHARED_COLS}" aria-pressed="false" aria-describedby="archTraceHint" style="--accent:var(--text-secondary); --active-accent:var(--series-1)"><h4>shared/kpi_registry.py</h4><p>33 thresholds tagged to a JD Duty. All 18 tools pull their defaults from here — one source of truth.</p></button>
+    <button type="button" class="arch-box arch-el" data-arch-group="${SHARED_COLS}" data-arch-trace="${SHARED_COLS}" aria-pressed="false" aria-describedby="archTraceHint" style="--accent:var(--text-secondary); --active-accent:var(--series-1)"><h4>shared/flagging_engine.py</h4><p>9 generic checks: threshold, band, missing-data, timing-adjacency, cost-baseline-materiality, z-score, trend-break, flatline, period-gap. 14 of the 18 tools delegate real logic here, not just parameters.</p></button>
   </div></foreignObject>`;
   arrows += `<line class="flow-arrow arch-el" data-arch-group="${SHARED_COLS}" style="--accent:var(--series-1)" x1="380" y1="${sharedY + sharedH}" x2="380" y2="${outY}" marker-end="url(#arrow)"/>`;
 
@@ -3461,7 +3877,7 @@ function renderArchitecture() {
   // one opaque image, which would hide every trace-trigger button (and its aria-pressed state)
   // from screen-reader users entirely. "group" keeps the aria-label while leaving descendants
   // in the accessibility tree.
-  const svg = `<svg viewBox="0 0 906 ${vh}" width="100%" height="${vh}" class="arch-diagram" id="archDiagram" role="group" aria-label="Pipeline architecture: data sources feed dbt_pipeline's staging and mart models, which feed 5 representative tools (15 total, see the tool cards above), 4 of these 5 sharing a KPI registry and flagging engine, all producing this dashboard. Click any source box or shared-layer box to trace its data-flow path.">
+  const svg = `<svg viewBox="0 0 906 ${vh}" width="100%" height="${vh}" class="arch-diagram" id="archDiagram" role="group" aria-label="Pipeline architecture: data sources feed dbt_pipeline's staging and mart models, which feed 5 representative tools (18 total, see the tool cards above), 4 of these 5 sharing a KPI registry and flagging engine, all producing this dashboard. Click any source box or shared-layer box to trace its data-flow path.">
     <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="var(--text-muted)"/></marker></defs>
     <g stroke="var(--text-muted)" stroke-width="1.5">${arrows}</g>
     ${boxes}
@@ -3470,7 +3886,7 @@ function renderArchitecture() {
   document.getElementById("panel-architecture").innerHTML = `
     <div class="card">
       <h2>How the pipeline is wired</h2>
-      <div class="desc">Data sources feed <code>dbt_pipeline</code>'s staging/mart models, which feed the 15 tools (each also still readable directly from a file — dbt is an optional <code>--source postgres</code> path, not a required hop); all 15 pull from the shared KPI registry, and 12 of them also share the flagging engine (variance_narrator's guardrails and fsma_traceability_checker's completeness checks are different-shaped problems it doesn't cover); everything lands in this dashboard. The infra maturity assessor deliberately bypasses both shared modules — a coarser, whole-domain weighting concept, not an oversight (see the comment in <code>assessor.py</code>).</div>
+      <div class="desc">Data sources feed <code>dbt_pipeline</code>'s staging/mart models, which feed the 18 tools (each also still readable directly from a file — dbt is an optional <code>--source postgres</code> path, not a required hop); all 18 pull from the shared KPI registry, and 14 of them also share the flagging engine (variance_narrator's guardrails and fsma_traceability_checker's completeness checks are different-shaped problems it doesn't cover); everything lands in this dashboard. The infra maturity assessor deliberately bypasses both shared modules — a coarser, whole-domain weighting concept, not an oversight (see the comment in <code>assessor.py</code>).</div>
       <div class="arch-trace-hint" id="archTraceHint">Try it — click a source box (top row) or a shared-layer box to trace its data-flow path through the diagram.<button type="button" class="threshold-reset" id="archTraceReset" hidden>Show full pipeline</button></div>
       ${svg}
       <div class="arch-trace-caption" id="archTraceCaption" aria-live="polite"></div>
@@ -3532,13 +3948,13 @@ function renderArchitecture() {
   resetBtn.addEventListener("click", clearTrace);
 }
 
-/* ---------- Navigation (scroll-based — all 20 sections render in one continuous document
+/* ---------- Navigation (scroll-based — all 23 sections render in one continuous document
    now, replacing the old show-one-panel-at-a-time tab model) ---------- */
-const VALID_TABS = ["overview", "architecture", "dbt", "narrator", "recon", "costroll", "margin", "infra", "ap", "costsim", "yieldmix", "energyvar", "fsma", "opsmonitor", "laboreff", "bbcinv", "timephasedpnl", "vendorscorecard", "crosstool", "glossary"];
+const VALID_TABS = ["overview", "architecture", "dbt", "narrator", "recon", "costroll", "margin", "infra", "ap", "costsim", "yieldmix", "energyvar", "fsma", "opsmonitor", "laboreff", "bbcinv", "timephasedpnl", "vendorscorecard", "cyclecount", "apdisbursement", "pbcaudit", "crosstool", "glossary"];
 
 function setActiveSidebarLink(name) {
   // Interview Mode hides every non-demo sidebar link via CSS; don't silently drop the
-  // visible highlight onto a hidden link while the reader scrolls through one of the 15
+  // visible highlight onto a hidden link while the reader scrolls through one of the 18
   // sections outside the demo path — leave the last visible demo link active instead.
   if (document.documentElement.getAttribute("data-view") === "interview") {
     const link = document.querySelector(`.sidebar a[data-tab="${name}"]`);
@@ -3783,12 +4199,12 @@ function buildFeed() {
    (timephasedpnl/yieldmix/energyvar/laboreff/infra) paraphrase that same file's other
    sections; the remaining 11 adapt each tool's own already-shipped `.desc` copy. Reuses
    scrollToSection (the same nav function the sidebar/cmdk use) rather than a separate scroll
-   mechanism. startTour() force-exits Interview Mode first (see below) since 15 of these 20
+   mechanism. startTour() force-exits Interview Mode first (see below) since 18 of these 23
    stops are non-demo sections Interview Mode hides entirely. */
 const TOUR_STEPS = [
-  { tab: "overview", title: "The whole engine, one screen", caption: "This walkthrough covers all 20 sections in the sidebar, in order — every tool's status rolls up into one verdict banner right here, alongside a findings feed of every flagged item across every tool, worst first." },
-  { tab: "architecture", title: "How the pipeline is wired", caption: "Data sources feed dbt_pipeline's staging/mart models, which feed the 15 tools — all sharing one KPI registry, 12 also sharing one flagging engine. Click any source box or shared-layer box below to trace its exact data-flow path through the diagram." },
-  { tab: "dbt", title: "From hand-shaped files to a real pipeline", caption: "Right now the 15 tools each read a hand-shaped sample file directly. This section shows what a real raw-export → tested-transformation → analysis pipeline in front of them looks like: 31 raw seeds → dbt staging (a malformed value becomes NULL and gets flagged, never crashes the load) → mart models shaped exactly like each tool's real input." },
+  { tab: "overview", title: "The whole engine, one screen", caption: "This walkthrough covers all 23 sections in the sidebar, in order — every tool's status rolls up into one verdict banner right here, alongside a findings feed of every flagged item across every tool, worst first." },
+  { tab: "architecture", title: "How the pipeline is wired", caption: "Data sources feed dbt_pipeline's staging/mart models, which feed the 18 tools — all sharing one KPI registry, 14 also sharing one flagging engine. Click any source box or shared-layer box below to trace its exact data-flow path through the diagram." },
+  { tab: "dbt", title: "From hand-shaped files to a real pipeline", caption: "Right now the 18 tools each read a hand-shaped sample file directly. This section shows what a real raw-export → tested-transformation → analysis pipeline in front of them looks like: 34 raw seeds → dbt staging (a malformed value becomes NULL and gets flagged, never crashes the load) → mart models shaped exactly like each tool's real input." },
   { tab: "narrator", title: "AI commentary, verified before it ships", caption: "The model-drafted narrative here is illustrative only — the numbers underneath are always code-computed, never model output. Direction is independently sign-checked against the real variance and account type, so a model claiming 'favorable' on an actual cost increase gets rejected before it would ever show here." },
   { tab: "recon", title: "ERP meets CPM", caption: "Two synthetic exports — one shaped like an ERP GL extract, one shaped like a CPM export — reconciled against each other to catch real mismatches and timing differences before they become a close problem." },
   { tab: "timephasedpnl", title: "Overhead absorption, the literal formula", caption: "Phases an annual plan into periods, then blends actuals with forecast into one continuous Latest Estimate. One line item is a literal overhead-absorption volume variance — (latest-estimate volume − phased budgeted volume) × budgeted fixed overhead rate — the textbook formula, not an analogy to it." },
@@ -3803,7 +4219,10 @@ const TOUR_STEPS = [
   { tab: "opsmonitor", title: "Judged against its own history, not a standard", caption: "No labor/headcount standard exists to compare against here — instead, each product's trend and output are judged against their own trailing history via trend-break detection, plus two new checks: a flatline detector and a period-gap detector, proven non-redundant on real fixture data." },
   { tab: "fsma", title: "Would this survive a real FDA records request?", caption: "For each lot, checks whether every required Critical Tracking Event has a complete Key Data Element and no impossibly-dated event. A lot failing any check would not survive a real FDA records request within FSMA's actual 24-hour response window." },
   { tab: "bbcinv", title: "PACA trust exposure", caption: "A borrowing-base line gets $12,000 carved out of its eligible collateral value because of unpaid-grower PACA trust exposure — a real statutory risk specific to buying from growers, and something a generic finance candidate almost never knows to model." },
-  { tab: "infra", title: "Built against the JD's own highest weight", caption: "Scores discovery observations per domain, weighted by which JD Essential Duty it maps to. Systems, Data & Automation is weighted 5× — the single highest weight of any domain in the job description — and 6 of the 15 tools are tagged directly to it." },
+  { tab: "cyclecount", title: "Quantity, not cost — the missing question", caption: "Every other Duty #3 tool answers a COST question (is the price/rate right, given the quantity on the books is trusted). This one answers the QUANTITY-integrity question a physical cycle count exists to catch — does what's actually on the shelf match what the books say." },
+  { tab: "apdisbursement", title: "Paying on time is only half of it", caption: "Late payments are the obvious risk — but paying too early with no discount reason ties up cash for no benefit. Three independent findings per invoice: late, missed discount (a literal dollar figure), and premature." },
+  { tab: "pbcaudit", title: "Duty #5's first tool", caption: "Every other JD duty already had a dedicated tool — audit/tax interface & compliance had zero. Tracks PBC completeness as of an explicit fieldwork date: an item already in progress isn't at-risk, but one untouched with the deadline closing in is." },
+  { tab: "infra", title: "Built against the JD's own highest weight", caption: "Scores discovery observations per domain, weighted by which JD Essential Duty it maps to. Systems, Data & Automation is weighted 5× — the single highest weight of any domain in the job description — and 6 of the 18 tools are tagged directly to it." },
   { tab: "crosstool", title: "A different shape — reading the other 14", caption: "The 15th tool doesn't own its own domain data — it reads a findings feed spanning the other 14 tools' already-verified results and produces one prioritized, guardrailed action list. Try the sandbox below: build a hypothetical recommendation and watch it run through the real hallucination/coverage/priority-consistency checks." },
   { tab: "glossary", title: "Every example, a real number", caption: "Same discipline as everywhere else in this repo: every example here is a real number from a real run of the tool it describes — nothing invented for this page. Three formula terms have a live calculator — change the numbers and watch the result recompute." },
 ];
@@ -3860,7 +4279,7 @@ function goToTourStep() {
   tourHighlightTimer = setTimeout(tourHighlightTarget, 350);
 }
 function startTour() {
-  // Interview Mode hides 15 of these 20 stops' sections entirely (display:none) -- scrolling
+  // Interview Mode hides 18 of these 23 stops' sections entirely (display:none) -- scrolling
   // to a hidden section is a silent no-op, so a tour started there would desync (card
   // advances, page/sidebar don't) the moment it hit any non-demo stop. Force Full Dashboard
   // first so every stop is actually reachable; this is a real, persisted mode switch (same
@@ -4064,9 +4483,66 @@ renderLaborEfficiency();
 renderBbcInventory();
 renderTimePhasedPnl();
 renderVendorScorecard();
+renderCycleCount();
+renderApDisbursement();
+renderPbcAudit();
 renderCrossToolSynthesis();
 renderGlossary();
-makeSortable(document.getElementById("kpiRegistryTable"));
+/* KPI Registry inline expandable detail rows. A detail row is a sibling <tr>, not a
+   child of its owner row -- makeSortable()'s sort() reads row.children[colIndex] for
+   EVERY <tr> in the tbody, and a detail row (a single colspan <td>) has a different
+   child count than the 4-column KPI rows, so leaving one in the DOM during a sort would
+   throw. Reconciliation strategy: a listener registered BEFORE makeSortable() strips any
+   open detail rows (remembering which KPIs were open); makeSortable()'s own listener then
+   sorts a tbody containing only uniform 4-column rows; a listener registered AFTER
+   re-inserts the remembered detail rows under their (possibly relocated) owner. All three
+   fire in registration order for the same click, so no change to makeSortable() itself. */
+function renderKpiDetailRow(name) {
+  const d = KPI_DETAILS[name];
+  if (!d) return "";
+  return `<tr class="kpi-detail-row" data-kpi-detail-for="${name}"><td colspan="4">
+    <p style="color:var(--text-secondary)">${esc(d.explanation)}</p>
+    <p><strong>Purpose:</strong> ${esc(d.purpose)}</p>
+    <p><strong>Insight:</strong> ${esc(d.insight)}</p>
+    <p><code>${esc(d.formula)}</code></p>
+    <p style="color:var(--text-muted)"><strong>Example:</strong> ${esc(d.example)}</p>
+  </td></tr>`;
+}
+function openKpiDetail(name, table) {
+  const row = table.querySelector(`tr[data-kpi="${name}"]`);
+  if (!row) return;
+  const next = row.nextElementSibling;
+  if (next && next.classList.contains("kpi-detail-row") && next.dataset.kpiDetailFor === name) return;
+  row.insertAdjacentHTML("afterend", renderKpiDetailRow(name));
+  const btn = row.querySelector(".kpi-expand-toggle");
+  if (btn) { btn.classList.add("open"); btn.setAttribute("aria-expanded", "true"); btn.setAttribute("aria-label", `Hide details for ${name}`); }
+}
+function closeKpiDetail(name, table) {
+  const row = table.querySelector(`tr[data-kpi="${name}"]`);
+  const next = row && row.nextElementSibling;
+  if (next && next.classList.contains("kpi-detail-row") && next.dataset.kpiDetailFor === name) next.remove();
+  const btn = row && row.querySelector(".kpi-expand-toggle");
+  if (btn) { btn.classList.remove("open"); btn.setAttribute("aria-expanded", "false"); btn.setAttribute("aria-label", `Show details for ${name}`); }
+}
+function wireKpiRegistry(table) {
+  table.querySelectorAll("tr[data-kpi]").forEach(row => {
+    const name = row.dataset.kpi;
+    const btn = row.querySelector(".kpi-expand-toggle");
+    if (!btn) return;
+    btn.addEventListener("click", () => {
+      if (btn.classList.contains("open")) closeKpiDetail(name, table); else openKpiDetail(name, table);
+    });
+  });
+  const openNames = new Set();
+  const headers = table.querySelectorAll("thead th.sortable");
+  headers.forEach(th => th.addEventListener("click", () => {
+    openNames.clear();
+    table.querySelectorAll("tr.kpi-detail-row").forEach(tr => { openNames.add(tr.dataset.kpiDetailFor); tr.remove(); });
+  }));
+  makeSortable(table);
+  headers.forEach(th => th.addEventListener("click", () => { openNames.forEach(name => openKpiDetail(name, table)); }));
+}
+wireKpiRegistry(document.getElementById("kpiRegistryTable"));
 makeSortable(document.getElementById("dbtSeedsTable"));
 
 // Post-render enhancement pass — everything here reads the fully-rendered DOM the 18
