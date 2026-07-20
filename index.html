@@ -232,8 +232,25 @@
   .kpi-expand-toggle:hover { color: var(--text-primary); }
   .kpi-expand-toggle.open { transform: rotate(90deg); }
   #kpiRegistryTable td.term { cursor: default; }
-  tr.kpi-detail-row > td { padding: 4px 0 14px 30px; border-top: none; background: var(--surface-2); }
+  tr.kpi-detail-row > td { padding: 10px 14px 16px 30px; border-top: none; background: var(--surface-2); }
   tr.kpi-detail-row p { margin: 4px 0; font-size: 13.5px; line-height: 1.55; }
+  /* per-JD-Duty accent, same fixed-hue-order discipline as the tab-color assignments --
+     lets a reader visually cluster "which duty" while scanning without reading every cell */
+  #kpiRegistryTable tr[data-duty="1"] > td:first-child { box-shadow: inset 3px 0 0 var(--series-2); }
+  #kpiRegistryTable tr[data-duty="2"] > td:first-child { box-shadow: inset 3px 0 0 var(--series-15); }
+  #kpiRegistryTable tr[data-duty="3"] > td:first-child { box-shadow: inset 3px 0 0 var(--series-4); }
+  #kpiRegistryTable tr[data-duty="4"] > td:first-child { box-shadow: inset 3px 0 0 var(--series-5); }
+  #kpiRegistryTable tr[data-duty="5"] > td:first-child { box-shadow: inset 3px 0 0 var(--series-21); }
+  #kpiRegistryTable tr[data-duty="8"] > td:first-child { box-shadow: inset 3px 0 0 var(--series-8); }
+  .kpi-detail-field { display: flex; gap: 8px; align-items: flex-start; margin: 7px 0; }
+  .kpi-detail-field i { color: var(--text-muted); font-size: 14px; margin-top: 2px; flex-shrink: 0; }
+  .kpi-detail-field .kpi-detail-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); display: block; margin-bottom: 1px; }
+  .kpi-formula-block { margin: 10px 0; padding: 9px 12px; border-radius: var(--radius-md, 8px); background: color-mix(in srgb, var(--accent) 8%, var(--surface)); border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--border)); font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12.5px; line-height: 1.5; overflow-x: auto; }
+  .kpi-example-callout { margin: 10px 0 2px; padding: 9px 12px; border-radius: var(--radius-md, 8px); background: color-mix(in srgb, var(--good) 10%, var(--surface)); border-left: 3px solid var(--good); font-size: 13px; }
+  /* Spotlight: a brief attention pulse on the row a reader is dropped onto, then it fades to
+     the same steady state as any other row -- draws the eye without leaving a permanent mark. */
+  @keyframes kpiSpotlightPulse { 0%, 100% { background: transparent; } 25%, 75% { background: color-mix(in srgb, var(--accent) 16%, transparent); } }
+  tr.kpi-spotlight-pulse > td { animation: kpiSpotlightPulse 1.6s ease-in-out; }
   .glossary-calc { margin-top: 10px; padding: 12px; border-radius: var(--radius-md, 8px); background: var(--surface-2); border: 1px dashed var(--border); }
   .glossary-calc-title { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; justify-content: space-between; }
   .glossary-calc-reset { font: inherit; font-size: 11px; text-transform: none; letter-spacing: 0; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--text-secondary); cursor: pointer; }
@@ -1915,6 +1932,25 @@ function renderOverview() {
     <div class="card" style="margin-top:16px">
       <h2>Shared KPI registry</h2>
       <div class="desc">Every threshold behind the eighteen data tools — materiality %, reconciliation tolerance, cost-roll validation band, trend-break sensitivity, AP price-variance/qty-overbill/duplicate-invoice bands, standard-cost simulation draws/percentile-band-width, yield/mix, energy, and labor efficiency variance materiality bands, FSMA records response window, operations-monitor flatline/period-gap thresholds, BBC inventory build-completeness minimum, time-phased P&amp;L materiality band + phasing-curve sum tolerance, vendor scorecard min-evaluable-lines/on-time-delivery-rate-floor/price-variance-band/price-variance-rate-ceiling, cycle-count variance materiality band + coverage minimum, AP disbursement premature-pay threshold, PBC at-risk threshold + coverage minimum — now lives in one place, each tagged with which JD Essential Duty it serves. Doubles as real controls documentation.</div>
+      <div class="kpi-grid" style="margin:14px 0 18px">
+        <div class="kpi"><div class="num">33</div><div class="label">controls, one shared source of truth</div></div>
+        <div class="kpi"><div class="num">18</div><div class="label">tools pulling their defaults from here</div></div>
+        <div class="kpi"><div class="num">6</div><div class="label">JD Essential Duties represented</div></div>
+      </div>
+      <div class="glossary-toolbar">
+        <div class="glossary-search-wrap"><i class="ph ph-magnifying-glass"></i><input type="text" class="kpi-search" placeholder="Search 33 controls…" aria-label="Search KPI registry"></div>
+        <div class="glossary-chips" id="kpiDutyChips">
+          <button type="button" class="feed-chip active" data-duty-filter="all">All <b>33</b></button>
+          <button type="button" class="feed-chip" data-duty-filter="1">Close &amp; Reporting <b>1</b></button>
+          <button type="button" class="feed-chip" data-duty-filter="2">Banking &amp; Cash <b>2</b></button>
+          <button type="button" class="feed-chip" data-duty-filter="3">Cost Accounting <b>13</b></button>
+          <button type="button" class="feed-chip" data-duty-filter="4">Other-Selling P&amp;L <b>2</b></button>
+          <button type="button" class="feed-chip" data-duty-filter="5">Audit &amp; Compliance <b>2</b></button>
+          <button type="button" class="feed-chip" data-duty-filter="8">Systems &amp; Automation <b>13</b></button>
+        </div>
+        <button type="button" class="feed-chip" id="kpiSpotlightBtn" title="Jump to a random control and expand it"><i class="ph ph-shuffle"></i> Spotlight a control</button>
+      </div>
+      <div class="glossary-status" id="kpiRegistryStatus" aria-live="polite">Showing all 33 controls</div>
       <table id="kpiRegistryTable">
         <thead><tr>
           <th class="sortable" data-sort="text">KPI<span class="sort-arrow">▲▼</span></th>
@@ -1923,39 +1959,39 @@ function renderOverview() {
           <th class="sortable" data-sort="text">JD Duty<span class="sort-arrow">▲▼</span></th>
         </tr></thead>
         <tbody>
-          <tr data-kpi="variance_materiality_threshold"><td${tip("variance_materiality_threshold")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for variance_materiality_threshold"></button>variance_materiality_threshold</td><td class="num">5%</td><td>variance_narrator</td><td>Duty #1</td></tr>
-          <tr data-kpi="reconciliation_tolerance"><td${tip("reconciliation_tolerance")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for reconciliation_tolerance"></button>reconciliation_tolerance</td><td class="num">$0.01</td><td>reconciliation_checker</td><td>Duty #8</td></tr>
-          <tr data-kpi="reconciliation_timing_adjacency_months"><td${tip("reconciliation_timing_adjacency_months")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for reconciliation_timing_adjacency_months"></button>reconciliation_timing_adjacency_months</td><td class="num">1 mo</td><td>reconciliation_checker</td><td>Duty #8</td></tr>
-          <tr data-kpi="cost_roll_validation_band"><td${tip("cost_roll_validation_band")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for cost_roll_validation_band"></button>cost_roll_validation_band</td><td class="num">10%</td><td>cost_roll_validator</td><td>Duty #3</td></tr>
-          <tr data-kpi="cost_roll_min_data_points"><td${tip("cost_roll_min_data_points")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for cost_roll_min_data_points"></button>cost_roll_min_data_points</td><td class="num">3</td><td>cost_roll_validator</td><td>Duty #3</td></tr>
-          <tr data-kpi="cost_roll_outlier_multiple"><td${tip("cost_roll_outlier_multiple")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for cost_roll_outlier_multiple"></button>cost_roll_outlier_multiple</td><td class="num">3.0×</td><td>cost_roll_validator</td><td>Duty #3</td></tr>
-          <tr data-kpi="trend_break_window"><td${tip("trend_break_window")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for trend_break_window"></button>trend_break_window</td><td class="num">3</td><td>margin_leak_analyzer</td><td>Duty #4</td></tr>
-          <tr data-kpi="trend_break_threshold_stddev"><td${tip("trend_break_threshold_stddev")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for trend_break_threshold_stddev"></button>trend_break_threshold_stddev</td><td class="num">2.0</td><td>margin_leak_analyzer</td><td>Duty #4</td></tr>
-          <tr data-kpi="ap_price_variance_band"><td${tip("ap_price_variance_band")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for ap_price_variance_band"></button>ap_price_variance_band</td><td class="num">5%</td><td>ap_three_way_match</td><td>Duty #8</td></tr>
-          <tr data-kpi="ap_qty_overbill_band"><td${tip("ap_qty_overbill_band")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for ap_qty_overbill_band"></button>ap_qty_overbill_band</td><td class="num">2%</td><td>ap_three_way_match</td><td>Duty #8</td></tr>
-          <tr data-kpi="ap_duplicate_invoice_lookback_days"><td${tip("ap_duplicate_invoice_lookback_days")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for ap_duplicate_invoice_lookback_days"></button>ap_duplicate_invoice_lookback_days</td><td class="num">30 days</td><td>ap_three_way_match</td><td>Duty #8</td></tr>
-          <tr data-kpi="cost_roll_simulation_draws"><td${tip("cost_roll_simulation_draws")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for cost_roll_simulation_draws"></button>cost_roll_simulation_draws</td><td class="num">10,000</td><td>cost_roll_simulator</td><td>Duty #3</td></tr>
-          <tr data-kpi="cost_roll_simulation_percentile_band_width"><td${tip("cost_roll_simulation_percentile_band_width")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for cost_roll_simulation_percentile_band_width"></button>cost_roll_simulation_percentile_band_width</td><td class="num">90%</td><td>cost_roll_simulator</td><td>Duty #3</td></tr>
-          <tr data-kpi="cost_roll_simulation_seed"><td${tip("cost_roll_simulation_seed")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for cost_roll_simulation_seed"></button>cost_roll_simulation_seed</td><td class="num">1337</td><td>cost_roll_simulator</td><td>Duty #3</td></tr>
-          <tr data-kpi="yield_mix_variance_materiality_band"><td${tip("yield_mix_variance_materiality_band")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for yield_mix_variance_materiality_band"></button>yield_mix_variance_materiality_band</td><td class="num">5%</td><td>yield_mix_analyzer</td><td>Duty #3</td></tr>
-          <tr data-kpi="energy_variance_materiality_band"><td${tip("energy_variance_materiality_band")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for energy_variance_materiality_band"></button>energy_variance_materiality_band</td><td class="num">5%</td><td>energy_variance_analyzer</td><td>Duty #3</td></tr>
-          <tr data-kpi="fsma_records_response_window_hours"><td${tip("fsma_records_response_window_hours")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for fsma_records_response_window_hours"></button>fsma_records_response_window_hours</td><td class="num">24 hrs</td><td>fsma_traceability_checker</td><td>Duty #8</td></tr>
-          <tr data-kpi="ops_monitor_flatline_min_consecutive"><td${tip("ops_monitor_flatline_min_consecutive")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for ops_monitor_flatline_min_consecutive"></button>ops_monitor_flatline_min_consecutive</td><td class="num">4 periods</td><td>ops_monitor</td><td>Duty #8</td></tr>
-          <tr data-kpi="ops_monitor_period_gap_multiple"><td${tip("ops_monitor_period_gap_multiple")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for ops_monitor_period_gap_multiple"></button>ops_monitor_period_gap_multiple</td><td class="num">1.5×</td><td>ops_monitor</td><td>Duty #8</td></tr>
-          <tr data-kpi="labor_efficiency_variance_materiality_band"><td${tip("labor_efficiency_variance_materiality_band")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for labor_efficiency_variance_materiality_band"></button>labor_efficiency_variance_materiality_band</td><td class="num">5%</td><td>labor_efficiency_analyzer</td><td>Duty #3</td></tr>
-          <tr data-kpi="bbc_inventory_min_expected_lines"><td${tip("bbc_inventory_min_expected_lines")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for bbc_inventory_min_expected_lines"></button>bbc_inventory_min_expected_lines</td><td class="num">4 lines</td><td>bbc_inventory_eligibility_checker</td><td>Duty #2</td></tr>
-          <tr data-kpi="time_phased_pnl_materiality_band"><td${tip("time_phased_pnl_materiality_band")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for time_phased_pnl_materiality_band"></button>time_phased_pnl_materiality_band</td><td class="num">5%</td><td>time_phased_pnl_analyzer</td><td>Duty #3</td></tr>
-          <tr data-kpi="time_phased_pnl_curve_sum_tolerance"><td${tip("time_phased_pnl_curve_sum_tolerance")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for time_phased_pnl_curve_sum_tolerance"></button>time_phased_pnl_curve_sum_tolerance</td><td class="num">0.5%</td><td>time_phased_pnl_analyzer</td><td>Duty #3</td></tr>
-          <tr data-kpi="vendor_scorecard_min_evaluable_lines"><td${tip("vendor_scorecard_min_evaluable_lines")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for vendor_scorecard_min_evaluable_lines"></button>vendor_scorecard_min_evaluable_lines</td><td class="num">3 lines</td><td>vendor_performance_scorecard</td><td>Duty #8</td></tr>
-          <tr data-kpi="vendor_scorecard_on_time_delivery_rate_floor"><td${tip("vendor_scorecard_on_time_delivery_rate_floor")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for vendor_scorecard_on_time_delivery_rate_floor"></button>vendor_scorecard_on_time_delivery_rate_floor</td><td class="num">85%</td><td>vendor_performance_scorecard</td><td>Duty #8</td></tr>
-          <tr data-kpi="vendor_scorecard_price_variance_band"><td${tip("vendor_scorecard_price_variance_band")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for vendor_scorecard_price_variance_band"></button>vendor_scorecard_price_variance_band</td><td class="num">5%</td><td>vendor_performance_scorecard</td><td>Duty #8</td></tr>
-          <tr data-kpi="vendor_scorecard_price_variance_rate_ceiling"><td${tip("vendor_scorecard_price_variance_rate_ceiling")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for vendor_scorecard_price_variance_rate_ceiling"></button>vendor_scorecard_price_variance_rate_ceiling</td><td class="num">20%</td><td>vendor_performance_scorecard</td><td>Duty #8</td></tr>
-          <tr data-kpi="cross_tool_synthesis_min_findings_required"><td${tip("cross_tool_synthesis_min_findings_required")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for cross_tool_synthesis_min_findings_required"></button>cross_tool_synthesis_min_findings_required</td><td class="num">3 findings</td><td>cross_tool_insight_synthesizer</td><td>Duty #8</td></tr>
-          <tr data-kpi="cycle_count_variance_materiality_band"><td${tip("cycle_count_variance_materiality_band")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for cycle_count_variance_materiality_band"></button>cycle_count_variance_materiality_band</td><td class="num">5%</td><td>cycle_count_reconciler</td><td>Duty #3</td></tr>
-          <tr data-kpi="cycle_count_min_coverage_lines"><td${tip("cycle_count_min_coverage_lines")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for cycle_count_min_coverage_lines"></button>cycle_count_min_coverage_lines</td><td class="num">4 lines</td><td>cycle_count_reconciler</td><td>Duty #3</td></tr>
-          <tr data-kpi="ap_disbursement_premature_pay_threshold_days"><td${tip("ap_disbursement_premature_pay_threshold_days")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for ap_disbursement_premature_pay_threshold_days"></button>ap_disbursement_premature_pay_threshold_days</td><td class="num">10 days</td><td>ap_disbursement_analyzer</td><td>Duty #2</td></tr>
-          <tr data-kpi="pbc_at_risk_days_threshold"><td${tip("pbc_at_risk_days_threshold")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for pbc_at_risk_days_threshold"></button>pbc_at_risk_days_threshold</td><td class="num">5 days</td><td>pbc_audit_tracker</td><td>Duty #5</td></tr>
-          <tr data-kpi="pbc_min_tracked_items"><td${tip("pbc_min_tracked_items")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for pbc_min_tracked_items"></button>pbc_min_tracked_items</td><td class="num">4 items</td><td>pbc_audit_tracker</td><td>Duty #5</td></tr>
+          <tr data-kpi="variance_materiality_threshold" data-duty="1" data-search="variance_materiality_threshold 5% variance_narrator duty 1"><td${tip("variance_materiality_threshold")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for variance_materiality_threshold"></button>variance_materiality_threshold</td><td class="num">5%</td><td>variance_narrator</td><td>Duty #1</td></tr>
+          <tr data-kpi="reconciliation_tolerance" data-duty="8" data-search="reconciliation_tolerance $0.01 reconciliation_checker duty 8"><td${tip("reconciliation_tolerance")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for reconciliation_tolerance"></button>reconciliation_tolerance</td><td class="num">$0.01</td><td>reconciliation_checker</td><td>Duty #8</td></tr>
+          <tr data-kpi="reconciliation_timing_adjacency_months" data-duty="8" data-search="reconciliation_timing_adjacency_months 1 mo reconciliation_checker duty 8"><td${tip("reconciliation_timing_adjacency_months")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for reconciliation_timing_adjacency_months"></button>reconciliation_timing_adjacency_months</td><td class="num">1 mo</td><td>reconciliation_checker</td><td>Duty #8</td></tr>
+          <tr data-kpi="cost_roll_validation_band" data-duty="3" data-search="cost_roll_validation_band 10% cost_roll_validator duty 3"><td${tip("cost_roll_validation_band")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for cost_roll_validation_band"></button>cost_roll_validation_band</td><td class="num">10%</td><td>cost_roll_validator</td><td>Duty #3</td></tr>
+          <tr data-kpi="cost_roll_min_data_points" data-duty="3" data-search="cost_roll_min_data_points 3 cost_roll_validator duty 3"><td${tip("cost_roll_min_data_points")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for cost_roll_min_data_points"></button>cost_roll_min_data_points</td><td class="num">3</td><td>cost_roll_validator</td><td>Duty #3</td></tr>
+          <tr data-kpi="cost_roll_outlier_multiple" data-duty="3" data-search="cost_roll_outlier_multiple 3.0× cost_roll_validator duty 3"><td${tip("cost_roll_outlier_multiple")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for cost_roll_outlier_multiple"></button>cost_roll_outlier_multiple</td><td class="num">3.0×</td><td>cost_roll_validator</td><td>Duty #3</td></tr>
+          <tr data-kpi="trend_break_window" data-duty="4" data-search="trend_break_window 3 margin_leak_analyzer duty 4"><td${tip("trend_break_window")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for trend_break_window"></button>trend_break_window</td><td class="num">3</td><td>margin_leak_analyzer</td><td>Duty #4</td></tr>
+          <tr data-kpi="trend_break_threshold_stddev" data-duty="4" data-search="trend_break_threshold_stddev 2.0 margin_leak_analyzer duty 4"><td${tip("trend_break_threshold_stddev")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for trend_break_threshold_stddev"></button>trend_break_threshold_stddev</td><td class="num">2.0</td><td>margin_leak_analyzer</td><td>Duty #4</td></tr>
+          <tr data-kpi="ap_price_variance_band" data-duty="8" data-search="ap_price_variance_band 5% ap_three_way_match duty 8"><td${tip("ap_price_variance_band")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for ap_price_variance_band"></button>ap_price_variance_band</td><td class="num">5%</td><td>ap_three_way_match</td><td>Duty #8</td></tr>
+          <tr data-kpi="ap_qty_overbill_band" data-duty="8" data-search="ap_qty_overbill_band 2% ap_three_way_match duty 8"><td${tip("ap_qty_overbill_band")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for ap_qty_overbill_band"></button>ap_qty_overbill_band</td><td class="num">2%</td><td>ap_three_way_match</td><td>Duty #8</td></tr>
+          <tr data-kpi="ap_duplicate_invoice_lookback_days" data-duty="8" data-search="ap_duplicate_invoice_lookback_days 30 days ap_three_way_match duty 8"><td${tip("ap_duplicate_invoice_lookback_days")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for ap_duplicate_invoice_lookback_days"></button>ap_duplicate_invoice_lookback_days</td><td class="num">30 days</td><td>ap_three_way_match</td><td>Duty #8</td></tr>
+          <tr data-kpi="cost_roll_simulation_draws" data-duty="3" data-search="cost_roll_simulation_draws 10,000 cost_roll_simulator duty 3"><td${tip("cost_roll_simulation_draws")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for cost_roll_simulation_draws"></button>cost_roll_simulation_draws</td><td class="num">10,000</td><td>cost_roll_simulator</td><td>Duty #3</td></tr>
+          <tr data-kpi="cost_roll_simulation_percentile_band_width" data-duty="3" data-search="cost_roll_simulation_percentile_band_width 90% cost_roll_simulator duty 3"><td${tip("cost_roll_simulation_percentile_band_width")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for cost_roll_simulation_percentile_band_width"></button>cost_roll_simulation_percentile_band_width</td><td class="num">90%</td><td>cost_roll_simulator</td><td>Duty #3</td></tr>
+          <tr data-kpi="cost_roll_simulation_seed" data-duty="3" data-search="cost_roll_simulation_seed 1337 cost_roll_simulator duty 3"><td${tip("cost_roll_simulation_seed")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for cost_roll_simulation_seed"></button>cost_roll_simulation_seed</td><td class="num">1337</td><td>cost_roll_simulator</td><td>Duty #3</td></tr>
+          <tr data-kpi="yield_mix_variance_materiality_band" data-duty="3" data-search="yield_mix_variance_materiality_band 5% yield_mix_analyzer duty 3"><td${tip("yield_mix_variance_materiality_band")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for yield_mix_variance_materiality_band"></button>yield_mix_variance_materiality_band</td><td class="num">5%</td><td>yield_mix_analyzer</td><td>Duty #3</td></tr>
+          <tr data-kpi="energy_variance_materiality_band" data-duty="3" data-search="energy_variance_materiality_band 5% energy_variance_analyzer duty 3"><td${tip("energy_variance_materiality_band")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for energy_variance_materiality_band"></button>energy_variance_materiality_band</td><td class="num">5%</td><td>energy_variance_analyzer</td><td>Duty #3</td></tr>
+          <tr data-kpi="fsma_records_response_window_hours" data-duty="8" data-search="fsma_records_response_window_hours 24 hrs fsma_traceability_checker duty 8"><td${tip("fsma_records_response_window_hours")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for fsma_records_response_window_hours"></button>fsma_records_response_window_hours</td><td class="num">24 hrs</td><td>fsma_traceability_checker</td><td>Duty #8</td></tr>
+          <tr data-kpi="ops_monitor_flatline_min_consecutive" data-duty="8" data-search="ops_monitor_flatline_min_consecutive 4 periods ops_monitor duty 8"><td${tip("ops_monitor_flatline_min_consecutive")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for ops_monitor_flatline_min_consecutive"></button>ops_monitor_flatline_min_consecutive</td><td class="num">4 periods</td><td>ops_monitor</td><td>Duty #8</td></tr>
+          <tr data-kpi="ops_monitor_period_gap_multiple" data-duty="8" data-search="ops_monitor_period_gap_multiple 1.5× ops_monitor duty 8"><td${tip("ops_monitor_period_gap_multiple")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for ops_monitor_period_gap_multiple"></button>ops_monitor_period_gap_multiple</td><td class="num">1.5×</td><td>ops_monitor</td><td>Duty #8</td></tr>
+          <tr data-kpi="labor_efficiency_variance_materiality_band" data-duty="3" data-search="labor_efficiency_variance_materiality_band 5% labor_efficiency_analyzer duty 3"><td${tip("labor_efficiency_variance_materiality_band")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for labor_efficiency_variance_materiality_band"></button>labor_efficiency_variance_materiality_band</td><td class="num">5%</td><td>labor_efficiency_analyzer</td><td>Duty #3</td></tr>
+          <tr data-kpi="bbc_inventory_min_expected_lines" data-duty="2" data-search="bbc_inventory_min_expected_lines 4 lines bbc_inventory_eligibility_checker duty 2"><td${tip("bbc_inventory_min_expected_lines")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for bbc_inventory_min_expected_lines"></button>bbc_inventory_min_expected_lines</td><td class="num">4 lines</td><td>bbc_inventory_eligibility_checker</td><td>Duty #2</td></tr>
+          <tr data-kpi="time_phased_pnl_materiality_band" data-duty="3" data-search="time_phased_pnl_materiality_band 5% time_phased_pnl_analyzer duty 3"><td${tip("time_phased_pnl_materiality_band")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for time_phased_pnl_materiality_band"></button>time_phased_pnl_materiality_band</td><td class="num">5%</td><td>time_phased_pnl_analyzer</td><td>Duty #3</td></tr>
+          <tr data-kpi="time_phased_pnl_curve_sum_tolerance" data-duty="3" data-search="time_phased_pnl_curve_sum_tolerance 0.5% time_phased_pnl_analyzer duty 3"><td${tip("time_phased_pnl_curve_sum_tolerance")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for time_phased_pnl_curve_sum_tolerance"></button>time_phased_pnl_curve_sum_tolerance</td><td class="num">0.5%</td><td>time_phased_pnl_analyzer</td><td>Duty #3</td></tr>
+          <tr data-kpi="vendor_scorecard_min_evaluable_lines" data-duty="8" data-search="vendor_scorecard_min_evaluable_lines 3 lines vendor_performance_scorecard duty 8"><td${tip("vendor_scorecard_min_evaluable_lines")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for vendor_scorecard_min_evaluable_lines"></button>vendor_scorecard_min_evaluable_lines</td><td class="num">3 lines</td><td>vendor_performance_scorecard</td><td>Duty #8</td></tr>
+          <tr data-kpi="vendor_scorecard_on_time_delivery_rate_floor" data-duty="8" data-search="vendor_scorecard_on_time_delivery_rate_floor 85% vendor_performance_scorecard duty 8"><td${tip("vendor_scorecard_on_time_delivery_rate_floor")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for vendor_scorecard_on_time_delivery_rate_floor"></button>vendor_scorecard_on_time_delivery_rate_floor</td><td class="num">85%</td><td>vendor_performance_scorecard</td><td>Duty #8</td></tr>
+          <tr data-kpi="vendor_scorecard_price_variance_band" data-duty="8" data-search="vendor_scorecard_price_variance_band 5% vendor_performance_scorecard duty 8"><td${tip("vendor_scorecard_price_variance_band")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for vendor_scorecard_price_variance_band"></button>vendor_scorecard_price_variance_band</td><td class="num">5%</td><td>vendor_performance_scorecard</td><td>Duty #8</td></tr>
+          <tr data-kpi="vendor_scorecard_price_variance_rate_ceiling" data-duty="8" data-search="vendor_scorecard_price_variance_rate_ceiling 20% vendor_performance_scorecard duty 8"><td${tip("vendor_scorecard_price_variance_rate_ceiling")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for vendor_scorecard_price_variance_rate_ceiling"></button>vendor_scorecard_price_variance_rate_ceiling</td><td class="num">20%</td><td>vendor_performance_scorecard</td><td>Duty #8</td></tr>
+          <tr data-kpi="cross_tool_synthesis_min_findings_required" data-duty="8" data-search="cross_tool_synthesis_min_findings_required 3 findings cross_tool_insight_synthesizer duty 8"><td${tip("cross_tool_synthesis_min_findings_required")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for cross_tool_synthesis_min_findings_required"></button>cross_tool_synthesis_min_findings_required</td><td class="num">3 findings</td><td>cross_tool_insight_synthesizer</td><td>Duty #8</td></tr>
+          <tr data-kpi="cycle_count_variance_materiality_band" data-duty="3" data-search="cycle_count_variance_materiality_band 5% cycle_count_reconciler duty 3"><td${tip("cycle_count_variance_materiality_band")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for cycle_count_variance_materiality_band"></button>cycle_count_variance_materiality_band</td><td class="num">5%</td><td>cycle_count_reconciler</td><td>Duty #3</td></tr>
+          <tr data-kpi="cycle_count_min_coverage_lines" data-duty="3" data-search="cycle_count_min_coverage_lines 4 lines cycle_count_reconciler duty 3"><td${tip("cycle_count_min_coverage_lines")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for cycle_count_min_coverage_lines"></button>cycle_count_min_coverage_lines</td><td class="num">4 lines</td><td>cycle_count_reconciler</td><td>Duty #3</td></tr>
+          <tr data-kpi="ap_disbursement_premature_pay_threshold_days" data-duty="2" data-search="ap_disbursement_premature_pay_threshold_days 10 days ap_disbursement_analyzer duty 2"><td${tip("ap_disbursement_premature_pay_threshold_days")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for ap_disbursement_premature_pay_threshold_days"></button>ap_disbursement_premature_pay_threshold_days</td><td class="num">10 days</td><td>ap_disbursement_analyzer</td><td>Duty #2</td></tr>
+          <tr data-kpi="pbc_at_risk_days_threshold" data-duty="5" data-search="pbc_at_risk_days_threshold 5 days pbc_audit_tracker duty 5"><td${tip("pbc_at_risk_days_threshold")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for pbc_at_risk_days_threshold"></button>pbc_at_risk_days_threshold</td><td class="num">5 days</td><td>pbc_audit_tracker</td><td>Duty #5</td></tr>
+          <tr data-kpi="pbc_min_tracked_items" data-duty="5" data-search="pbc_min_tracked_items 4 items pbc_audit_tracker duty 5"><td${tip("pbc_min_tracked_items")}><button type="button" class="kpi-expand-toggle" aria-expanded="false" aria-label="Show details for pbc_min_tracked_items"></button>pbc_min_tracked_items</td><td class="num">4 items</td><td>pbc_audit_tracker</td><td>Duty #5</td></tr>
         </tbody>
       </table>
       <div class="flag-note">Generated from <code>shared/kpi_registry.py</code> — click a KPI's row to expand its explanation, purpose, insight, formula, and a real worked example inline; see <code>KPI_REGISTRY.md</code> for the same content as a standalone doc. Dotted terms and column headers are hoverable/sortable.</div>
@@ -4501,11 +4537,11 @@ function renderKpiDetailRow(name) {
   const d = KPI_DETAILS[name];
   if (!d) return "";
   return `<tr class="kpi-detail-row" data-kpi-detail-for="${name}"><td colspan="4">
-    <p style="color:var(--text-secondary)">${esc(d.explanation)}</p>
-    <p><strong>Purpose:</strong> ${esc(d.purpose)}</p>
-    <p><strong>Insight:</strong> ${esc(d.insight)}</p>
-    <p><code>${esc(d.formula)}</code></p>
-    <p style="color:var(--text-muted)"><strong>Example:</strong> ${esc(d.example)}</p>
+    <div class="kpi-detail-field"><i class="ph ph-book-open"></i><div><span class="kpi-detail-label">What it is</span>${esc(d.explanation)}</div></div>
+    <div class="kpi-detail-field"><i class="ph ph-target"></i><div><span class="kpi-detail-label">Why it exists</span>${esc(d.purpose)}</div></div>
+    <div class="kpi-detail-field"><i class="ph ph-lightbulb"></i><div><span class="kpi-detail-label">What a flag means</span>${esc(d.insight)}</div></div>
+    <div class="kpi-formula-block"><i class="ph ph-function" style="margin-right:6px;color:var(--text-muted)"></i>${esc(d.formula)}</div>
+    <div class="kpi-example-callout"><strong>Real example:</strong> ${esc(d.example)}</div>
   </td></tr>`;
 }
 function openKpiDetail(name, table) {
@@ -4542,7 +4578,71 @@ function wireKpiRegistry(table) {
   makeSortable(table);
   headers.forEach(th => th.addEventListener("click", () => { openNames.forEach(name => openKpiDetail(name, table)); }));
 }
+// Search + JD-Duty filter + "spotlight a random control" -- reuses the same .glossary-search/
+// .feed-chip visual language as the Glossary tab and findings feed rather than inventing new
+// CSS, per this repo's own established convention of one look per interaction pattern.
+function wireKpiRegistryFilters(table) {
+  const searchInput = document.querySelector(".kpi-search");
+  const chips = document.querySelectorAll("#kpiDutyChips [data-duty-filter]");
+  const status = document.getElementById("kpiRegistryStatus");
+  const spotlightBtn = document.getElementById("kpiSpotlightBtn");
+  if (!searchInput || !status) return;
+  const rows = Array.from(table.querySelectorAll("tr[data-kpi]"));
+  let activeDuty = "all";
+
+  function applyFilter() {
+    const q = searchInput.value.trim().toLowerCase();
+    let shown = 0;
+    rows.forEach(row => {
+      const dutyMatch = activeDuty === "all" || row.dataset.duty === activeDuty;
+      const searchMatch = !q || row.dataset.search.includes(q);
+      const visible = dutyMatch && searchMatch;
+      row.style.display = visible ? "" : "none";
+      const detail = row.nextElementSibling;
+      if (detail && detail.classList.contains("kpi-detail-row") && detail.dataset.kpiDetailFor === row.dataset.kpi) {
+        detail.style.display = visible ? "" : "none";
+      }
+      if (visible) shown++;
+    });
+    const parts = [];
+    if (activeDuty !== "all") parts.push(document.querySelector(`[data-duty-filter="${activeDuty}"]`).textContent.replace(/\d+$/, "").trim());
+    if (q) parts.push(`matching "${searchInput.value.trim()}"`);
+    status.textContent = parts.length ? `Showing ${shown} of 33 controls — ${parts.join(", ")}` : `Showing all ${shown} controls`;
+    let empty = table.parentElement.querySelector(".glossary-empty");
+    if (!shown) {
+      if (!empty) { empty = document.createElement("div"); empty.className = "card glossary-empty"; table.insertAdjacentElement("afterend", empty); }
+      empty.textContent = "No controls match this search/filter combination.";
+      table.style.display = "none";
+    } else {
+      if (empty) empty.remove();
+      table.style.display = "";
+    }
+  }
+
+  searchInput.addEventListener("input", applyFilter);
+  chips.forEach(chip => chip.addEventListener("click", () => {
+    chips.forEach(c => c.classList.remove("active"));
+    chip.classList.add("active");
+    activeDuty = chip.dataset.dutyFilter;
+    applyFilter();
+  }));
+
+  if (spotlightBtn) {
+    spotlightBtn.addEventListener("click", () => {
+      const visible = rows.filter(row => row.style.display !== "none");
+      if (!visible.length) return;
+      const pick = visible[Math.floor(Math.random() * visible.length)];
+      const name = pick.dataset.kpi;
+      openKpiDetail(name, table);
+      pick.scrollIntoView({ behavior: "smooth", block: "center" });
+      pick.classList.remove("kpi-spotlight-pulse");
+      void pick.offsetWidth; // restart the animation on repeat clicks landing on the same row
+      pick.classList.add("kpi-spotlight-pulse");
+    });
+  }
+}
 wireKpiRegistry(document.getElementById("kpiRegistryTable"));
+wireKpiRegistryFilters(document.getElementById("kpiRegistryTable"));
 makeSortable(document.getElementById("dbtSeedsTable"));
 
 // Post-render enhancement pass — everything here reads the fully-rendered DOM the 18
