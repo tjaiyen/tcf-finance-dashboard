@@ -4550,6 +4550,11 @@ function openKpiDetail(name, table) {
   const next = row.nextElementSibling;
   if (next && next.classList.contains("kpi-detail-row") && next.dataset.kpiDetailFor === name) return;
   row.insertAdjacentHTML("afterend", renderKpiDetailRow(name));
+  // A row hidden by the search/duty filter (row.style.display === "none") must stay hidden
+  // even when its detail row is freshly (re-)inserted here -- e.g. by the sort-reconciliation
+  // listener in wireKpiRegistry(), which knows nothing about filter state. Sync unconditionally
+  // rather than special-casing the sort path, so every insertion path stays correct by default.
+  row.nextElementSibling.style.display = row.style.display;
   const btn = row.querySelector(".kpi-expand-toggle");
   if (btn) { btn.classList.add("open"); btn.setAttribute("aria-expanded", "true"); btn.setAttribute("aria-label", `Hide details for ${name}`); }
 }
@@ -4633,9 +4638,15 @@ function wireKpiRegistryFilters(table) {
       if (!visible.length) return;
       const pick = visible[Math.floor(Math.random() * visible.length)];
       const name = pick.dataset.kpi;
+      // One spotlight at a time: close every other open detail row first, otherwise repeat
+      // clicks pile up an unbounded number of expanded rows (up to all 33) rather than moving
+      // the spotlight from one control to the next.
+      table.querySelectorAll("tr.kpi-detail-row").forEach(tr => {
+        if (tr.dataset.kpiDetailFor !== name) closeKpiDetail(tr.dataset.kpiDetailFor, table);
+      });
+      table.querySelectorAll(".kpi-spotlight-pulse").forEach(el => el.classList.remove("kpi-spotlight-pulse"));
       openKpiDetail(name, table);
       pick.scrollIntoView({ behavior: "smooth", block: "center" });
-      pick.classList.remove("kpi-spotlight-pulse");
       void pick.offsetWidth; // restart the animation on repeat clicks landing on the same row
       pick.classList.add("kpi-spotlight-pulse");
     });
