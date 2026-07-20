@@ -44,6 +44,7 @@
     --series-9:#c0a07f; --series-10:#8fb0e0; --series-11:#c9a06a; --series-12:#7fc0b0;
     --series-13:#b09fd6; --series-14:#d0997f; --series-15:#8090c0; --series-16:#c9b878;
     --series-17:#8fbf9f; --series-18:#c188a8; --series-19:#7fb0a8; --series-20:#d68fa0; --series-21:#c9a878;
+    --series-22:#7fada8; --series-23:#a3c47f;
     --good:#5fb07a; --warning:#d6a94a; --serious:#d68a5e; --critical:#d66a63;
   }
   [data-theme="light"] {
@@ -68,6 +69,7 @@
     --series-9:#856a4a; --series-10:#4a6aa0; --series-11:#8a6a3c; --series-12:#3f8f7f;
     --series-13:#6a5aa0; --series-14:#a3634e; --series-15:#3c5578; --series-16:#7a6a33;
     --series-17:#4f7c59; --series-18:#8f5a7a; --series-19:#3f7c74; --series-20:#a8425a; --series-21:#8a6a2e;
+    --series-22:#3f7a72; --series-23:#5f8a3f;
     /* Darkened from the original #2f8f5a/#a8791e/#a8603e/#a84a44 -- those measured
        1.94-2.97:1 text-vs-pill-background contrast in this theme, below WCAG AA's 4.5:1.
        Same hue/saturation, lightness reduced until each cleared 4.5:1 (verified 4.79-4.84:1
@@ -88,6 +90,7 @@
   [data-tab="timephasedpnl"]{--tab-color:var(--series-16)} [data-tab="vendorscorecard"]{--tab-color:var(--series-17)}
   [data-tab="cyclecount"]{--tab-color:var(--series-19)} [data-tab="apdisbursement"]{--tab-color:var(--series-20)}
   [data-tab="pbcaudit"]{--tab-color:var(--series-21)}
+  [data-tab="glvariance"]{--tab-color:var(--series-22)} [data-tab="carbonthroughput"]{--tab-color:var(--series-23)}
   [data-tab="crosstool"]{--tab-color:var(--series-18)} [data-tab="glossary"]{--tab-color:var(--text-muted)}
 
   /* palette · Vivid — the original high-signal tool colours */
@@ -97,6 +100,7 @@
     --series-9:#9a6d3c; --series-10:#5b7fbd; --series-11:#b5762a; --series-12:#4f9e8f;
     --series-13:#8a6bb8; --series-14:#c1654f; --series-15:#5b84c4; --series-16:#b08d1f; --series-17:#4a7c59;
     --series-18:#3fa0c1; --series-19:#2e9e88; --series-20:#d6547a; --series-21:#c99a1f;
+    --series-22:#2fa89c; --series-23:#7cb342;
   }
   /* palette · Mono — every tool collapses to the one blurple accent */
   [data-palette="mono"] {
@@ -105,6 +109,7 @@
     --series-9:var(--accent); --series-10:var(--accent); --series-11:var(--accent); --series-12:var(--accent);
     --series-13:var(--accent); --series-14:var(--accent); --series-15:var(--accent); --series-16:var(--accent); --series-17:var(--accent);
     --series-18:var(--accent); --series-19:var(--accent); --series-20:var(--accent); --series-21:var(--accent);
+    --series-22:var(--accent); --series-23:var(--accent);
   }
 
   * { box-sizing: border-box; }
@@ -490,9 +495,9 @@
   .switcher-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
 
   /* ---- Interview Mode — declutters the default click-path down to the 5 tools the
-     live-demo walkthrough uses. The 18 non-demo sections are actually hidden below
+     live-demo walkthrough uses. The 20 non-demo sections are actually hidden below
      (display:none), not just their nav links -- a bare scroll/#hash into one of them is
-     a no-op while Interview Mode is active. The 23-stop "Take the tour" forces Full
+     a no-op while Interview Mode is active. The 25-stop "Take the tour" forces Full
      Dashboard mode before it starts (see startTour()) specifically so every stop stays
      reachable regardless of which mode the page loaded in. */
   [data-view="interview"] #cmdkOpen,
@@ -606,7 +611,7 @@
     <div>
       <div class="kicker">Finance Automation Engine</div>
       <h1>Operations Dashboard</h1>
-      <div class="sub">A live read over 18 already-built, stress-tested components + a shared KPI registry &mdash; synthetic sample data throughout, every figure from a real deterministic tool run.</div>
+      <div class="sub">A live read over 20 already-built, stress-tested components + a shared KPI registry &mdash; synthetic sample data throughout, every figure from a real deterministic tool run.</div>
       <div class="nav-hint">New here? Click <strong>Interview Mode</strong> (top right) for a simplified 5-tool view, or explore the sidebar / press <kbd>&#8984;K</kbd> to search any tool or finding.</div>
     </div>
     <div class="top-actions">
@@ -618,7 +623,7 @@
         <span class="switcher-label">Density</span>
         <button class="theme-toggle" id="densityToggle" title="Toggle layout density"><i class="ph ph-rows"></i>Comfortable</button>
       </div>
-      <button class="theme-toggle" id="tourStart" title="A guided 23-stop walkthrough covering every tool and reference tab on the dashboard, in sidebar order"><i class="ph ph-compass"></i>Take the tour</button>
+      <button class="theme-toggle" id="tourStart" title="A guided 25-stop walkthrough covering every tool and reference tab on the dashboard, in sidebar order"><i class="ph ph-compass"></i>Take the tour</button>
       <button class="cmdk-open" id="cmdkOpen"><i class="ph ph-magnifying-glass"></i>Search<kbd>&#8984;K</kbd></button>
       <button class="theme-toggle" id="themeToggle"><i class="ph ph-moon-stars"></i>Toggle theme</button>
       <button class="theme-toggle" id="modeToggle" title="Toggle interview-ready view (hides search, switchers, and non-demo tools)"><i class="ph ph-presentation-chart"></i>Full Dashboard</button>
@@ -638,6 +643,7 @@
         <a href="#narrator" data-tab="narrator"><span class="idx">04</span><span>Variance Narrator</span></a>
         <a href="#recon" data-tab="recon"><span class="idx">05</span><span>Reconciliation Checker</span></a>
         <a href="#timephasedpnl" data-tab="timephasedpnl"><span class="idx">17</span><span>Time-Phased P&amp;L</span></a>
+        <a href="#glvariance" data-tab="glvariance"><span class="idx">24</span><span>GL Variance Tie-Out</span></a>
       </div>
       <div class="nav-group">
         <div class="nav-group-label">Cost &amp; Margin</div>
@@ -648,6 +654,7 @@
         <a href="#energyvar" data-tab="energyvar"><span class="idx">12</span><span>Energy Variance</span></a>
         <a href="#laboreff" data-tab="laboreff"><span class="idx">15</span><span>Labor Efficiency</span></a>
         <a href="#cyclecount" data-tab="cyclecount"><span class="idx">21</span><span>Cycle Count Reconciler</span></a>
+        <a href="#carbonthroughput" data-tab="carbonthroughput"><span class="idx">25</span><span>Carbon-Adjusted Throughput</span></a>
       </div>
       <div class="nav-group">
         <div class="nav-group-label">Procurement</div>
@@ -745,6 +752,10 @@
         <div class="section-title" data-tab="timephasedpnl"><span class="section-num">17</span><span class="section-dot"></span><h1 id="heading-timephasedpnl">Time-Phased P&amp;L</h1></div>
         <div id="panel-timephasedpnl"></div>
       </section>
+      <section class="section" id="section-glvariance" aria-labelledby="heading-glvariance">
+        <div class="section-title" data-tab="glvariance"><span class="section-num">24</span><span class="section-dot"></span><h1 id="heading-glvariance">GL Variance Tie-Out</h1></div>
+        <div id="panel-glvariance"></div>
+      </section>
       <section class="section" id="section-vendorscorecard" aria-labelledby="heading-vendorscorecard">
         <div class="section-title" data-tab="vendorscorecard"><span class="section-num">18</span><span class="section-dot"></span><h1 id="heading-vendorscorecard">Vendor Scorecard</h1></div>
         <div id="panel-vendorscorecard"></div>
@@ -752,6 +763,10 @@
       <section class="section" id="section-cyclecount" aria-labelledby="heading-cyclecount">
         <div class="section-title" data-tab="cyclecount"><span class="section-num">21</span><span class="section-dot"></span><h1 id="heading-cyclecount">Cycle Count Reconciler</h1></div>
         <div id="panel-cyclecount"></div>
+      </section>
+      <section class="section" id="section-carbonthroughput" aria-labelledby="heading-carbonthroughput">
+        <div class="section-title" data-tab="carbonthroughput"><span class="section-num">25</span><span class="section-dot"></span><h1 id="heading-carbonthroughput">Carbon-Adjusted Throughput</h1></div>
+        <div id="panel-carbonthroughput"></div>
       </section>
       <section class="section" id="section-apdisbursement" aria-labelledby="heading-apdisbursement">
         <div class="section-title" data-tab="apdisbursement"><span class="section-num">22</span><span class="section-dot"></span><h1 id="heading-apdisbursement">AP Disbursement</h1></div>
@@ -1152,6 +1167,38 @@ const DATA = {
       { itemId: "PBC-004", category: "Fixed Assets", description: "Fixed asset roll-forward + additions/disposals detail FY26", dueDate: "2026-07-10", status: "in_progress", submittedDate: null, overdue: true, atRisk: false, flagged: true, reason: "overdue -- due 2026-07-10, 10d past due, still in progress" },
       { itemId: "PBC-005", category: "Debt", description: "Borrowing base certificates - trailing 12 months FY26", dueDate: "2026-08-01", status: "not_started", submittedDate: null, overdue: false, atRisk: false, flagged: false, reason: "on track (not started)" },
       { itemId: "PBC-006", category: "Equity", description: "Shareholder ownership computation + cap table FY26", dueDate: "2026-07-18", status: "submitted", submittedDate: "2026-07-17", overdue: false, atRisk: false, flagged: false, reason: "on track (submitted)" },
+    ],
+  },
+  glVariance: {
+    // gl_variance_tie_out/sample_data/*.csv, run 2026-07-20 -- transcribed verbatim from the
+    // real tie_out.py CLI output, not invented for display (same discipline every panel here
+    // follows). tolerance is TIE_OUT_TOLERANCE, a local module constant (not KPI-registry-
+    // promoted -- see that tool's own module docstring for why).
+    tolerance: 0.02,
+    results: [
+      { glAccount: "5100-Material-Price-Variance", period: "2026-06", category: "cost", computedSum: -7700.00, glBalance: -7700.00, difference: 0.00, contributingTools: ["cost_roll_validator", "vendor_performance_scorecard"], flagged: false, reason: "ties out — sub-ledger $-7,700.00 vs. GL $-7,700.00" },
+      { glAccount: "5100-Material-Price-Variance", period: "2026-06", category: "carbon", computedSum: -450.00, glBalance: -500.00, difference: 50.00, contributingTools: ["ghg_scope1_tracker"], flagged: true, reason: "sub-ledger vs. GL difference $+50.00 is 10.0% of GL balance $500.00 (exceeds 2% band)" },
+      { glAccount: "5200-Material-Usage-Variance", period: "2026-06", category: "cost", computedSum: -3400.00, glBalance: -5000.00, difference: 1600.00, contributingTools: ["yield_mix_analyzer"], flagged: true, reason: "sub-ledger vs. GL difference $+1,600.00 is 32.0% of GL balance $5,000.00 (exceeds 2% band)" },
+      { glAccount: "5300-Overhead-Volume-Variance", period: "2026-06", category: "cost", computedSum: -10000.00, glBalance: -10000.00, difference: 0.00, contributingTools: ["time_phased_pnl_analyzer"], flagged: false, reason: "ties out — sub-ledger $-10,000.00 vs. GL $-10,000.00" },
+      { glAccount: "5400-Energy-Rate-Variance", period: "2026-06", category: "cost", computedSum: -620.50, glBalance: null, difference: null, contributingTools: ["energy_variance_analyzer"], flagged: true, reason: "no GL balance on file for this account/period/category -- 1 tool-output row(s) (energy_variance_analyzer) computed a $-620.50 variance that was never posted/asserted against" },
+      { glAccount: "5500-Labor-Efficiency-Variance", period: "2026-06", category: "cost", computedSum: null, glBalance: -2000.00, difference: null, contributingTools: [], flagged: true, reason: "GL balance $-2,000.00 on file for this account/period/category but no supporting tool-output rows -- nothing in this repo's analytical layer explains it" },
+    ],
+  },
+  carbonThroughput: {
+    // carbon_adjusted_throughput_analyzer/sample_data/constraint_standards.csv, run
+    // 2026-07-20 -- transcribed verbatim from the real analyzer.py CLI output. Bounded research
+    // pilot (see that tool's own module docstring): carbon_kg_co2e_per_lb is illustrative of
+    // the MECHANIC only, no real product-level carbon-intensity study exists in this repo's
+    // source research. rankDivergenceThreshold is RANK_DIVERGENCE_THRESHOLD, a local module
+    // constant (not KPI-registry-promoted, same reasoning as glVariance.tolerance above).
+    rankDivergenceThreshold: 2,
+    products: [
+      { outputProduct: "Corn - Frozen", throughputPerUnit: 0.45, throughputPerConstraintMinute: 30.00, carbonPerConstraintMinute: 30.00, dollarRank: 1, carbonRank: 5, rankDivergence: 4, flagged: true, reason: "$-throughput ranks this product #1 of 5 -- the kind of product pure $ prioritization would favor at the constraint -- but its carbon efficiency ranks only #5 of 5, 4 position(s) worse (exceeds the 2-position divergence threshold)" },
+      { outputProduct: "Peas - Frozen", throughputPerUnit: 0.50, throughputPerConstraintMinute: 25.00, carbonPerConstraintMinute: 15.00, dollarRank: 2, carbonRank: 3, rankDivergence: 1, flagged: false, reason: "$ rank #2, carbon rank #3 -- within the 2-position divergence threshold" },
+      { outputProduct: "Green Beans - Frozen", throughputPerUnit: 0.50, throughputPerConstraintMinute: 23.809524, carbonPerConstraintMinute: 28.571429, dollarRank: 3, carbonRank: 4, rankDivergence: 1, flagged: false, reason: "$ rank #3, carbon rank #4 -- within the 2-position divergence threshold" },
+      { outputProduct: "Baby Lima Beans - Frozen", throughputPerUnit: 0.40, throughputPerConstraintMinute: 22.222222, carbonPerConstraintMinute: 13.888889, dollarRank: 4, carbonRank: 2, rankDivergence: -2, flagged: false, reason: "$ rank #4, carbon rank #2 -- carbon efficiency is BETTER than $ priority here, the opposite of the tension this tool flags" },
+      { outputProduct: "Carrots - Frozen", throughputPerUnit: 0.45, throughputPerConstraintMinute: 18.00, carbonPerConstraintMinute: 8.00, dollarRank: 5, carbonRank: 1, rankDivergence: -4, flagged: false, reason: "$ rank #5, carbon rank #1 -- the cheapest $ priority is also the best carbon performer" },
+      { outputProduct: "Cauliflower - Frozen", throughputPerUnit: null, throughputPerConstraintMinute: null, carbonPerConstraintMinute: null, dollarRank: null, carbonRank: null, rankDivergence: null, flagged: true, reason: "constraint_minutes_per_lb is zero or negative -- cannot compute a per-constraint-minute rate, excluded from ranking" },
     ],
   },
   crossToolSynthesis: {
@@ -1666,6 +1713,8 @@ function computeToolStatus() {
     cyclecount: f(d.cycleCount.lines.some(l => l.flagged)),
     apdisbursement: f(d.apDisbursement.invoices.some(i => i.flagged)),
     pbcaudit: f(d.pbcAudit.items.some(i => i.flagged)),
+    glvariance: f(d.glVariance.results.some(r => r.flagged)),
+    carbonthroughput: f(d.carbonThroughput.products.some(p => p.flagged)),
     crosstool: f(d.crossToolSynthesis.recommendations.some(r => r.urgency === "immediate" || r.urgency === "this_week")),
     glossary: "na",
   };
@@ -1699,6 +1748,8 @@ function computeFindings() {
   d.cycleCount.lines.filter(l => l.flagged).forEach(l => add("cyclecount", "Cycle Count", l.bookValue === 0 ? "serious" : "warning", l.sku + " (" + l.location + "): " + l.reason));
   d.apDisbursement.invoices.filter(i => i.flagged).forEach(i => add("apdisbursement", "AP Disbursement", i.late ? "serious" : "warning", i.invoiceId + " (" + i.vendor + "): " + i.reason));
   d.pbcAudit.items.filter(i => i.flagged).forEach(i => add("pbcaudit", "PBC Tracker", i.overdue ? "serious" : "warning", i.itemId + " (" + i.category + "): " + i.reason));
+  d.glVariance.results.filter(r => r.flagged).forEach(r => add("glvariance", "GL Variance Tie-Out", "serious", r.glAccount + " " + r.period + " [" + r.category + "]: " + r.reason));
+  d.carbonThroughput.products.filter(p => p.flagged).forEach(p => add("carbonthroughput", "Carbon Throughput", "warning", p.outputProduct + ": " + p.reason));
   const URGENCY_SEV = { immediate: "critical", this_week: "serious", this_month: "warning", monitor: "good" };
   d.crossToolSynthesis.recommendations.forEach(r => add("crosstool", "Cross-Tool Synthesis", URGENCY_SEV[r.urgency] || "warning", r.action));
   return out;
@@ -1710,6 +1761,7 @@ const TOOL_ICONS = {
   yieldmix: "stack", energyvar: "lightning", fsma: "shield-check", opsmonitor: "chart-line",
   laboreff: "users", bbcinv: "package", timephasedpnl: "calendar-blank", vendorscorecard: "truck",
   cyclecount: "list-checks", apdisbursement: "credit-card", pbcaudit: "clipboard-text",
+  glvariance: "scales", carbonthroughput: "leaf",
   crosstool: "brain", glossary: "book-open",
 };
 function setSectionIcons() {
@@ -3274,6 +3326,60 @@ function renderPbcAudit() {
   `;
 }
 
+/* ---------- GL Variance Tie-Out ---------- */
+function renderGlVarianceTieOut() {
+  const d = DATA.glVariance;
+  const flaggedCount = d.results.filter(r => r.flagged).length;
+  const row = (r) => `<tr><td>${r.glAccount}</td><td>${r.period}</td><td>${r.category}</td><td class="num">${r.computedSum != null ? fmt$$(r.computedSum) : "—"}</td><td class="num">${r.glBalance != null ? fmt$$(r.glBalance) : "—"}</td><td class="num">${r.difference != null ? fmt$$(r.difference) : "—"}</td><td>${r.contributingTools.join(", ") || "—"}</td>`;
+  const flaggedRows = d.results.filter(r => r.flagged).map(r => `${row(r)}<td>${statusPill("serious", "Flagged")}</td><td style="color:var(--text-secondary)">${r.reason}</td></tr>`).join("");
+  const cleanRows = d.results.filter(r => !r.flagged).map(r => `${row(r)}<td>${statusPill("good", "Ties Out")}</td></tr>`).join("");
+
+  document.getElementById("panel-glvariance").innerHTML = `
+    <div class="card">
+      <h2>Sub-ledger vs. general-ledger cross-check</h2>
+      <div class="desc">Sums each of this repo's OTHER variance-producing tools' own $ output, rolled up by GL account, period, and <strong>variance_category</strong> (a "cost" variance and a "carbon" variance sharing the same GL account/period reconcile independently, never summed together — see the flagged 5100-Material-Price-Variance row below: the "cost" category ties out exactly while the "carbon" category on the SAME account does not), and checks it against an asserted GL balance for that same account/period/category — a real, standard month-end close control: does the sub-ledger detail explain the GL balance, or is there an unexplained difference (a posting error, a real variance nobody's analytical tool caught, or double-counting)? Two structural flags fire regardless of dollar tolerance: an orphan tool output with no matching GL balance on file, and a GL balance with no supporting tool-output rows at all. Tolerance: <strong>${(d.tolerance * 100).toFixed(0)}%</strong> of the GL balance. <strong>Data-confidence note:</strong> a hand-curated snapshot of the other tools' own $ outputs, not a live cross-tool aggregator — this repo's other 19 tools have zero interface uniformity, and building that adapter layer is a separate, larger integration project, deliberately out of scope here. The "carbon" row's $ figure is an internal shadow-carbon-price translation (a tCO2e variance × an internal $/tonne rate), not a literal emissions-tracking figure — <code>ghg_scope1_tracker</code> is an illustrative source label only, not a built tool in this repo. <strong>Scope note:</strong> file-based first pass — no dbt layer yet.</div>
+    </div>
+    <div class="card">
+      <h2>Flagged — mismatch or unexplained (${flaggedCount})</h2>
+      <table>
+        <thead><tr><th>GL Account</th><th>Period</th><th>Category</th><th class="num">Sub-Ledger Sum</th><th class="num">GL Balance</th><th class="num">Difference</th><th>Contributing Tools</th><th>Status</th><th>Reason</th></tr></thead>
+        <tbody>${flaggedRows || '<tr><td colspan="9" style="color:var(--text-muted)">—</td></tr>'}</tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h2>Ties out</h2>
+      <table>
+        <thead><tr><th>GL Account</th><th>Period</th><th>Category</th><th class="num">Sub-Ledger Sum</th><th class="num">GL Balance</th><th class="num">Difference</th><th>Contributing Tools</th><th>Status</th></tr></thead>
+        <tbody>${cleanRows || '<tr><td colspan="8" style="color:var(--text-muted)">—</td></tr>'}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+/* ---------- Carbon-Adjusted Throughput Analyzer ---------- */
+function renderCarbonAdjustedThroughput() {
+  const d = DATA.carbonThroughput;
+  const flaggedCount = d.products.filter(p => p.flagged).length;
+  const ranked = d.products.filter(p => p.dollarRank != null).sort((a, b) => a.dollarRank - b.dollarRank);
+  const excluded = d.products.filter(p => p.dollarRank == null);
+  const rankedRows = ranked.map(p => `<tr><td>${p.outputProduct}</td><td class="num">$${p.throughputPerConstraintMinute.toFixed(2)}</td><td class="num">${p.dollarRank}</td><td class="num">${p.carbonPerConstraintMinute.toFixed(3)} kg</td><td class="num">${p.carbonRank}</td><td class="num">${p.rankDivergence > 0 ? "+" : ""}${p.rankDivergence}</td><td>${p.flagged ? statusPill("serious", "Flagged") : statusPill("good", "OK")}</td><td style="color:var(--text-secondary)">${p.reason}</td></tr>`).join("");
+  const excludedRows = excluded.map(p => `<tr><td>${p.outputProduct}</td><td colspan="5" style="color:var(--text-muted)">excluded from ranking</td><td>${statusPill("serious", "Flagged")}</td><td style="color:var(--text-secondary)">${p.reason}</td></tr>`).join("");
+
+  document.getElementById("panel-carbonthroughput").innerHTML = `
+    <div class="card">
+      <h2>Does $-only product-mix prioritization push toward carbon-heavy products?</h2>
+      <div class="desc"><strong>Bounded research pilot, not a platform claim.</strong> Builds Phase 4 of this engine's own stress-tested research pack: does Theory-of-Constraints throughput accounting (T = sales price − totally variable cost, per unit of the plant's own bottleneck resource) combine meaningfully with a carbon-intensity signal at that SAME bottleneck? A dedicated single-pass prior-art search found no existing product or published methodology doing this — read as a genuine white space, not a certified negative. Products are ranked twice against one constraint resource (an IQF tunnel freezer's own throughput minutes): $-throughput per constraint-minute descending (Goldratt's own product-mix rule), and carbon per constraint-minute ascending. A product is flagged when its $-priority rank runs more than ${d.rankDivergenceThreshold} positions ahead of its carbon-efficiency rank — deliberately one-directional; a product with a WORSE $ rank than carbon rank is not a tension worth flagging. <strong>Data-confidence note:</strong> carbon_kg_co2e_per_lb carries a stronger caveat than any other per-unit figure in this repo — no real product-level carbon-intensity study exists anywhere in this repo's source research. <strong>Scope note:</strong> file-based first pass — no dbt layer yet.</div>
+    </div>
+    <div class="card">
+      <h2>Ranked by $-throughput per constraint-minute (${flaggedCount} flagged for divergence)</h2>
+      <table>
+        <thead><tr><th>Product</th><th class="num">$/Constraint-Min</th><th class="num">$ Rank</th><th class="num">Carbon/Constraint-Min</th><th class="num">Carbon Rank</th><th class="num">Divergence</th><th>Status</th><th>Reason</th></tr></thead>
+        <tbody>${rankedRows}${excludedRows}</tbody>
+      </table>
+    </div>
+  `;
+}
+
 /* ---------- Cross-Tool Insight Synthesizer ---------- */
 // ---- Guardrail sandbox: a live, hand-built hypothetical recommendation run through the
 // SAME logic as cross_tool_insight_synthesizer/synthesizer.py's run_guardrails() (mirrored
@@ -3758,8 +3864,8 @@ function renderDbtPipeline() {
 
   document.getElementById("panel-dbt").innerHTML = `
     <div class="card">
-      <h2>dbt-core + Postgres: a transformation layer in front of the 18 data tools</h2>
-      <div class="desc">Right now the 18 data tools each read a hand-shaped sample file directly. This is what a real "raw export → tested transformation → analysis" pipeline in front of them looks like: 34 raw seeds (exact mirrors of the existing sample data, messy fields intact) → dbt staging models (a malformed value becomes NULL and gets flagged, never crashes the load — Postgres has no native TRY_CAST, so this uses a small safe-cast helper) → mart models shaped exactly like each tool's existing input. Every eligible tool gained an optional <code>--source postgres</code> flag, plus a third <code>--source postgres-airbyte</code> choice (see below); the file-based default is completely unchanged.</div>
+      <h2>dbt-core + Postgres: a transformation layer in front of 18 of the 20 data tools</h2>
+      <div class="desc">Right now 18 of the 20 data tools each read a hand-shaped sample file directly (<code>gl_variance_tie_out</code> and <code>carbon_adjusted_throughput_analyzer</code> are file-based only, no dbt layer yet). This is what a real "raw export → tested transformation → analysis" pipeline in front of them looks like: 34 raw seeds (exact mirrors of the existing sample data, messy fields intact) → dbt staging models (a malformed value becomes NULL and gets flagged, never crashes the load — Postgres has no native TRY_CAST, so this uses a small safe-cast helper) → mart models shaped exactly like each tool's existing input. Every eligible tool gained an optional <code>--source postgres</code> flag, plus a third <code>--source postgres-airbyte</code> choice (see below); the file-based default is completely unchanged.</div>
     </div>
     <div class="kpi-grid">
       <div class="kpi" style="border-top:3px solid var(--series-7)">
@@ -3898,8 +4004,8 @@ function renderArchitecture() {
   // to either of these two boxes previously showed the washed-out default outline color even
   // when the box was simultaneously part of an active trace.
   boxes += `<foreignObject x="20" y="${sharedY}" width="720" height="${sharedH}"><div xmlns="http://www.w3.org/1999/xhtml" class="arch-shared-wrap">
-    <button type="button" class="arch-box arch-el" data-arch-group="${SHARED_COLS}" data-arch-trace="${SHARED_COLS}" aria-pressed="false" aria-describedby="archTraceHint" style="--accent:var(--text-secondary); --active-accent:var(--series-1)"><h4>shared/kpi_registry.py</h4><p>33 thresholds tagged to a JD Duty. All 18 tools pull their defaults from here — one source of truth.</p></button>
-    <button type="button" class="arch-box arch-el" data-arch-group="${SHARED_COLS}" data-arch-trace="${SHARED_COLS}" aria-pressed="false" aria-describedby="archTraceHint" style="--accent:var(--text-secondary); --active-accent:var(--series-1)"><h4>shared/flagging_engine.py</h4><p>9 generic checks: threshold, band, missing-data, timing-adjacency, cost-baseline-materiality, z-score, trend-break, flatline, period-gap. 14 of the 18 tools delegate real logic here, not just parameters.</p></button>
+    <button type="button" class="arch-box arch-el" data-arch-group="${SHARED_COLS}" data-arch-trace="${SHARED_COLS}" aria-pressed="false" aria-describedby="archTraceHint" style="--accent:var(--text-secondary); --active-accent:var(--series-1)"><h4>shared/kpi_registry.py</h4><p>33 thresholds tagged to a JD Duty. 18 of the 20 tools pull their defaults from here — one source of truth (gl_variance_tie_out and carbon_adjusted_throughput_analyzer keep their own tolerance/threshold as local constants — see their own module docstrings for why).</p></button>
+    <button type="button" class="arch-box arch-el" data-arch-group="${SHARED_COLS}" data-arch-trace="${SHARED_COLS}" aria-pressed="false" aria-describedby="archTraceHint" style="--accent:var(--text-secondary); --active-accent:var(--series-1)"><h4>shared/flagging_engine.py</h4><p>9 generic checks: threshold, band, missing-data, timing-adjacency, cost-baseline-materiality, z-score, trend-break, flatline, period-gap. 16 of the 20 tools delegate real logic here, not just parameters.</p></button>
   </div></foreignObject>`;
   arrows += `<line class="flow-arrow arch-el" data-arch-group="${SHARED_COLS}" style="--accent:var(--series-1)" x1="380" y1="${sharedY + sharedH}" x2="380" y2="${outY}" marker-end="url(#arrow)"/>`;
 
@@ -3913,7 +4019,7 @@ function renderArchitecture() {
   // one opaque image, which would hide every trace-trigger button (and its aria-pressed state)
   // from screen-reader users entirely. "group" keeps the aria-label while leaving descendants
   // in the accessibility tree.
-  const svg = `<svg viewBox="0 0 906 ${vh}" width="100%" height="${vh}" class="arch-diagram" id="archDiagram" role="group" aria-label="Pipeline architecture: data sources feed dbt_pipeline's staging and mart models, which feed 5 representative tools (18 total, see the tool cards above), 4 of these 5 sharing a KPI registry and flagging engine, all producing this dashboard. Click any source box or shared-layer box to trace its data-flow path.">
+  const svg = `<svg viewBox="0 0 906 ${vh}" width="100%" height="${vh}" class="arch-diagram" id="archDiagram" role="group" aria-label="Pipeline architecture: data sources feed dbt_pipeline's staging and mart models, which feed 5 representative tools (20 total, see the tool cards above), 4 of these 5 sharing a KPI registry and flagging engine, all producing this dashboard. Click any source box or shared-layer box to trace its data-flow path.">
     <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="var(--text-muted)"/></marker></defs>
     <g stroke="var(--text-muted)" stroke-width="1.5">${arrows}</g>
     ${boxes}
@@ -3922,7 +4028,7 @@ function renderArchitecture() {
   document.getElementById("panel-architecture").innerHTML = `
     <div class="card">
       <h2>How the pipeline is wired</h2>
-      <div class="desc">Data sources feed <code>dbt_pipeline</code>'s staging/mart models, which feed the 18 tools (each also still readable directly from a file — dbt is an optional <code>--source postgres</code> path, not a required hop); all 18 pull from the shared KPI registry, and 14 of them also share the flagging engine (variance_narrator's guardrails and fsma_traceability_checker's completeness checks are different-shaped problems it doesn't cover); everything lands in this dashboard. The infra maturity assessor deliberately bypasses both shared modules — a coarser, whole-domain weighting concept, not an oversight (see the comment in <code>assessor.py</code>).</div>
+      <div class="desc">Data sources feed <code>dbt_pipeline</code>'s staging/mart models, which feed 18 of the 20 tools (each also still readable directly from a file — dbt is an optional <code>--source postgres</code> path, not a required hop; <code>gl_variance_tie_out</code> and <code>carbon_adjusted_throughput_analyzer</code> are file-based only, no dbt layer yet); 18 of the 20 pull from the shared KPI registry, and 16 of them also share the flagging engine (variance_narrator's guardrails and fsma_traceability_checker's completeness checks are different-shaped problems it doesn't cover); everything lands in this dashboard. The infra maturity assessor deliberately bypasses both shared modules — a coarser, whole-domain weighting concept, not an oversight (see the comment in <code>assessor.py</code>).</div>
       <div class="arch-trace-hint" id="archTraceHint">Try it — click a source box (top row) or a shared-layer box to trace its data-flow path through the diagram.<button type="button" class="threshold-reset" id="archTraceReset" hidden>Show full pipeline</button></div>
       ${svg}
       <div class="arch-trace-caption" id="archTraceCaption" aria-live="polite"></div>
@@ -3984,13 +4090,13 @@ function renderArchitecture() {
   resetBtn.addEventListener("click", clearTrace);
 }
 
-/* ---------- Navigation (scroll-based — all 23 sections render in one continuous document
+/* ---------- Navigation (scroll-based — all 25 sections render in one continuous document
    now, replacing the old show-one-panel-at-a-time tab model) ---------- */
-const VALID_TABS = ["overview", "architecture", "dbt", "narrator", "recon", "costroll", "margin", "infra", "ap", "costsim", "yieldmix", "energyvar", "fsma", "opsmonitor", "laboreff", "bbcinv", "timephasedpnl", "vendorscorecard", "cyclecount", "apdisbursement", "pbcaudit", "crosstool", "glossary"];
+const VALID_TABS = ["overview", "architecture", "dbt", "narrator", "recon", "costroll", "margin", "infra", "ap", "costsim", "yieldmix", "energyvar", "fsma", "opsmonitor", "laboreff", "bbcinv", "timephasedpnl", "vendorscorecard", "cyclecount", "apdisbursement", "pbcaudit", "glvariance", "carbonthroughput", "crosstool", "glossary"];
 
 function setActiveSidebarLink(name) {
   // Interview Mode hides every non-demo sidebar link via CSS; don't silently drop the
-  // visible highlight onto a hidden link while the reader scrolls through one of the 18
+  // visible highlight onto a hidden link while the reader scrolls through one of the 20
   // sections outside the demo path — leave the last visible demo link active instead.
   if (document.documentElement.getAttribute("data-view") === "interview") {
     const link = document.querySelector(`.sidebar a[data-tab="${name}"]`);
@@ -4235,15 +4341,16 @@ function buildFeed() {
    (timephasedpnl/yieldmix/energyvar/laboreff/infra) paraphrase that same file's other
    sections; the remaining 11 adapt each tool's own already-shipped `.desc` copy. Reuses
    scrollToSection (the same nav function the sidebar/cmdk use) rather than a separate scroll
-   mechanism. startTour() force-exits Interview Mode first (see below) since 18 of these 23
+   mechanism. startTour() force-exits Interview Mode first (see below) since 20 of these 25
    stops are non-demo sections Interview Mode hides entirely. */
 const TOUR_STEPS = [
-  { tab: "overview", title: "The whole engine, one screen", caption: "This walkthrough covers all 23 sections in the sidebar, in order — every tool's status rolls up into one verdict banner right here, alongside a findings feed of every flagged item across every tool, worst first." },
-  { tab: "architecture", title: "How the pipeline is wired", caption: "Data sources feed dbt_pipeline's staging/mart models, which feed the 18 tools — all sharing one KPI registry, 14 also sharing one flagging engine. Click any source box or shared-layer box below to trace its exact data-flow path through the diagram." },
-  { tab: "dbt", title: "From hand-shaped files to a real pipeline", caption: "Right now the 18 tools each read a hand-shaped sample file directly. This section shows what a real raw-export → tested-transformation → analysis pipeline in front of them looks like: 34 raw seeds → dbt staging (a malformed value becomes NULL and gets flagged, never crashes the load) → mart models shaped exactly like each tool's real input." },
+  { tab: "overview", title: "The whole engine, one screen", caption: "This walkthrough covers all 25 sections in the sidebar, in order — every tool's status rolls up into one verdict banner right here, alongside a findings feed of every flagged item across every tool, worst first." },
+  { tab: "architecture", title: "How the pipeline is wired", caption: "Data sources feed dbt_pipeline's staging/mart models, which feed 18 of the 20 tools — 18 sharing one KPI registry, 16 also sharing one flagging engine. Click any source box or shared-layer box below to trace its exact data-flow path through the diagram." },
+  { tab: "dbt", title: "From hand-shaped files to a real pipeline", caption: "Right now the tools each read a hand-shaped sample file directly. This section shows what a real raw-export → tested-transformation → analysis pipeline in front of them looks like: 34 raw seeds → dbt staging (a malformed value becomes NULL and gets flagged, never crashes the load) → mart models shaped exactly like each tool's real input." },
   { tab: "narrator", title: "AI commentary, verified before it ships", caption: "The model-drafted narrative here is illustrative only — the numbers underneath are always code-computed, never model output. Direction is independently sign-checked against the real variance and account type, so a model claiming 'favorable' on an actual cost increase gets rejected before it would ever show here." },
   { tab: "recon", title: "ERP meets CPM", caption: "Two synthetic exports — one shaped like an ERP GL extract, one shaped like a CPM export — reconciled against each other to catch real mismatches and timing differences before they become a close problem." },
   { tab: "timephasedpnl", title: "Overhead absorption, the literal formula", caption: "Phases an annual plan into periods, then blends actuals with forecast into one continuous Latest Estimate. One line item is a literal overhead-absorption volume variance — (latest-estimate volume − phased budgeted volume) × budgeted fixed overhead rate — the textbook formula, not an analogy to it." },
+  { tab: "glvariance", title: "Does the sub-ledger actually explain the GL?", caption: "Sums every other variance tool's own $ output by GL account, period, and category, then checks it against an asserted GL balance — a real month-end close control. 5100-Material-Price-Variance's \"cost\" category ties out exactly while its \"carbon\" category, same account, does not — proof the category dimension keeps two unrelated variances from silently netting together." },
   { tab: "costroll", title: "The flat-average problem", caption: "Corn - Sweet's flat annual average looks fine: −4.2% vs. the $0.50 standard, inside the ±10% band. Broken into seasons it's a different story — Q1 +10.2%, Q3 −19.9%, Q4 +17.7% — three real cost swings the flat number was hiding until the season was already over." },
   { tab: "costsim", title: "Is the standard still plausible?", caption: "A probabilistic companion to Cost-Roll Validator, not a replacement — same PO-history data, a different question: is the current standard still statistically plausible given the full shape of real PO experience, not just its average? Seeded Monte Carlo draws cross-check a closed-form analytic calculation per item." },
   { tab: "margin", title: "$20,150 in unrecovered margin", caption: "Freight underpriced, Storage never invoiced, Brokerage a small gap, Cash Discount underpriced — split cleanly by unbilled vs. underpriced because those need different fixes. Two customers, Distributor B ($10,250) and Regional Grocer A ($9,900), account for the entire total." },
@@ -4256,9 +4363,10 @@ const TOUR_STEPS = [
   { tab: "fsma", title: "Would this survive a real FDA records request?", caption: "For each lot, checks whether every required Critical Tracking Event has a complete Key Data Element and no impossibly-dated event. A lot failing any check would not survive a real FDA records request within FSMA's actual 24-hour response window." },
   { tab: "bbcinv", title: "PACA trust exposure", caption: "A borrowing-base line gets $12,000 carved out of its eligible collateral value because of unpaid-grower PACA trust exposure — a real statutory risk specific to buying from growers, and something a generic finance candidate almost never knows to model." },
   { tab: "cyclecount", title: "Quantity, not cost — the missing question", caption: "Every other Duty #3 tool answers a COST question (is the price/rate right, given the quantity on the books is trusted). This one answers the QUANTITY-integrity question a physical cycle count exists to catch — does what's actually on the shelf match what the books say." },
+  { tab: "carbonthroughput", title: "A bounded pilot, not a platform claim", caption: "Does pure $-throughput product-mix priority at a plant's own bottleneck diverge from carbon-efficiency priority at that same bottleneck? A single-pass prior-art search found nothing combining Theory-of-Constraints logic with a carbon signal — a genuine white space, so this ships as one constraint, five products, an explicit flag, not a committed feature." },
   { tab: "apdisbursement", title: "Paying on time is only half of it", caption: "Late payments are the obvious risk — but paying too early with no discount reason ties up cash for no benefit. Three independent findings per invoice: late, missed discount (a literal dollar figure), and premature." },
   { tab: "pbcaudit", title: "Duty #5's first tool", caption: "Every other JD duty already had a dedicated tool — audit/tax interface & compliance had zero. Tracks PBC completeness as of an explicit fieldwork date: an item already in progress isn't at-risk, but one untouched with the deadline closing in is." },
-  { tab: "infra", title: "Built against the JD's own highest weight", caption: "Scores discovery observations per domain, weighted by which JD Essential Duty it maps to. Systems, Data & Automation is weighted 5× — the single highest weight of any domain in the job description — and 6 of the 18 tools are tagged directly to it." },
+  { tab: "infra", title: "Built against the JD's own highest weight", caption: "Scores discovery observations per domain, weighted by which JD Essential Duty it maps to. Systems, Data & Automation is weighted 5× — the single highest weight of any domain in the job description — and 7 of the 20 tools are tagged directly to it." },
   { tab: "crosstool", title: "A different shape — reading the other 14", caption: "The 15th tool doesn't own its own domain data — it reads a findings feed spanning the other 14 tools' already-verified results and produces one prioritized, guardrailed action list. Try the sandbox below: build a hypothetical recommendation and watch it run through the real hallucination/coverage/priority-consistency checks." },
   { tab: "glossary", title: "Every example, a real number", caption: "Same discipline as everywhere else in this repo: every example here is a real number from a real run of the tool it describes — nothing invented for this page. Three formula terms have a live calculator — change the numbers and watch the result recompute." },
 ];
@@ -4315,7 +4423,7 @@ function goToTourStep() {
   tourHighlightTimer = setTimeout(tourHighlightTarget, 350);
 }
 function startTour() {
-  // Interview Mode hides 18 of these 23 stops' sections entirely (display:none) -- scrolling
+  // Interview Mode hides 20 of these 25 stops' sections entirely (display:none) -- scrolling
   // to a hidden section is a silent no-op, so a tour started there would desync (card
   // advances, page/sidebar don't) the moment it hit any non-demo stop. Force Full Dashboard
   // first so every stop is actually reachable; this is a real, persisted mode switch (same
@@ -4522,6 +4630,8 @@ renderVendorScorecard();
 renderCycleCount();
 renderApDisbursement();
 renderPbcAudit();
+renderGlVarianceTieOut();
+renderCarbonAdjustedThroughput();
 renderCrossToolSynthesis();
 renderGlossary();
 /* KPI Registry inline expandable detail rows. A detail row is a sibling <tr>, not a
@@ -4656,7 +4766,7 @@ wireKpiRegistry(document.getElementById("kpiRegistryTable"));
 wireKpiRegistryFilters(document.getElementById("kpiRegistryTable"));
 makeSortable(document.getElementById("dbtSeedsTable"));
 
-// Post-render enhancement pass — everything here reads the fully-rendered DOM the 18
+// Post-render enhancement pass — everything here reads the fully-rendered DOM the 20
 // render*() calls above just produced, so it must run after all of them, not interleaved.
 setSectionIcons();
 setNavTicks();
@@ -4665,7 +4775,7 @@ buildCmdk();
 // wireGotoButtons() moved here, after buildFeed(): its own doc-comment already says "run
 // last... covers every [data-goto] regardless of which render function produced it" — but
 // buildFeed()'s 69 feed-row buttons (each carrying data-goto) are created by a POST-render
-// call, not one of the 18 render*() functions above. Wiring before buildFeed() ran left
+// call, not one of the 20 render*() functions above. Wiring before buildFeed() ran left
 // every feed-row a dead click (confirmed empirically: row.click() left location.hash
 // unchanged) — this restores the actual invariant the comment describes.
 wireGotoButtons();

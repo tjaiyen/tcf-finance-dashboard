@@ -2,11 +2,11 @@
 
 **Live: https://tjaiyen.github.io/tcf-finance-dashboard/**
 
-A single, self-contained operations dashboard covering 18 cost-accounting and finance-automation
+A single, self-contained operations dashboard covering 20 cost-accounting and finance-automation
 tools built for food/beverage manufacturing — seasonal standard-cost validation, margin-leak
 recovery, vendor performance scoring, borrowing-base inventory eligibility, FSMA traceability,
-a cross-tool AI insight synthesizer, and more, all backed by a shared KPI registry and a common
-flagging engine.
+a cross-tool AI insight synthesizer, a sub-ledger-to-GL variance tie-out, and more, all backed by
+a shared KPI registry and a common flagging engine.
 
 Every figure on the page comes from a real, deterministic run of the underlying tool against
 synthetic sample data — nothing on the page is invented for display. See the disclaimer footer
@@ -25,9 +25,10 @@ searches across all tools and findings.
 - **Dark-first UI** with a live palette (Nocturne/Vivid/Mono) and density (Comfortable/Compact)
   switcher, a command palette (`⌘K`) that jumps to any tool or finding, and an **Interview
   Mode** toggle that collapses the view down to a short guided walkthrough.
-- **18 tools** spanning cost accounting, AP/procurement, compliance, and operational readiness —
+- **20 tools** spanning cost accounting, AP/procurement, compliance, and operational readiness —
   reachable from the sidebar, with an Overview panel that rolls every tool's status up into one
-  screen.
+  screen. Includes a bounded research pilot (Carbon-Adjusted Throughput) that's explicit about
+  its own limits — see that tab's own disclosure, not a polished "finished feature."
 - **Live threshold sliders** on 8 of the tools — drag a materiality band or price-variance
   ceiling and watch which rows flag change in real time, always paired with a "reset to the
   real value" button so the actual production threshold is never lost.
@@ -41,7 +42,7 @@ searches across all tools and findings.
 
 This is a standalone snapshot published for sharing — it does not include the underlying Python
 tools, tests, dbt pipeline, or any other project documentation. All data shown is synthetic
-sample data, disclosed as such in the page's own footer. The source repo (`tcf-engine-prep`,
-private) currently has 20 tools; 2 of the newest (`gl_variance_tie_out`, a sub-ledger-to-GL
-reconciliation, and `carbon_adjusted_throughput_analyzer`, a bounded research pilot) don't have
-a dashboard tab yet — a named follow-up, not an oversight.
+sample data, disclosed as such in the page's own footer. 18 of the 20 tools have an optional dbt
+layer in the source repo (`tcf-engine-prep`, private); `gl_variance_tie_out` and
+`carbon_adjusted_throughput_analyzer` are file-based only, no dbt layer yet — a named follow-up,
+disclosed on their own tabs, not an oversight.
