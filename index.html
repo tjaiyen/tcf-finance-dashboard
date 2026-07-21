@@ -534,6 +534,26 @@
   .section-title .section-num { color: var(--tab-color, var(--accent)); font-family: var(--font-heading); font-size: 13px; font-variant-numeric: tabular-nums; letter-spacing: 0.06em; }
   .sec-ico { font-size: 20px; line-height: 1; color: var(--tab-color, var(--accent)); flex: none; }
 
+  /* ---- focus mode: one section at a time, sidebar/header hidden, for reading without
+     clutter. Injected onto every .section-title (30 sections) by wireSectionFocusButtons(),
+     not hand-added per section -- one generic pass instead of 30 markup edits. */
+  .section-focus-btn {
+    margin-left: auto; appearance: none; border: none; background: none; color: var(--text-muted);
+    cursor: pointer; font-size: 15px; line-height: 1; padding: 5px; border-radius: var(--radius-sm, 4px);
+    flex-shrink: 0;
+  }
+  .section-focus-btn:hover, .section-focus-btn:focus-visible { color: var(--text-primary); background: color-mix(in srgb, var(--accent) 12%, transparent); }
+  html[data-focus] header.top, html[data-focus] .sidebar { display: none; }
+  .section.is-focused {
+    position: fixed; inset: 0; z-index: 50; overflow-y: auto; background: var(--surface);
+    padding: 22px clamp(20px, 6vw, 72px) 60px; margin: 0;
+  }
+  .section.is-focused .section-title {
+    position: sticky; top: 0; z-index: 2; margin: -22px calc(-1 * clamp(20px, 6vw, 72px)) 16px;
+    padding: 22px clamp(20px, 6vw, 72px) 12px; background: var(--surface);
+  }
+  html[data-focus] .section:not(.is-focused) { display: none; }
+
   .term { border-bottom: 1px dotted var(--text-muted); cursor: help; }
   th.sortable { cursor: pointer; user-select: none; }
   th.sortable:hover { color: var(--text-secondary); }
@@ -601,8 +621,14 @@
   [data-view="interview"] .sidebar a:not([data-demo]) { display: none; }
   [data-view="interview"] .nav-group:not(:has(a[data-demo])) { display: none; }
   /* .section[data-demo] is set in JS from the matching sidebar link (single source of
-     truth, not a second hand-maintained list) right before Interview Mode is first applied. */
-  [data-view="interview"] .section:not([data-demo]) { display: none; }
+     truth, not a second hand-maintained list) right before Interview Mode is first applied.
+     :not(.is-focused) exception: without it, Interview Mode entered/active while a NON-demo
+     section is focused would force display:none onto that same section Focus Mode is trying
+     to show full-screen -- header/sidebar already hidden by Focus Mode too, so the result is
+     a blank viewport. Not reachable today (Interview Mode's toggle lives in header.top, which
+     Focus Mode hides, and there's no other entry point) but cheap to close now rather than
+     leave as a landmine for the next keybinding/cmdk action that reaches it. */
+  [data-view="interview"] .section:not([data-demo]):not(.is-focused) { display: none; }
 
   /* ---- chart craft: draw-in + depth + glow on the accent series ---- */
   svg .bar { filter: drop-shadow(0 2px 3px color-mix(in srgb, #000 30%, transparent)); }
@@ -4788,6 +4814,14 @@ function setActiveSidebarLink(name) {
 function scrollToSection(name, { updateHash = true } = {}) {
   const requested = name;
   if (!VALID_TABS.includes(name)) name = "overview";
+  // Focus Mode hides every section but the focused one via CSS -- any navigation (sidebar
+  // link, cmdk result, a data-goto button inside the focused tool, the tour) must tear that
+  // down first, unconditionally, even if the destination is the SAME tab that's focused: the
+  // tour landing on its first stop while that stop happens to already be focused is exactly
+  // this case (confirmed live) -- `name === focusedTab` must still exit, or the tour proceeds
+  // with header/sidebar hidden and only a fixed-fullscreen section showing underneath it.
+  const focusedTab = root.getAttribute("data-focus");
+  if (focusedTab) exitFocusState(focusedTab);
   const target = document.getElementById("section-" + name);
   if (target) {
     const before = window.scrollY;
@@ -4966,6 +5000,74 @@ modeBtn.addEventListener("click", () => {
   applyMode(next);
   try { localStorage.setItem(MODE_KEY, next); } catch (e) { console.warn("mode persistence unavailable:", e); }
 });
+
+/* ---------- Focus Mode ----------
+   One section fills the viewport (sidebar + header hidden) for reading a single tool
+   without clutter. Session-only, not persisted — unlike theme/density/mode above, this
+   is a transient "give me one tool right now" state, not a durable preference; every
+   reload starts un-focused. A single button per section toggles it (injected generically
+   by wireSectionFocusButtons(), not hand-added 30 times). */
+function setSectionFocusBtnState(tab, focused) {
+  const btn = document.querySelector(`.section-focus-btn[data-tab="${tab}"]`);
+  if (!btn) return;
+  btn.innerHTML = focused ? `<i class="ph ph-arrows-in"></i>` : `<i class="ph ph-arrows-out"></i>`;
+  btn.setAttribute("aria-label", focused ? "Exit focus mode" : "Focus on this section, hiding everything else");
+  btn.setAttribute("aria-pressed", focused ? "true" : "false");
+}
+// Pure state teardown -- no scrolling, so scrollToSection() (below) can call this to clear
+// a stale focus before navigating elsewhere without triggering a second, conflicting scroll.
+function exitFocusState(tab) {
+  const section = document.getElementById(`section-${tab}`);
+  if (section) section.classList.remove("is-focused");
+  root.removeAttribute("data-focus");
+  setSectionFocusBtnState(tab, false);
+  // The mind map's connectors are measured from live getBoundingClientRect() results (see
+  // its own Interview-Mode fix above) -- hiding/restoring the sidebar changes #panel-mindmap's
+  // width, so a stale measurement from before the focus toggle would leave them degenerate.
+  if (tab === "mindmap" && document.getElementById("panel-mindmap").innerHTML) mmMeasureAndConnect();
+}
+function enterFocus(tab) {
+  const section = document.getElementById(`section-${tab}`);
+  if (!section) return;
+  const current = root.getAttribute("data-focus");
+  if (current && current !== tab) exitFocusState(current);
+  section.classList.add("is-focused");
+  root.setAttribute("data-focus", tab);
+  setSectionFocusBtnState(tab, true);
+  section.scrollTop = 0;
+  if (tab === "mindmap" && document.getElementById("panel-mindmap").innerHTML) mmMeasureAndConnect();
+}
+function toggleFocus(tab) {
+  if (root.getAttribute("data-focus") === tab) { exitFocusState(tab); scrollToSection(tab); }
+  else enterFocus(tab);
+}
+function wireSectionFocusButtons() {
+  document.querySelectorAll(".section-title[data-tab]").forEach(title => {
+    const tab = title.dataset.tab;
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "section-focus-btn";
+    btn.dataset.tab = tab;
+    btn.setAttribute("aria-pressed", "false");
+    btn.setAttribute("aria-label", "Focus on this section, hiding everything else");
+    btn.innerHTML = `<i class="ph ph-arrows-out"></i>`;
+    btn.addEventListener("click", () => toggleFocus(tab));
+    title.appendChild(btn);
+  });
+}
+// Capture phase, deliberately: the cmdk input's own Escape-closes-cmdk handler lives on the
+// input itself and fires during the BUBBLE phase, before this reaches document if registered
+// the normal way -- by then cmdk already reports closed, so a bubble-phase check here can never
+// see "cmdk was open when this Escape was pressed." Capture runs first, seeing the true prior
+// state, so cmdk gets first claim on the keypress and focus mode only exits once cmdk is
+// already closed (a second Escape, or the first one when cmdk was never open).
+document.addEventListener("keydown", (e) => {
+  if (e.key !== "Escape") return;
+  const cmdkEl = document.getElementById("cmdk");
+  if (cmdkEl && !cmdkEl.hidden) return;
+  const focused = root.getAttribute("data-focus");
+  if (focused) { exitFocusState(focused); scrollToSection(focused); }
+}, true);
 
 /* ---------- Findings feed (Overview panel) ----------
    Reads computeFindings() (real, our-own-DATA-derived) — inserted right after the verdict
@@ -5465,6 +5567,7 @@ buildCmdk();
 // every feed-row a dead click (confirmed empirically: row.click() left location.hash
 // unchanged) — this restores the actual invariant the comment describes.
 wireGotoButtons();
+wireSectionFocusButtons();
 countUp();
 animateLines();
 revealOnScroll();
