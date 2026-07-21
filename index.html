@@ -405,6 +405,98 @@
      a second layout shift on top of the (unavoidable) one when a trace first turns on. */
   .arch-trace-caption { font-size: 12.5px; color: var(--text-secondary); min-height: 58px; margin-top: 6px; }
 
+  /* ---- System Map (mind map): duty colors reuse existing --series-N tokens (no new
+     palette), everything else styled through --surface/--text-*/--border like the rest of
+     the dashboard. Node positions come from CSS flex layout; connector lines are computed
+     from real getBoundingClientRect() results in renderMindMap(), never hand-placed. A node
+     with a real dashboard tab renders as a genuine <button> (see mmNode()/button.arch-box
+     precedent) so it's keyboard-focusable and wired for free by the existing global
+     wireGotoButtons() -- appearance/font/color resets below turn a <button> back into
+     looking like the same node as a plain <div>. ---- */
+  .mm-stats { display: flex; gap: 18px; flex-wrap: wrap; font-family: var(--font-mono, monospace); font-variant-numeric: tabular-nums; margin: -4px 0 4px; }
+  .mm-stat { text-align: left; }
+  .mm-stat .n { font-size: 15px; font-weight: 600; color: var(--accent); display: block; }
+  .mm-stat .l { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .06em; }
+  .mm-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin: 0 0 16px; padding: 10px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); }
+  .mm-legend-keys { display: flex; flex-wrap: wrap; gap: 4px 12px; }
+  .mm-legend-key { display: inline-flex; align-items: center; gap: 5px; font-size: 10.5px; color: var(--text-secondary); font-weight: 600; }
+  .mm-legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .mm-legend-hint { font-size: 10.5px; color: var(--text-muted); }
+  /* overflow-y computes to "auto" (not "visible") whenever overflow-x isn't also "visible" —
+     so a wide bottom padding, not "visible", is what actually keeps the bottom-row tool
+     tooltips (data-why, popped below the button) from being clipped/scrolled-away. 90px
+     comfortably covers the longest real data-why string's rendered height (~66px incl. the
+     6px margin-top), measured live against #panel-mindmap's actual content. */
+  .mm-canvas-wrap { overflow-x: auto; overflow-y: auto; padding: 10px 0 90px; }
+  .mm-canvas { position: relative; min-width: 2560px; padding: 0 20px; }
+  .mm-svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+  .mm-svg path { fill: none; stroke-width: 1.5px; opacity: .5; transition: opacity .2s, stroke-width .2s; }
+  .mm-svg path.mm-dim { opacity: .07; }
+  .mm-svg path.mm-lit { opacity: .95; stroke-width: 2.2px; }
+  @media (prefers-reduced-motion: no-preference) { .mm-svg path { transition: opacity .2s, stroke-width .2s, stroke-dashoffset 1.1s ease; } }
+  .mm-columns { position: relative; display: flex; align-items: stretch; gap: 52px; z-index: 1; }
+  .mm-col { display: flex; flex-direction: column; justify-content: center; gap: 16px; flex-shrink: 0; }
+  @media (prefers-reduced-motion: no-preference) {
+    .mm-col { opacity: 0; transform: translateY(10px); animation: mmColIn .5s ease forwards; }
+    .mm-col:nth-child(1) { animation-delay: .02s; } .mm-col:nth-child(2) { animation-delay: .08s; }
+    .mm-col:nth-child(3) { animation-delay: .14s; } .mm-col:nth-child(4) { animation-delay: .20s; }
+    .mm-col:nth-child(5) { animation-delay: .26s; } .mm-col:nth-child(6) { animation-delay: .34s; }
+    .mm-col:nth-child(7) { animation-delay: .42s; }
+    @keyframes mmColIn { to { opacity: 1; transform: none; } }
+  }
+  .mm-col-label { font-size: 10px; text-transform: uppercase; letter-spacing: .09em; color: var(--text-muted); text-align: center; margin-bottom: 2px; }
+  .mm-node { display: block; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px 14px; transition: background .15s, transform .15s, box-shadow .15s; font: inherit; color: inherit; text-align: left; }
+  button.mm-node { appearance: none; width: 100%; cursor: pointer; }
+  button.mm-node:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .mm-goto-hint { font-size: 9.5px; color: var(--accent); display: flex; align-items: center; gap: 3px; margin-top: 4px; opacity: .75; }
+  button.mm-node:hover .mm-goto-hint { opacity: 1; }
+  .mm-node.mm-root { width: 214px; border-color: var(--accent); box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent); }
+  .mm-node.mm-root .mm-eyebrow { color: var(--accent); }
+  .mm-node.mm-root h3 { font-size: 13.5px; margin: 2px 0 5px; line-height: 1.25; }
+  .mm-node p { font-size: 10.5px; color: var(--text-secondary); margin: 0 0 6px; line-height: 1.45; }
+  .mm-node.mm-layer { width: 226px; }
+  .mm-node .mm-eyebrow { font-size: 9px; text-transform: uppercase; letter-spacing: .08em; color: var(--text-muted); }
+  .mm-node .mm-metric { font-size: 10px; color: var(--text-muted); }
+  .mm-node .mm-metric b { color: var(--text-primary); font-weight: 600; }
+  .mm-cluster { width: 296px; border-radius: var(--radius-md); padding: 14px 16px 14px; background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--dcolor); transition: opacity .15s, transform .15s; }
+  .mm-cluster:hover { transform: translateY(-2px); }
+  .mm-cluster.mm-dim { opacity: .35; }
+  .mm-cluster.mm-pinned { box-shadow: 0 0 0 1px var(--dcolor); }
+  .mm-cluster-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 3px; appearance: none; width: 100%; background: none; border: none; padding: 0; cursor: pointer; font: inherit; color: inherit; text-align: left; }
+  .mm-cluster-head .mm-duty-id { display: inline-flex; align-items: center; gap: 5px; font-size: 9.5px; color: var(--dcolor); font-weight: 700; letter-spacing: .03em; }
+  .mm-cluster-head .mm-count { font-size: 9.5px; color: var(--text-muted); margin-left: auto; margin-right: 6px; }
+  .mm-chevron { font-size: 11px; color: var(--text-muted); transition: transform .2s ease; }
+  .mm-cluster.mm-pinned .mm-chevron { transform: rotate(180deg); color: var(--dcolor); }
+  .mm-cluster h3 { font-size: 12.5px; margin: 0 0 3px; line-height: 1.25; }
+  .mm-cluster .mm-why { font-size: 10px; color: var(--text-secondary); margin: 0 0 8px; line-height: 1.4; }
+  .mm-detail { font-size: 10.5px; color: var(--text-secondary); line-height: 1.55; background: color-mix(in srgb, var(--dcolor) 8%, transparent); border-radius: 6px; padding: 9px 10px; margin: 0 0 10px; }
+  .mm-detail em { color: var(--text-primary); font-style: normal; font-weight: 600; }
+  .mm-tools { display: flex; flex-direction: column; gap: 4px; }
+  .mm-tool { position: relative; display: flex; align-items: baseline; gap: 6px; width: 100%; appearance: none; border: none; font: inherit; text-align: left; font-size: 10.5px; color: var(--text-primary); padding: 4px 7px; border-radius: 5px; background: color-mix(in srgb, var(--dcolor) 9%, transparent); cursor: pointer; transition: background .15s; }
+  .mm-tool:hover, .mm-tool:focus-visible { background: color-mix(in srgb, var(--dcolor) 22%, transparent); }
+  .mm-tool-icon { font-size: 11px; color: var(--dcolor); flex-shrink: 0; }
+  .mm-tool .mm-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--dcolor); flex-shrink: 0; }
+  .mm-tool .mm-name { flex: 1; line-height: 1.25; }
+  .mm-tool .mm-flag { font-size: 8.5px; color: var(--text-muted); }
+  .mm-tool[data-why]:hover::after, .mm-tool[data-why]:focus-visible::after {
+    content: attr(data-why); position: absolute; left: 0; top: 100%; margin-top: 6px; z-index: 30;
+    width: 230px; padding: 8px 10px; border-radius: 8px; background: var(--surface-2, var(--surface));
+    border: 1px solid var(--border); color: var(--text-secondary); font-size: 10px; line-height: 1.45;
+    box-shadow: var(--shadow-md); pointer-events: none; white-space: normal;
+  }
+  .mm-node.mm-terminal { width: 248px; background: linear-gradient(160deg, color-mix(in srgb, var(--accent) 14%, var(--surface)), var(--surface)); border-color: var(--accent); box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent); }
+  @media (prefers-reduced-motion: no-preference) {
+    .mm-node.mm-terminal { animation: mmPulse 3.5s ease-in-out infinite; }
+    @keyframes mmPulse {
+      0%, 100% { box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent); }
+      50% { box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 60%, transparent), 0 0 22px color-mix(in srgb, var(--accent) 22%, transparent); }
+    }
+  }
+  .mm-node.mm-terminal .mm-eyebrow { color: var(--accent); }
+  .mm-node.mm-terminal h3 { font-size: 14px; margin: 2px 0 6px; line-height: 1.25; }
+  .mm-node.mm-terminal .mm-metric-row { display: flex; flex-wrap: wrap; gap: 6px 12px; font-size: 10px; color: var(--text-muted); margin-top: 6px; }
+  .mm-node.mm-terminal .mm-metric-row b { color: var(--accent); font-weight: 650; }
+
   /* ---- layout: sidebar + document ---- */
   .layout { display: flex; gap: 34px; align-items: flex-start; }
   .sidebar {
@@ -497,9 +589,9 @@
   .switcher-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
 
   /* ---- Interview Mode — declutters the default click-path down to the 5 tools the
-     live-demo walkthrough uses. The 24 non-demo sections are actually hidden below
+     live-demo walkthrough uses. The 25 non-demo sections are actually hidden below
      (display:none), not just their nav links -- a bare scroll/#hash into one of them is
-     a no-op while Interview Mode is active. The 29-stop "Take the tour" forces Full
+     a no-op while Interview Mode is active. The 30-stop "Take the tour" forces Full
      Dashboard mode before it starts (see startTour()) specifically so every stop stays
      reachable regardless of which mode the page loaded in. */
   [data-view="interview"] #cmdkOpen,
@@ -625,7 +717,7 @@
         <span class="switcher-label">Density</span>
         <button class="theme-toggle" id="densityToggle" title="Toggle layout density"><i class="ph ph-rows"></i>Comfortable</button>
       </div>
-      <button class="theme-toggle" id="tourStart" title="A guided 29-stop walkthrough covering every tool and reference tab on the dashboard, in sidebar order"><i class="ph ph-compass"></i>Take the tour</button>
+      <button class="theme-toggle" id="tourStart" title="A guided 30-stop walkthrough covering every tool and reference tab on the dashboard, in sidebar order"><i class="ph ph-compass"></i>Take the tour</button>
       <button class="cmdk-open" id="cmdkOpen"><i class="ph ph-magnifying-glass"></i>Search<kbd>&#8984;K</kbd></button>
       <button class="theme-toggle" id="themeToggle"><i class="ph ph-moon-stars"></i>Toggle theme</button>
       <button class="theme-toggle" id="modeToggle" title="Toggle interview-ready view (hides search, switchers, and non-demo tools)"><i class="ph ph-presentation-chart"></i>Full Dashboard</button>
@@ -639,6 +731,7 @@
         <a href="#overview" data-tab="overview" data-demo aria-current="true"><span class="idx">01</span><span>Overview</span></a>
         <a href="#architecture" data-tab="architecture"><span class="idx">02</span><span>Architecture</span></a>
         <a href="#dbt" data-tab="dbt"><span class="idx">03</span><span>Data Pipeline</span></a>
+        <a href="#mindmap" data-tab="mindmap"><span class="idx">30</span><span>System Map</span></a>
       </div>
       <div class="nav-group">
         <div class="nav-group-label">Close &amp; Reporting</div>
@@ -701,6 +794,10 @@
       <section class="section" id="section-dbt" aria-labelledby="heading-dbt">
         <div class="section-title" data-tab="dbt"><span class="section-num">03</span><span class="section-dot"></span><h1 id="heading-dbt">Data Pipeline</h1></div>
         <div id="panel-dbt"></div>
+      </section>
+      <section class="section" id="section-mindmap" aria-labelledby="heading-mindmap">
+        <div class="section-title" data-tab="mindmap"><span class="section-num">30</span><span class="section-dot"></span><h1 id="heading-mindmap">System Map</h1></div>
+        <div id="panel-mindmap"></div>
       </section>
       <section class="section" id="section-narrator" aria-labelledby="heading-narrator">
         <div class="section-title" data-tab="narrator"><span class="section-num">04</span><span class="section-dot"></span><h1 id="heading-narrator">Variance Narrator</h1></div>
@@ -1804,7 +1901,7 @@ function wireTooltip(el, htmlFn) {
 function computeToolStatus() {
   const d = DATA, f = (b) => b ? "flag" : "clean";
   return {
-    overview: "na", architecture: "na",
+    overview: "na", architecture: "na", mindmap: "na",
     dbt: f(d.dbt.dbtTestsPassed !== d.dbt.dbtTestsTotal),
     narrator: f(d.narrator.exceptions.length > 0),
     recon: f(!d.recon.passed),
@@ -1876,7 +1973,7 @@ function computeFindings() {
   return out;
 }
 const TOOL_ICONS = {
-  overview: "squares-four", architecture: "share-network", dbt: "database",
+  overview: "squares-four", architecture: "share-network", dbt: "database", mindmap: "tree-structure",
   narrator: "chat-text", recon: "git-diff", costroll: "chart-bar",
   margin: "trend-down", infra: "gauge", ap: "receipt", costsim: "pulse",
   yieldmix: "stack", energyvar: "lightning", fsma: "shield-check", opsmonitor: "chart-line",
@@ -4155,6 +4252,345 @@ function renderDbtPipeline() {
   `;
 }
 
+/* ---------- System Map (mind map) ----------
+   MAINTENANCE: to add a 25th tool, append one { name, tab, why, flag } object to the matching
+   duty's `tools` array in MINDMAP_DATA.clusters below (search "ADD A NEW TOOL HERE"). `tab` must
+   be a real VALID_TABS slug (that's what makes the tool chip clickable-to-navigate) and `why`
+   should be a short, real, grounded reason -- not filler. Duty tags are transcribed from this
+   repo's own TWIN_CITY_MAPPING.md "## `tool/` → Duty #N" headers -- keep them in sync with that
+   file, don't invent a new taxonomy here. Every stat below is a live-verified number (24 tools,
+   33 KPI thresholds, 11 flagging_engine checks, 34 dbt raw seeds, 638 pytest cases, 29 non-
+   mindmap dashboard sections), not copied from any other doc's own count strings (several of
+   which had drifted stale independently of each other). Duty colors reuse this dashboard's own
+   --series-N tokens, not a new palette; tool-chip icons reuse TOOL_ICONS (zero new icon data).
+   Connector lines are computed from real DOM rects in mmMeasureAndConnect(), never hand-placed
+   -- resize-safe by construction. Click a duty header to read why it exists (the JD language
+   behind it); click any tool/layer node to jump straight to that tool's own real section. */
+const MINDMAP_DATA = {
+  root: {
+    eyebrow: "Source", title: "Twin City Foods — Director of Accounting",
+    body: "Real job posting, captured 2026-07-14 (Stanwood/Pasco, WA). Every tool's jd_duty tag cites a specific Essential Duty from this text by name.",
+  },
+  discovery: {
+    eyebrow: "Discovery", title: "infra_maturity_assessor", tab: "infra",
+    body: "Not a data tool — the day-zero methodology for scoring what a real legacy system (Adage ERP + Planful) actually looks like before any tool below can be pointed at it.",
+    metric: "Weights <b>Systems, Data &amp; Automation</b> 5× — the JD's own highest-weighted domain.",
+  },
+  dataFoundation: [
+    { eyebrow: "Extract-Load", title: "airbyte_pipeline", tab: "dbt", body: "Config scaffolding (real Terraform against Airbyte's current API), not a running deployment.", metric: "4 mechanical streams + a 2nd CPM source" },
+    { eyebrow: "Transform", title: "dbt_pipeline", tab: "dbt", body: "Raw messy exports → tested staging models → mart models shaped exactly like each tool's real input.", metric: "<b>34</b> raw seeds · <b>182/182</b> dbt tests" },
+  ],
+  sharedSpine: [
+    { eyebrow: "Parameters", title: "shared/kpi_registry.py", tab: "architecture", body: "One source of truth for every materiality threshold, tolerance, and band — each tagged to the JD duty it maps to.", metric: "<b>33</b> thresholds · feeds 18 of 24 tools" },
+    { eyebrow: "Logic", title: "shared/flagging_engine.py", tab: "architecture", body: "Generic statistical/structural checks shared instead of copy-pasted per tool.", metric: "<b>11</b> checks · feeds 20 of 24 tools" },
+  ],
+  // ADD A NEW TOOL HERE — append to the matching duty's `tools` array: { name, tab, why, flag }.
+  clusters: [
+    { id: "Duty #1", color: "var(--series-2)", icon: "calculator", title: "Financial Close & Reporting",
+      why: "Own the close, GL/CoA integrity, GAAP/FASB/lender-covenant compliance.",
+      detail: "The JD says: <em>\"own monthly/quarterly/annual close; variance insight to CFO; GL/CoA integrity; GAAP/FASB/lender-covenant compliance.\"</em> These two tools cover the AI-guardrailed commentary layer and the literal ASC 330 compliance check — the two pieces of that language no prior tool touched.",
+      tools: [
+        { name: "Variance Narrator", tab: "narrator", flag: "AI-guardrailed", why: "AI drafts the commentary; code always computes and sign-checks the number first." },
+        { name: "GAAP Cost Compliance Checker", tab: "gaapcompliance", flag: "ASC 330, file-based", why: "ASC 330-10-30-3 abnormal-cost expensing + ASC 330-10-35 lower-of-cost-or-NRV, literally." },
+      ] },
+    { id: "Duty #2", color: "var(--series-3)", icon: "bank", title: "Banking, Cash & Borrowing Base",
+      why: "Lender relationship, weekly Borrowing Base Certificate, AP payment runs.",
+      detail: "The JD says: <em>\"lender relationship, weekly Borrowing Base Certificate, 13-week cash flow, AP payment runs + automation.\"</em> These two tools answer the two most checkable pieces: which inventory can actually back an advance, and whether payment-run timing holds.",
+      tools: [
+        { name: "BBC Inventory Eligibility Checker", tab: "bbcinv", flag: "", why: "Which inventory can back a borrowing-base advance — PACA trust and consignment carve-outs included." },
+        { name: "AP Disbursement Analyzer", tab: "apdisbursement", flag: "", why: "Payment-run timing against real due dates, not just whether the invoice eventually got paid." },
+      ] },
+    { id: "Duty #3", color: "var(--series-7)", icon: "factory", title: "Cost Accounting & Manufacturing Finance",
+      why: "Standard-cost policy, overhead allocation, seasonal absorption, variance review, inventory valuation.",
+      detail: "The JD says: <em>\"standard-cost policy, overhead allocation, seasonal absorption; review manufacturing variance...; inventory valuation, physical/cycle counts.\"</em> The largest cluster in the repo — eight tools, each a genuinely different axis of that one sentence.",
+      tools: [
+        { name: "Cost-Roll Validator", tab: "costroll", flag: "seasonal + tiered", why: "Standard cost vs. PO history, with a seasonal mode for a business that isn't flat year-round." },
+        { name: "Cost-Roll Simulator", tab: "costsim", flag: "Monte Carlo", why: "Same question, Monte Carlo — how much does the validator's single point estimate actually vary?" },
+        { name: "Yield/Mix Analyzer", tab: "yieldmix", flag: "", why: "Splits a cost-roll miss into 'used more material' vs. 'made a different mix' — different root causes." },
+        { name: "Energy Variance Analyzer", tab: "energyvar", flag: "", why: "Rate variance (paid more per kWh) vs. efficiency variance (used more kWh) — refrigeration's the plant's biggest utility line." },
+        { name: "Labor Efficiency Analyzer", tab: "laboreff", flag: "TDABC", why: "Time-driven ABC — flags a labor standard nobody's re-verified in too long, not just a variance." },
+        { name: "Time-Phased P&amp;L Analyzer", tab: "timephasedpnl", flag: "", why: "Plan vs. Actual vs. Forecast, period by period — not just a single-point cost roll." },
+        { name: "Cycle Count Reconciler", tab: "cyclecount", flag: "", why: "Physical count vs. book quantity — the one Duty #3 axis none of the other seven cost tools touch." },
+        { name: "Carbon-Adjusted Throughput Analyzer", tab: "carbonthroughput", flag: "research pilot", why: "Bounded pilot: does $-throughput priority at the bottleneck diverge from carbon-efficiency priority?" },
+      ] },
+    { id: "Duty #4", color: "var(--series-6)", icon: "truck", title: "Other-Selling P&amp;L",
+      why: "Category P&amp;L for outbound freight, storage, brokerage, discounts — drive toward break-even.",
+      detail: "The JD says: <em>\"build category P&amp;L, trend/driver analysis... drive freight/storage/brokerage/discounts toward break-even\"</em> — historically a loss. One tool, one job: find where it's unbilled vs. underpriced.",
+      tools: [
+        { name: "Margin-Leak Analyzer", tab: "margin", flag: "", why: "Unbilled vs. underpriced ancillary cost — freight, storage, brokerage, discounts stuck below break-even." },
+      ] },
+    { id: "Duty #5", color: "var(--series-5)", icon: "shield-check", title: "Audit, Tax Interface &amp; Compliance",
+      why: "External-audit coordination, PBC calendar, internal-controls documentation.",
+      detail: "The JD says: <em>\"primary external-audit coordinator... PBC calendar, audit prep...; internal-controls docs.\"</em> Two tools split the calendar (is the audit request list on schedule?) from the document itself (is each controlled artifact's version history trustworthy?).",
+      tools: [
+        { name: "PBC Audit Tracker", tab: "pbcaudit", flag: "first tool on this duty", why: "The external-audit request list's own status and deadline risk." },
+        { name: "Document Version-Control Auditor", tab: "docversioncontrol", flag: "controls-doc integrity", why: "Is the document itself trustworthy — version history intact, no silent overwrite?" },
+      ] },
+    { id: "Duty #8", color: "var(--series-8)", icon: "flow-arrow", title: "Systems, Data Integrity &amp; Automation",
+      why: "Data-flow integrity across ERP+CPM, SQL, AP/AR automation, AI with human oversight. JD's highest-weighted domain (5×).",
+      detail: "The JD's own highest-weighted domain, 5× any other. <em>\"Data-flow integrity across Adage ERP + Planful; SQL queries; sponsor AP/AR automation; apply AI/automation with human oversight.\"</em> Seven tools here — none literally named in the JD text, all closest-fit applications of that one sentence.",
+      tools: [
+        { name: "ERP↔CPM Reconciliation Checker", tab: "recon", flag: "centerpiece", why: "The centerpiece: does the GL actually agree with the planning system it's supposed to mirror?" },
+        { name: "FSMA Traceability Checker", tab: "fsma", flag: "closest-fit", why: "Closest-fit, not literally named — lot-level CTE completeness food-safety compliance requires." },
+        { name: "Operations Monitor", tab: "opsmonitor", flag: "closest-fit", why: "Time-series flatline/trend-break detection — a sensor for 'something's wrong' before it's a variance." },
+        { name: "AP 3-Way Match", tab: "ap", flag: "closest-fit", why: "PO vs. receipt vs. invoice — the textbook AP control, applied for real." },
+        { name: "Vendor Performance Scorecard", tab: "vendorscorecard", flag: "closest-fit", why: "On-time-delivery and price-variance history, estimated through to its internal-process cost impact." },
+        { name: "AI/Automation Cost Governor", tab: "aigovernance", flag: "literal JD quote", why: "The JD's own 'apply AI and automation... without sacrificing control' line, made into a showback/chargeback gate." },
+        { name: "Data Provenance Auditor", tab: "dataprovenance", flag: "no-fabrication, made runnable", why: "Checks the repo's own no-fabrication promise mechanically — does every dashboard number trace to a real row?" },
+      ] },
+  ],
+  synthesis: [
+    { eyebrow: "Rollup", title: "gl_variance_tie_out", tab: "glvariance", body: "Hand-curated snapshot of every other variance tool's own $ output, summed by GL account and checked against an asserted GL balance.", metric: "Duty #8 · extends reconciliation_checker" },
+    { eyebrow: "Synthesis", title: "cross_tool_insight_synthesizer", tab: "crosstool", body: "Reads a findings feed drawn from the other tools' already-verified results; an AI call produces one prioritized, guardrailed action list.", metric: "Duty #8 · guardrail sandbox included" },
+  ],
+  terminal: {
+    eyebrow: "How it ends", title: "This Dashboard", tab: "overview",
+    body: "Every tool's real, deterministic CLI output — transcribed, not simulated — converges here: one verdict banner, one findings feed worst-first, a guided tour, an Interview Mode for a 5-tool live demo.",
+    metrics: [["30", "sections"], ["638/638", "pytest"], ["182/182", "dbt tests"]],
+  },
+};
+let mmPinned = null;
+const MINDMAP_STATS = [["24", "tools"], ["9", "essential duties"], ["33", "KPI thresholds"], ["638", "pytest cases"]];
+
+function mmEscAttr(s) {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+function mmEl(tag, cls, html) {
+  const e = document.createElement(tag);
+  e.className = cls;
+  if (html != null) e.innerHTML = html;
+  return e;
+}
+// A node becomes a real <button> (keyboard-focusable, wired by this file's existing global
+// wireGotoButtons()) whenever it names a real tab; otherwise it stays a plain div. Mirrors this
+// file's own button.arch-box convention (appearance:none, text-align:left, width:100%, in CSS).
+function mmNode(d, extraClass) {
+  const tag = d.tab ? "button" : "div";
+  const n = mmEl(tag, "mm-node mm-layer" + (extraClass ? " " + extraClass : "") + (d.tab ? " mm-goto" : ""));
+  if (tag === "button") { n.type = "button"; n.dataset.goto = d.tab; }
+  n.innerHTML = `<div class="mm-eyebrow">${d.eyebrow}</div><h3>${d.title}</h3><p>${d.body}</p>${d.metric ? `<div class="mm-metric">${d.metric}</div>` : ""}${d.tab ? `<div class="mm-goto-hint">Open this section <i class="ph ph-arrow-right"></i></div>` : ""}`;
+  return n;
+}
+function mmClusterNode(c) {
+  const n = mmEl("div", "mm-cluster");
+  n.style.setProperty("--dcolor", c.color);
+  n.dataset.duty = c.id;
+  const tools = c.tools.map(t => {
+    const iconName = TOOL_ICONS[t.tab];
+    const icon = iconName ? `<i class="ph ph-${iconName} mm-tool-icon"></i>` : "";
+    const why = mmEscAttr(t.why);
+    return `<button type="button" class="mm-tool" data-goto="${t.tab}" data-why="${why}" aria-label="${mmEscAttr(t.name)} — ${why} Opens this tool's section.">${icon}<span class="mm-dot"></span><span class="mm-name">${t.name}</span>${t.flag ? `<span class="mm-flag">${t.flag}</span>` : ""}</button>`;
+  }).join("");
+  n.innerHTML = `
+    <button type="button" class="mm-cluster-head" aria-expanded="false">
+      <span class="mm-duty-id"><i class="ph ph-${c.icon}"></i>${c.id}</span>
+      <span class="mm-count">${c.tools.length} tool${c.tools.length === 1 ? "" : "s"}</span>
+      <i class="ph ph-caret-down mm-chevron"></i>
+    </button>
+    <h3>${c.title}</h3>
+    <p class="mm-why">${c.why}</p>
+    <div class="mm-detail" hidden>${c.detail}</div>
+    <div class="mm-tools">${tools}</div>`;
+  return n;
+}
+
+function renderMindMap() {
+  const panel = document.getElementById("panel-mindmap");
+  panel.innerHTML = `
+    <div class="mm-stats" id="mmStats"></div>
+    <div class="mm-legend" id="mmLegend"></div>
+    <div class="mm-canvas-wrap"><div class="mm-canvas" id="mmCanvas"><svg class="mm-svg" id="mmSvg"></svg><div class="mm-columns" id="mmColumns"></div></div></div>
+  `;
+  document.getElementById("mmStats").innerHTML = MINDMAP_STATS.map(([n, l]) => `<div class="mm-stat"><span class="n">${n}</span><span class="l">${l}</span></div>`).join("");
+  document.getElementById("mmLegend").innerHTML = `
+    <div class="mm-legend-keys">${MINDMAP_DATA.clusters.map(c => `<span class="mm-legend-key"><span class="mm-legend-dot" style="background:${c.color}"></span>${c.id}</span>`).join("")}</div>
+    <div class="mm-legend-hint">Hover a duty to trace its connections · click a duty name to read why it's here · click any tool to jump straight to it</div>
+  `;
+
+  const columns = document.getElementById("mmColumns");
+  const c1 = mmEl("div", "mm-col");
+  c1.dataset.mmCol = "root";
+  const root = mmEl("div", "mm-node mm-root");
+  root.innerHTML = `<div class="mm-eyebrow">${MINDMAP_DATA.root.eyebrow}</div><h3>${MINDMAP_DATA.root.title}</h3><p>${MINDMAP_DATA.root.body}</p>`;
+  c1.appendChild(root);
+  columns.appendChild(c1);
+
+  const c2 = mmEl("div", "mm-col");
+  c2.dataset.mmCol = "discovery";
+  c2.appendChild(mmEl("div", "mm-col-label", "Discovery"));
+  c2.appendChild(mmNode(MINDMAP_DATA.discovery));
+  columns.appendChild(c2);
+
+  const c3 = mmEl("div", "mm-col");
+  c3.dataset.mmCol = "dataFoundation";
+  c3.appendChild(mmEl("div", "mm-col-label", "Data Foundation"));
+  MINDMAP_DATA.dataFoundation.forEach(d => c3.appendChild(mmNode(d)));
+  columns.appendChild(c3);
+
+  const c4 = mmEl("div", "mm-col");
+  c4.dataset.mmCol = "sharedSpine";
+  c4.appendChild(mmEl("div", "mm-col-label", "Shared Spine"));
+  MINDMAP_DATA.sharedSpine.forEach(d => c4.appendChild(mmNode(d)));
+  columns.appendChild(c4);
+
+  const c5 = mmEl("div", "mm-col");
+  c5.dataset.mmCol = "clusters";
+  c5.style.gap = "12px";
+  c5.appendChild(mmEl("div", "mm-col-label", "22 Tools, by JD Essential Duty"));
+  MINDMAP_DATA.clusters.forEach(c => c5.appendChild(mmClusterNode(c)));
+  columns.appendChild(c5);
+
+  const c6 = mmEl("div", "mm-col");
+  c6.dataset.mmCol = "synthesis";
+  c6.appendChild(mmEl("div", "mm-col-label", "Synthesis"));
+  MINDMAP_DATA.synthesis.forEach(d => c6.appendChild(mmNode(d)));
+  columns.appendChild(c6);
+
+  const c7 = mmEl("div", "mm-col");
+  c7.dataset.mmCol = "terminal";
+  c7.appendChild(mmEl("div", "mm-col-label", "Output"));
+  c7.appendChild(mmNode(MINDMAP_DATA.terminal, "mm-terminal"));
+  columns.appendChild(c7);
+
+  mmMeasureAndConnect();
+  mmWireInteractions();
+}
+
+function mmMeasureAndConnect() {
+  const canvas = document.getElementById("mmCanvas");
+  if (!canvas) return;
+  const svg = document.getElementById("mmSvg");
+  svg.innerHTML = "";
+  const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const canvasRect = canvas.getBoundingClientRect();
+  function rectOf(node) {
+    const r = node.getBoundingClientRect();
+    return { left: r.left - canvasRect.left, right: r.right - canvasRect.left, top: r.top - canvasRect.top, bottom: r.bottom - canvasRect.top, cy: r.top - canvasRect.top + r.height / 2 };
+  }
+  const paths = [];
+  function curve(fromNode, toNode, color, group) {
+    const a = rectOf(fromNode), b = rectOf(toNode);
+    const x1 = a.right, y1 = a.cy, x2 = b.left, y2 = b.cy, mx = (x1 + x2) / 2;
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", `M ${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}`);
+    path.setAttribute("stroke", color);
+    if (group) path.dataset.group = group;
+    svg.appendChild(path);
+    paths.push(path);
+  }
+  const rootNode = document.querySelector("#panel-mindmap .mm-node.mm-root");
+  const discNode = document.querySelector('#panel-mindmap .mm-col[data-mm-col="discovery"] .mm-node');
+  const dataNodes = document.querySelectorAll('#panel-mindmap .mm-col[data-mm-col="dataFoundation"] .mm-node');
+  const spineNodes = document.querySelectorAll('#panel-mindmap .mm-col[data-mm-col="sharedSpine"] .mm-node');
+  const clusterNodes = document.querySelectorAll("#panel-mindmap .mm-cluster");
+  const synthNodes = document.querySelectorAll('#panel-mindmap .mm-col[data-mm-col="synthesis"] .mm-node');
+  const termNode = document.querySelector("#panel-mindmap .mm-node.mm-terminal");
+
+  curve(rootNode, discNode, "var(--text-muted)");
+  dataNodes.forEach(d => curve(discNode, d, "var(--text-muted)"));
+  dataNodes.forEach(d => spineNodes.forEach(s => curve(d, s, "var(--text-muted)")));
+  clusterNodes.forEach(cl => spineNodes.forEach(s => curve(s, cl, "var(--text-muted)", cl.dataset.duty)));
+  clusterNodes.forEach(cl => {
+    const color = getComputedStyle(cl).getPropertyValue("--dcolor").trim() || "var(--accent)";
+    curve(rootNode, cl, color, cl.dataset.duty);
+  });
+  clusterNodes.forEach(cl => {
+    const color = getComputedStyle(cl).getPropertyValue("--dcolor").trim() || "var(--accent)";
+    synthNodes.forEach(s => curve(cl, s, color, cl.dataset.duty));
+  });
+  clusterNodes.forEach(cl => {
+    const color = getComputedStyle(cl).getPropertyValue("--dcolor").trim() || "var(--accent)";
+    curve(cl, termNode, color, cl.dataset.duty);
+  });
+  synthNodes.forEach(s => curve(s, termNode, "var(--accent)"));
+
+  // Draw-in: each path animates from hidden to fully drawn. Skipped entirely under reduced
+  // motion -- paths just render complete, no animation at all, per this file's own established
+  // no-preference-gated motion convention (see the CSS @media blocks around line 561/607).
+  if (reduceMotion) {
+    paths.forEach(p => p.style.strokeDashoffset = "0");
+  } else {
+    paths.forEach((p, i) => {
+      const len = p.getTotalLength();
+      p.style.strokeDasharray = String(len);
+      p.style.strokeDashoffset = String(len);
+      p.getBoundingClientRect(); // force layout so the dashoffset transition below has a start state
+      p.style.transitionDelay = (i * 6) + "ms";
+      requestAnimationFrame(() => { p.style.strokeDashoffset = "0"; });
+    });
+  }
+}
+// Debounced: an unthrottled resize handler would tear down + replay the full staggered
+// draw-in animation on every single tick of a drag-resize, not just once it settles.
+let mmResizeTimer = null;
+window.addEventListener("resize", () => {
+  clearTimeout(mmResizeTimer);
+  mmResizeTimer = setTimeout(() => {
+    if (document.getElementById("panel-mindmap").innerHTML) mmMeasureAndConnect();
+  }, 200);
+});
+
+/* Click/hover/keydown wiring for the mind map -- kept OUT of mmMeasureAndConnect() and called
+   exactly once (see the single mmWireInteractions() call site) on purpose. mmMeasureAndConnect()
+   runs again on every window resize to reposition the SVG connectors; the cluster/head DOM nodes
+   it measures are never removed or recreated on resize, only re-measured, so binding listeners
+   there too would stack a fresh set on the SAME elements every single resize without ever
+   removing the old ones -- stress-test finding: after exactly one resize, a single click on a
+   cluster header fired two stacked click handlers back-to-back and canceled itself out (pin,
+   then immediately un-pin), making the whole click-to-pin feature appear silently broken. */
+function mmWireInteractions() {
+  const svg = document.getElementById("mmSvg");
+  const clusterNodes = document.querySelectorAll("#panel-mindmap .mm-cluster");
+
+  function highlight(cl) {
+    const duty = cl.dataset.duty;
+    svg.querySelectorAll("path").forEach(p => p.classList.add(p.dataset.group === duty ? "mm-lit" : "mm-dim"));
+    clusterNodes.forEach(other => { if (other !== cl) other.classList.add("mm-dim"); });
+  }
+  function clearHighlight() {
+    svg.querySelectorAll("path").forEach(p => p.classList.remove("mm-lit", "mm-dim"));
+    clusterNodes.forEach(other => other.classList.remove("mm-dim"));
+  }
+
+  clusterNodes.forEach(cl => {
+    cl.addEventListener("mouseenter", () => { if (!mmPinned || mmPinned === cl) highlight(cl); });
+    cl.addEventListener("mouseleave", () => { if (!mmPinned) clearHighlight(); });
+
+    const head = cl.querySelector(".mm-cluster-head");
+    head.addEventListener("click", () => {
+      const detail = cl.querySelector(".mm-detail");
+      const wasPinned = mmPinned === cl;
+      if (mmPinned && mmPinned !== cl) {
+        mmPinned.classList.remove("mm-pinned");
+        mmPinned.querySelector(".mm-detail").hidden = true;
+        mmPinned.querySelector(".mm-cluster-head").setAttribute("aria-expanded", "false");
+      }
+      if (wasPinned) {
+        mmPinned = null;
+        cl.classList.remove("mm-pinned");
+        detail.hidden = true;
+        head.setAttribute("aria-expanded", "false");
+        clearHighlight();
+      } else {
+        mmPinned = cl;
+        cl.classList.add("mm-pinned");
+        detail.hidden = false;
+        head.setAttribute("aria-expanded", "true");
+        highlight(cl);
+      }
+    });
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && mmPinned) {
+      mmPinned.classList.remove("mm-pinned");
+      mmPinned.querySelector(".mm-detail").hidden = true;
+      mmPinned.querySelector(".mm-cluster-head").setAttribute("aria-expanded", "false");
+      mmPinned = null;
+      clearHighlight();
+    }
+  });
+}
+
 function renderArchitecture() {
   // Fixed layout, not data-driven — this is a structural diagram of how the 6 components
   // wire together, not a chart over DATA. Column order matches the nav tab order above.
@@ -4318,9 +4754,9 @@ function renderArchitecture() {
   resetBtn.addEventListener("click", clearTrace);
 }
 
-/* ---------- Navigation (scroll-based — all 29 sections render in one continuous document
+/* ---------- Navigation (scroll-based — all 30 sections render in one continuous document
    now, replacing the old show-one-panel-at-a-time tab model) ---------- */
-const VALID_TABS = ["overview", "architecture", "dbt", "narrator", "recon", "costroll", "margin", "infra", "ap", "costsim", "yieldmix", "energyvar", "fsma", "opsmonitor", "laboreff", "bbcinv", "timephasedpnl", "vendorscorecard", "cyclecount", "apdisbursement", "pbcaudit", "glvariance", "carbonthroughput", "aigovernance", "gaapcompliance", "dataprovenance", "docversioncontrol", "crosstool", "glossary"];
+const VALID_TABS = ["overview", "architecture", "dbt", "mindmap", "narrator", "recon", "costroll", "margin", "infra", "ap", "costsim", "yieldmix", "energyvar", "fsma", "opsmonitor", "laboreff", "bbcinv", "timephasedpnl", "vendorscorecard", "cyclecount", "apdisbursement", "pbcaudit", "glvariance", "carbonthroughput", "aigovernance", "gaapcompliance", "dataprovenance", "docversioncontrol", "crosstool", "glossary"];
 
 function setActiveSidebarLink(name) {
   // Interview Mode hides every non-demo sidebar link via CSS; don't silently drop the
@@ -4498,6 +4934,17 @@ function applyMode(name) {
       if (cmdkInput) cmdkInput.setAttribute("aria-expanded", "false");
     }
   }
+  // Interview Mode hides #section-mindmap via display:none, which zeroes out
+  // getBoundingClientRect() for anything mmMeasureAndConnect() measured while hidden
+  // (initial load in a persisted Interview Mode, or a resize while hidden) — every SVG
+  // connector collapses to a degenerate zero-length path and stays broken forever, since
+  // nothing else re-measures on its own. Re-measure whenever the section becomes visible
+  // again; guard on the panel already having content so this is a no-op before
+  // renderMindMap()'s own init call has run.
+  if (name === "Full") {
+    const mmPanel = document.getElementById("panel-mindmap");
+    if (mmPanel && mmPanel.innerHTML) mmMeasureAndConnect();
+  }
 }
 // Mirror each demo sidebar link's marker onto its matching section, so Interview Mode's
 // CSS can hide the actual content (not just the nav link) via the same attribute --
@@ -4563,19 +5010,20 @@ function buildFeed() {
 }
 
 /* ---------- Guided tour ----------
-   All 24 tool sections, in sidebar order (plus the non-tool reference stops -- 29 total).
+   All 24 tool sections, in sidebar order (plus the non-tool reference stops -- 30 total).
    Every caption traces to one of three sources, nothing invented: 4 stops
    (costroll/margin/vendorscorecard/bbcinv) keep their original, already-tested
    INTERVIEW_TALKING_POINTS.md-sourced captions unchanged; 5 more
    (timephasedpnl/yieldmix/energyvar/laboreff/infra) paraphrase that same file's other
    sections; the remaining 15 adapt each tool's own already-shipped `.desc` copy. Reuses
    scrollToSection (the same nav function the sidebar/cmdk use) rather than a separate scroll
-   mechanism. startTour() force-exits Interview Mode first (see below) since 24 of these 29
+   mechanism. startTour() force-exits Interview Mode first (see below) since 25 of these 30
    stops are non-demo sections Interview Mode hides entirely. */
 const TOUR_STEPS = [
-  { tab: "overview", title: "The whole engine, one screen", caption: "This walkthrough covers all 29 sections in the sidebar, in order — every tool's status rolls up into one verdict banner right here, alongside a findings feed of every flagged item across every tool, worst first." },
+  { tab: "overview", title: "The whole engine, one screen", caption: "This walkthrough covers all 30 sections in the sidebar, in order — every tool's status rolls up into one verdict banner right here, alongside a findings feed of every flagged item across every tool, worst first." },
   { tab: "architecture", title: "How the pipeline is wired", caption: "Data sources feed dbt_pipeline's staging/mart models, which feed 18 of the 24 tools — 18 sharing one KPI registry, 20 also sharing one flagging engine. Click any source box or shared-layer box below to trace its exact data-flow path through the diagram." },
   { tab: "dbt", title: "From hand-shaped files to a real pipeline", caption: "Right now the tools each read a hand-shaped sample file directly. This section shows what a real raw-export → tested-transformation → analysis pipeline in front of them looks like: 34 raw seeds → dbt staging (a malformed value becomes NULL and gets flagged, never crashes the load) → mart models shaped exactly like each tool's real input." },
+  { tab: "mindmap", title: "The whole engine, one map", caption: "Every one of the 24 tools traced back to the real job description that grounds it — discovery → data pipeline → the 24 tools grouped by JD Essential Duty → shared infra → synthesis → this dashboard. Hover a duty cluster to trace its connections." },
   { tab: "narrator", title: "AI commentary, verified before it ships", caption: "The model-drafted narrative here is illustrative only — the numbers underneath are always code-computed, never model output. Direction is independently sign-checked against the real variance and account type, so a model claiming 'favorable' on an actual cost increase gets rejected before it would ever show here." },
   { tab: "recon", title: "ERP meets CPM", caption: "Two synthetic exports — one shaped like an ERP GL extract, one shaped like a CPM export — reconciled against each other to catch real mismatches and timing differences before they become a close problem." },
   { tab: "timephasedpnl", title: "Overhead absorption, the literal formula", caption: "Phases an annual plan into periods, then blends actuals with forecast into one continuous Latest Estimate. One line item is a literal overhead-absorption volume variance — (latest-estimate volume − phased budgeted volume) × budgeted fixed overhead rate — the textbook formula, not an analogy to it." },
@@ -4656,7 +5104,7 @@ function goToTourStep() {
   tourHighlightTimer = setTimeout(tourHighlightTarget, 350);
 }
 function startTour() {
-  // Interview Mode hides 24 of these 29 stops' sections entirely (display:none) -- scrolling
+  // Interview Mode hides 25 of these 30 stops' sections entirely (display:none) -- scrolling
   // to a hidden section is a silent no-op, so a tour started there would desync (card
   // advances, page/sidebar don't) the moment it hit any non-demo stop. Force Full Dashboard
   // first so every stop is actually reachable; this is a real, persisted mode switch (same
@@ -4808,7 +5256,7 @@ function revealOnScroll() {
   // after a fixed delay isn't a "harmless no-op" here the way it is for a number that's
   // already finished animating: on a normal FOREGROUND load it would force-reveal every
   // card/KPI still below the fold before the reader ever scrolls to it, silently disabling
-  // the progressive reveal-on-scroll motion for most of a 29-section page (confirmed as a
+  // the progressive reveal-on-scroll motion for most of a 30-section page (confirmed as a
   // real regression, not hypothetical, by independent review). Only fire the fallback if
   // the tab is still genuinely hidden at that moment -- the exact failure mode this exists
   // to cover, nothing broader.
@@ -4845,6 +5293,7 @@ function persistLastSection() {
 renderOverview();
 renderArchitecture();
 renderDbtPipeline();
+renderMindMap();
 renderNarrator();
 renderRecon();
 renderCostRoll();
@@ -5003,7 +5452,7 @@ wireKpiRegistry(document.getElementById("kpiRegistryTable"));
 wireKpiRegistryFilters(document.getElementById("kpiRegistryTable"));
 makeSortable(document.getElementById("dbtSeedsTable"));
 
-// Post-render enhancement pass — everything here reads the fully-rendered DOM the 29
+// Post-render enhancement pass — everything here reads the fully-rendered DOM the 30
 // render*() calls above just produced, so it must run after all of them, not interleaved.
 setSectionIcons();
 setNavTicks();
@@ -5012,7 +5461,7 @@ buildCmdk();
 // wireGotoButtons() moved here, after buildFeed(): its own doc-comment already says "run
 // last... covers every [data-goto] regardless of which render function produced it" — but
 // buildFeed()'s feed-row buttons (each carrying data-goto) are created by a POST-render
-// call, not one of the 29 render*() functions above. Wiring before buildFeed() ran left
+// call, not one of the 30 render*() functions above. Wiring before buildFeed() ran left
 // every feed-row a dead click (confirmed empirically: row.click() left location.hash
 // unchanged) — this restores the actual invariant the comment describes.
 wireGotoButtons();
