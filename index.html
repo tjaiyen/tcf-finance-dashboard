@@ -497,9 +497,9 @@
   .switcher-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
 
   /* ---- Interview Mode — declutters the default click-path down to the 5 tools the
-     live-demo walkthrough uses. The 23 non-demo sections are actually hidden below
+     live-demo walkthrough uses. The 24 non-demo sections are actually hidden below
      (display:none), not just their nav links -- a bare scroll/#hash into one of them is
-     a no-op while Interview Mode is active. The 28-stop "Take the tour" forces Full
+     a no-op while Interview Mode is active. The 29-stop "Take the tour" forces Full
      Dashboard mode before it starts (see startTour()) specifically so every stop stays
      reachable regardless of which mode the page loaded in. */
   [data-view="interview"] #cmdkOpen,
@@ -613,7 +613,7 @@
     <div>
       <div class="kicker">Finance Automation Engine</div>
       <h1>Operations Dashboard</h1>
-      <div class="sub">A live read over 23 already-built, stress-tested components + a shared KPI registry &mdash; synthetic sample data throughout, every figure from a real deterministic tool run.</div>
+      <div class="sub">A live read over 24 already-built, stress-tested components + a shared KPI registry &mdash; synthetic sample data throughout, every figure from a real deterministic tool run.</div>
       <div class="nav-hint">New here? Click <strong>Interview Mode</strong> (top right) for a simplified 5-tool view, or explore the sidebar / press <kbd>&#8984;K</kbd> to search any tool or finding.</div>
     </div>
     <div class="top-actions">
@@ -625,7 +625,7 @@
         <span class="switcher-label">Density</span>
         <button class="theme-toggle" id="densityToggle" title="Toggle layout density"><i class="ph ph-rows"></i>Comfortable</button>
       </div>
-      <button class="theme-toggle" id="tourStart" title="A guided 28-stop walkthrough covering every tool and reference tab on the dashboard, in sidebar order"><i class="ph ph-compass"></i>Take the tour</button>
+      <button class="theme-toggle" id="tourStart" title="A guided 29-stop walkthrough covering every tool and reference tab on the dashboard, in sidebar order"><i class="ph ph-compass"></i>Take the tour</button>
       <button class="cmdk-open" id="cmdkOpen"><i class="ph ph-magnifying-glass"></i>Search<kbd>&#8984;K</kbd></button>
       <button class="theme-toggle" id="themeToggle"><i class="ph ph-moon-stars"></i>Toggle theme</button>
       <button class="theme-toggle" id="modeToggle" title="Toggle interview-ready view (hides search, switchers, and non-demo tools)"><i class="ph ph-presentation-chart"></i>Full Dashboard</button>
@@ -673,6 +673,7 @@
         <a href="#pbcaudit" data-tab="pbcaudit"><span class="idx">23</span><span>PBC Audit Tracker</span></a>
         <a href="#aigovernance" data-tab="aigovernance"><span class="idx">26</span><span>AI/Automation Cost Governor</span></a>
         <a href="#dataprovenance" data-tab="dataprovenance"><span class="idx">28</span><span>Data Provenance Auditor</span></a>
+        <a href="#docversioncontrol" data-tab="docversioncontrol"><span class="idx">29</span><span>Document Version Control</span></a>
       </div>
       <div class="nav-group">
         <div class="nav-group-label">Readiness</div>
@@ -792,6 +793,10 @@
       <section class="section" id="section-dataprovenance" aria-labelledby="heading-dataprovenance">
         <div class="section-title" data-tab="dataprovenance"><span class="section-num">28</span><span class="section-dot"></span><h1 id="heading-dataprovenance">Data Provenance Auditor</h1></div>
         <div id="panel-dataprovenance"></div>
+      </section>
+      <section class="section" id="section-docversioncontrol" aria-labelledby="heading-docversioncontrol">
+        <div class="section-title" data-tab="docversioncontrol"><span class="section-num">29</span><span class="section-dot"></span><h1 id="heading-docversioncontrol">Document Version Control</h1></div>
+        <div id="panel-docversioncontrol"></div>
       </section>
       <section class="section" id="section-crosstool" aria-labelledby="heading-crosstool">
         <div class="section-title" data-tab="crosstool"><span class="section-num">19</span><span class="section-dot"></span><h1 id="heading-crosstool">Cross-Tool Insight Synthesizer</h1></div>
@@ -1284,6 +1289,27 @@ const DATA = {
       { sourceTool: "ai_automation_cost_governor", csvRelpath: "ai_automation_cost_governor/sample_data/ai_automation_spend.csv", matchColumn: "use_case", matchValue: "SQL query-generation copilot", claimColumn: "monthly_cost_dollars", claimedValue: "999.00", actualValue: "500.00", flagged: true, reason: "claimed monthly_cost_dollars='999.00' but the real row has '500.00'" },
       { sourceTool: "ai_automation_cost_governor", csvRelpath: "ai_automation_cost_governor/sample_data/ai_automation_spend.csv", matchColumn: "use_case", matchValue: "Nonexistent Use Case", claimColumn: "monthly_cost_dollars", claimedValue: "100.00", actualValue: null, flagged: true, reason: "no row found where use_case='Nonexistent Use Case'" },
       { sourceTool: "nonexistent_tool", csvRelpath: "nonexistent_tool/sample_data/fake.csv", matchColumn: "x", matchValue: "y", claimColumn: "z", claimedValue: "1", actualValue: null, flagged: true, reason: "csv_relpath does not exist -- claim cannot be verified against real data" },
+    ],
+  },
+  documentVersionControl: {
+    // document_version_control_auditor/sample_data/document_versions.csv, run 2026-07-20 --
+    // transcribed verbatim from the real auditor.py CLI output (all 12 rows, not just the
+    // flagged ones the CLI's own summary() prints). Data-confidence note: hand-built,
+    // purpose-made illustrative data -- no real Twin City Foods document-management system
+    // or folder taxonomy exists anywhere in this repo's source research.
+    results: [
+      { docId: "D1", versionNumber: 1, filename: "close_inventory_recon_v1.xlsx", flagged: false, reason: "version-control and naming/folder conventions satisfied" },
+      { docId: "D1", versionNumber: 2, filename: "close_inventory_recon_v2.xlsx", flagged: true, reason: "version_number (2) is not strictly greater than the previous version in timestamp order (3) -- version history is out of order" },
+      { docId: "D1", versionNumber: 3, filename: "close_inventory_recon_v3.xlsx", flagged: false, reason: "version-control and naming/folder conventions satisfied" },
+      { docId: "D2", versionNumber: 1, filename: "wp_ap_confirmations_v1.pdf", flagged: false, reason: "version-control and naming/folder conventions satisfied" },
+      { docId: "D2", versionNumber: 1, filename: "wp_ap_confirmations_v1.pdf", flagged: true, reason: "version_number (1) is not strictly greater than the previous version in timestamp order (1) -- version history is out of order; content_hash differs from the first-seen hash for version 1 -- content changed without a version bump (silent overwrite)" },
+      { docId: "D3", versionNumber: 1, filename: "ctrl_cash_disbursement_v1.docx", flagged: true, reason: "author is blank -- incomplete audit trail" },
+      { docId: "D3", versionNumber: 2, filename: "ctrl_cash_disbursement_v2.docx", flagged: true, reason: "content_hash is blank -- incomplete audit trail" },
+      { docId: "D4", versionNumber: 1, filename: "close_gl_tie_v1.xlsx", flagged: true, reason: "folder_path 'Shared Drive/Misc' does not match the expected folder 'Close/Schedules' for category 'close_schedule'" },
+      { docId: "D5", versionNumber: 1, filename: "AP_Confirmations_Final_v1.pdf", flagged: true, reason: "filename 'AP_Confirmations_Final_v1.pdf' does not match the 'audit_workpaper' naming convention" },
+      { docId: "D6", versionNumber: 1, filename: "whatever.txt", flagged: true, reason: "category 'unknown_category' is not a known document category -- cannot evaluate folder/naming conventions" },
+      { docId: "D7", versionNumber: 1, filename: "close_overhead_alloc_v1.xlsx", flagged: false, reason: "version-control and naming/folder conventions satisfied" },
+      { docId: "D7", versionNumber: 2, filename: "close_overhead_alloc_v2.xlsx", flagged: false, reason: "version-control and naming/folder conventions satisfied" },
     ],
   },
   crossToolSynthesis: {
@@ -1803,6 +1829,7 @@ function computeToolStatus() {
     aigovernance: f(!d.aiGovernance.chargebackEligible || d.aiGovernance.materialityFlagged || d.aiGovernance.lines.some(l => l.oversightFlagged)),
     gaapcompliance: f(d.gaapCompliance.dispositionResults.some(r => r.flagged) || d.gaapCompliance.valuationResults.some(r => r.flagged)),
     dataprovenance: f(d.dataProvenance.results.some(r => r.flagged)),
+    docversioncontrol: f(d.documentVersionControl.results.some(r => r.flagged)),
     crosstool: f(d.crossToolSynthesis.recommendations.some(r => r.urgency === "immediate" || r.urgency === "this_week")),
     glossary: "na",
   };
@@ -1843,6 +1870,7 @@ function computeFindings() {
   d.gaapCompliance.dispositionResults.filter(r => r.flagged).forEach(r => add("gaapcompliance", "GAAP Compliance", "serious", r.period + " " + r.costCategory + ": " + r.reason));
   d.gaapCompliance.valuationResults.filter(r => r.flagged).forEach(r => add("gaapcompliance", "GAAP Compliance", "serious", r.product + ": " + r.reason));
   d.dataProvenance.results.filter(r => r.flagged).forEach(r => add("dataprovenance", "Data Provenance", "warning", r.sourceTool + " (" + r.matchColumn + "=" + r.matchValue + "): " + r.reason));
+  d.documentVersionControl.results.filter(r => r.flagged).forEach(r => add("docversioncontrol", "Document Version Control", "warning", r.docId + " v" + r.versionNumber + " (" + r.filename + "): " + r.reason));
   const URGENCY_SEV = { immediate: "critical", this_week: "serious", this_month: "warning", monitor: "good" };
   d.crossToolSynthesis.recommendations.forEach(r => add("crosstool", "Cross-Tool Synthesis", URGENCY_SEV[r.urgency] || "warning", r.action));
   return out;
@@ -1856,6 +1884,7 @@ const TOOL_ICONS = {
   cyclecount: "list-checks", apdisbursement: "credit-card", pbcaudit: "clipboard-text",
   glvariance: "scales", carbonthroughput: "leaf", aigovernance: "robot",
   gaapcompliance: "seal-check", dataprovenance: "fingerprint",
+  docversioncontrol: "clock-counter-clockwise",
   crosstool: "brain", glossary: "book-open",
 };
 function setSectionIcons() {
@@ -3558,6 +3587,27 @@ function renderDataProvenanceAuditor() {
   `;
 }
 
+/* ---------- Document Version-Control Auditor ---------- */
+function renderDocumentVersionControlAuditor() {
+  const d = DATA.documentVersionControl;
+  const flaggedCount = d.results.filter(r => r.flagged).length;
+  const rows = d.results.map(r => `<tr><td>${esc(r.docId)}</td><td>v${r.versionNumber}</td><td style="font-family:monospace;font-size:12px">${esc(r.filename)}</td><td>${r.flagged ? statusPill("serious", "Flagged") : statusPill("good", "Clean")}</td><td style="color:var(--text-secondary)">${esc(r.reason)}</td></tr>`).join("");
+
+  document.getElementById("panel-docversioncontrol").innerHTML = `
+    <div class="card">
+      <h2>Is the document itself a trustworthy controlled artifact?</h2>
+      <div class="desc"><code>pbc_audit_tracker</code> already tracks a PBC calendar's STATUS and DEADLINE risk — this tool covers a different question that one explicitly scopes out: is the document ITSELF well-controlled? Two independent check families, both evaluated per document-version row. <strong>Version-control integrity:</strong> out-of-order version numbers (sorted by timestamp, each version must be strictly greater than the last), silent overwrites (same version number, different content hash — the classic "final_v2_FINAL_reviewed.xlsx" failure), missing metadata (blank author or content hash), and invalid version numbers (&lt; 1). <strong>Organization/naming discipline:</strong> unknown document categories, wrong folder, and naming-convention violations. A row can trip multiple checks at once — every applicable issue is combined into one reason, never truncated to the first. <strong>Data-confidence note:</strong> hand-built, purpose-made illustrative data across 7 documents — no real Twin City Foods document-management system exists anywhere in this repo's source research. <strong>Scope note:</strong> file-based first pass — no dbt layer yet.</div>
+    </div>
+    <div class="card">
+      <h2>Document versions audited (${flaggedCount} of ${d.results.length} flagged)</h2>
+      <table>
+        <thead><tr><th>Doc</th><th>Version</th><th>Filename</th><th>Status</th><th>Reason</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+  `;
+}
+
 /* ---------- Cross-Tool Insight Synthesizer ---------- */
 // ---- Guardrail sandbox: a live, hand-built hypothetical recommendation run through the
 // SAME logic as cross_tool_insight_synthesizer/synthesizer.py's run_guardrails() (mirrored
@@ -4042,8 +4092,8 @@ function renderDbtPipeline() {
 
   document.getElementById("panel-dbt").innerHTML = `
     <div class="card">
-      <h2>dbt-core + Postgres: a transformation layer in front of 18 of the 23 data tools</h2>
-      <div class="desc">Right now 18 of the 23 data tools each read a hand-shaped sample file directly (<code>gl_variance_tie_out</code>, <code>carbon_adjusted_throughput_analyzer</code>, <code>ai_automation_cost_governor</code>, <code>gaap_cost_compliance_checker</code>, and <code>data_provenance_auditor</code> are file-based only, no dbt layer yet). This is what a real "raw export → tested transformation → analysis" pipeline in front of them looks like: 34 raw seeds (exact mirrors of the existing sample data, messy fields intact) → dbt staging models (a malformed value becomes NULL and gets flagged, never crashes the load — Postgres has no native TRY_CAST, so this uses a small safe-cast helper) → mart models shaped exactly like each tool's existing input. Every eligible tool gained an optional <code>--source postgres</code> flag, plus a third <code>--source postgres-airbyte</code> choice (see below); the file-based default is completely unchanged.</div>
+      <h2>dbt-core + Postgres: a transformation layer in front of 18 of the 24 data tools</h2>
+      <div class="desc">Right now 18 of the 24 data tools each read a hand-shaped sample file directly (<code>gl_variance_tie_out</code>, <code>carbon_adjusted_throughput_analyzer</code>, <code>ai_automation_cost_governor</code>, <code>gaap_cost_compliance_checker</code>, <code>data_provenance_auditor</code>, and <code>document_version_control_auditor</code> are file-based only, no dbt layer yet). This is what a real "raw export → tested transformation → analysis" pipeline in front of them looks like: 34 raw seeds (exact mirrors of the existing sample data, messy fields intact) → dbt staging models (a malformed value becomes NULL and gets flagged, never crashes the load — Postgres has no native TRY_CAST, so this uses a small safe-cast helper) → mart models shaped exactly like each tool's existing input. Every eligible tool gained an optional <code>--source postgres</code> flag, plus a third <code>--source postgres-airbyte</code> choice (see below); the file-based default is completely unchanged.</div>
     </div>
     <div class="kpi-grid">
       <div class="kpi" style="border-top:3px solid var(--series-7)">
@@ -4182,12 +4232,12 @@ function renderArchitecture() {
   // to either of these two boxes previously showed the washed-out default outline color even
   // when the box was simultaneously part of an active trace.
   boxes += `<foreignObject x="20" y="${sharedY}" width="720" height="${sharedH}"><div xmlns="http://www.w3.org/1999/xhtml" class="arch-shared-wrap">
-    <button type="button" class="arch-box arch-el" data-arch-group="${SHARED_COLS}" data-arch-trace="${SHARED_COLS}" aria-pressed="false" aria-describedby="archTraceHint" style="--accent:var(--text-secondary); --active-accent:var(--series-1)"><h4>shared/kpi_registry.py</h4><p>33 thresholds tagged to a JD Duty. 18 of the 23 tools pull their defaults from here — one source of truth (gl_variance_tie_out, carbon_adjusted_throughput_analyzer, ai_automation_cost_governor, gaap_cost_compliance_checker, and data_provenance_auditor keep their own tolerance/threshold as local constants — see their own module docstrings for why).</p></button>
-    <button type="button" class="arch-box arch-el" data-arch-group="${SHARED_COLS}" data-arch-trace="${SHARED_COLS}" aria-pressed="false" aria-describedby="archTraceHint" style="--accent:var(--text-secondary); --active-accent:var(--series-1)"><h4>shared/flagging_engine.py</h4><p>9 generic checks: threshold, band, missing-data, timing-adjacency, cost-baseline-materiality, z-score, trend-break, flatline, period-gap. 19 of the 23 tools delegate real logic here, not just parameters.</p></button>
+    <button type="button" class="arch-box arch-el" data-arch-group="${SHARED_COLS}" data-arch-trace="${SHARED_COLS}" aria-pressed="false" aria-describedby="archTraceHint" style="--accent:var(--text-secondary); --active-accent:var(--series-1)"><h4>shared/kpi_registry.py</h4><p>33 thresholds tagged to a JD Duty. 18 of the 24 tools pull their defaults from here — one source of truth (gl_variance_tie_out, carbon_adjusted_throughput_analyzer, ai_automation_cost_governor, gaap_cost_compliance_checker, data_provenance_auditor, and document_version_control_auditor keep their own tolerance/threshold or policy constants as local values — see their own module docstrings for why).</p></button>
+    <button type="button" class="arch-box arch-el" data-arch-group="${SHARED_COLS}" data-arch-trace="${SHARED_COLS}" aria-pressed="false" aria-describedby="archTraceHint" style="--accent:var(--text-secondary); --active-accent:var(--series-1)"><h4>shared/flagging_engine.py</h4><p>9 generic checks: threshold, band, missing-data, timing-adjacency, cost-baseline-materiality, z-score, trend-break, flatline, period-gap. 20 of the 24 tools delegate real logic here, not just parameters.</p></button>
   </div></foreignObject>`;
   arrows += `<line class="flow-arrow arch-el" data-arch-group="${SHARED_COLS}" style="--accent:var(--series-1)" x1="380" y1="${sharedY + sharedH}" x2="380" y2="${outY}" marker-end="url(#arrow)"/>`;
 
-  boxes += `<foreignObject x="20" y="${outY}" width="860" height="${outH}"><div xmlns="http://www.w3.org/1999/xhtml" class="arch-box arch-outputs-box arch-el" data-arch-group="${ALL_COLS}" style="--accent:var(--series-1)"><p><strong>Outputs</strong> — this dashboard (23 tabs) · KPI_REGISTRY.md · TWIN_CITY_MAPPING.md · COST_ACCOUNTING_DEFENSE_VS_FOOD.md</p></div></foreignObject>`;
+  boxes += `<foreignObject x="20" y="${outY}" width="860" height="${outH}"><div xmlns="http://www.w3.org/1999/xhtml" class="arch-box arch-outputs-box arch-el" data-arch-group="${ALL_COLS}" style="--accent:var(--series-1)"><p><strong>Outputs</strong> — this dashboard (24 tabs) · KPI_REGISTRY.md · TWIN_CITY_MAPPING.md · COST_ACCOUNTING_DEFENSE_VS_FOOD.md</p></div></foreignObject>`;
 
   // viewBox is 906 wide (not 900) purely to give col4's box -- whose right edge sits exactly
   // flush at x=900 -- room for its 2px active box-shadow and 2px focus outline to render
@@ -4197,7 +4247,7 @@ function renderArchitecture() {
   // one opaque image, which would hide every trace-trigger button (and its aria-pressed state)
   // from screen-reader users entirely. "group" keeps the aria-label while leaving descendants
   // in the accessibility tree.
-  const svg = `<svg viewBox="0 0 906 ${vh}" width="100%" height="${vh}" class="arch-diagram" id="archDiagram" role="group" aria-label="Pipeline architecture: data sources feed dbt_pipeline's staging and mart models, which feed 5 representative tools (23 total, see the tool cards above), 4 of these 5 sharing a KPI registry and flagging engine, all producing this dashboard. Click any source box or shared-layer box to trace its data-flow path.">
+  const svg = `<svg viewBox="0 0 906 ${vh}" width="100%" height="${vh}" class="arch-diagram" id="archDiagram" role="group" aria-label="Pipeline architecture: data sources feed dbt_pipeline's staging and mart models, which feed 5 representative tools (24 total, see the tool cards above), 4 of these 5 sharing a KPI registry and flagging engine, all producing this dashboard. Click any source box or shared-layer box to trace its data-flow path.">
     <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="var(--text-muted)"/></marker></defs>
     <g stroke="var(--text-muted)" stroke-width="1.5">${arrows}</g>
     ${boxes}
@@ -4206,7 +4256,7 @@ function renderArchitecture() {
   document.getElementById("panel-architecture").innerHTML = `
     <div class="card">
       <h2>How the pipeline is wired</h2>
-      <div class="desc">Data sources feed <code>dbt_pipeline</code>'s staging/mart models, which feed 18 of the 23 tools (each also still readable directly from a file — dbt is an optional <code>--source postgres</code> path, not a required hop; <code>gl_variance_tie_out</code>, <code>carbon_adjusted_throughput_analyzer</code>, <code>ai_automation_cost_governor</code>, <code>gaap_cost_compliance_checker</code>, and <code>data_provenance_auditor</code> are file-based only, no dbt layer yet); 18 of the 23 pull from the shared KPI registry, and 19 of them also share the flagging engine (variance_narrator's guardrails and fsma_traceability_checker's completeness checks are different-shaped problems it doesn't cover); everything lands in this dashboard. The infra maturity assessor deliberately bypasses both shared modules — a coarser, whole-domain weighting concept, not an oversight (see the comment in <code>assessor.py</code>).</div>
+      <div class="desc">Data sources feed <code>dbt_pipeline</code>'s staging/mart models, which feed 18 of the 24 tools (each also still readable directly from a file — dbt is an optional <code>--source postgres</code> path, not a required hop; <code>gl_variance_tie_out</code>, <code>carbon_adjusted_throughput_analyzer</code>, <code>ai_automation_cost_governor</code>, <code>gaap_cost_compliance_checker</code>, <code>data_provenance_auditor</code>, and <code>document_version_control_auditor</code> are file-based only, no dbt layer yet); 18 of the 24 pull from the shared KPI registry, and 20 of them also share the flagging engine (variance_narrator's guardrails and fsma_traceability_checker's completeness checks are different-shaped problems it doesn't cover); everything lands in this dashboard. The infra maturity assessor deliberately bypasses both shared modules — a coarser, whole-domain weighting concept, not an oversight (see the comment in <code>assessor.py</code>).</div>
       <div class="arch-trace-hint" id="archTraceHint">Try it — click a source box (top row) or a shared-layer box to trace its data-flow path through the diagram.<button type="button" class="threshold-reset" id="archTraceReset" hidden>Show full pipeline</button></div>
       ${svg}
       <div class="arch-trace-caption" id="archTraceCaption" aria-live="polite"></div>
@@ -4268,13 +4318,13 @@ function renderArchitecture() {
   resetBtn.addEventListener("click", clearTrace);
 }
 
-/* ---------- Navigation (scroll-based — all 28 sections render in one continuous document
+/* ---------- Navigation (scroll-based — all 29 sections render in one continuous document
    now, replacing the old show-one-panel-at-a-time tab model) ---------- */
-const VALID_TABS = ["overview", "architecture", "dbt", "narrator", "recon", "costroll", "margin", "infra", "ap", "costsim", "yieldmix", "energyvar", "fsma", "opsmonitor", "laboreff", "bbcinv", "timephasedpnl", "vendorscorecard", "cyclecount", "apdisbursement", "pbcaudit", "glvariance", "carbonthroughput", "aigovernance", "gaapcompliance", "dataprovenance", "crosstool", "glossary"];
+const VALID_TABS = ["overview", "architecture", "dbt", "narrator", "recon", "costroll", "margin", "infra", "ap", "costsim", "yieldmix", "energyvar", "fsma", "opsmonitor", "laboreff", "bbcinv", "timephasedpnl", "vendorscorecard", "cyclecount", "apdisbursement", "pbcaudit", "glvariance", "carbonthroughput", "aigovernance", "gaapcompliance", "dataprovenance", "docversioncontrol", "crosstool", "glossary"];
 
 function setActiveSidebarLink(name) {
   // Interview Mode hides every non-demo sidebar link via CSS; don't silently drop the
-  // visible highlight onto a hidden link while the reader scrolls through one of the 23
+  // visible highlight onto a hidden link while the reader scrolls through one of the 24
   // sections outside the demo path — leave the last visible demo link active instead.
   if (document.documentElement.getAttribute("data-view") === "interview") {
     const link = document.querySelector(`.sidebar a[data-tab="${name}"]`);
@@ -4513,17 +4563,18 @@ function buildFeed() {
 }
 
 /* ---------- Guided tour ----------
-   All 23 sidebar sections, in sidebar order. Every caption traces to one of three sources,
-   nothing invented: 4 stops (costroll/margin/vendorscorecard/bbcinv) keep their original,
-   already-tested INTERVIEW_TALKING_POINTS.md-sourced captions unchanged; 5 more
+   All 24 tool sections, in sidebar order (plus the non-tool reference stops -- 29 total).
+   Every caption traces to one of three sources, nothing invented: 4 stops
+   (costroll/margin/vendorscorecard/bbcinv) keep their original, already-tested
+   INTERVIEW_TALKING_POINTS.md-sourced captions unchanged; 5 more
    (timephasedpnl/yieldmix/energyvar/laboreff/infra) paraphrase that same file's other
-   sections; the remaining 14 adapt each tool's own already-shipped `.desc` copy. Reuses
+   sections; the remaining 15 adapt each tool's own already-shipped `.desc` copy. Reuses
    scrollToSection (the same nav function the sidebar/cmdk use) rather than a separate scroll
-   mechanism. startTour() force-exits Interview Mode first (see below) since 23 of these 28
+   mechanism. startTour() force-exits Interview Mode first (see below) since 24 of these 29
    stops are non-demo sections Interview Mode hides entirely. */
 const TOUR_STEPS = [
-  { tab: "overview", title: "The whole engine, one screen", caption: "This walkthrough covers all 28 sections in the sidebar, in order — every tool's status rolls up into one verdict banner right here, alongside a findings feed of every flagged item across every tool, worst first." },
-  { tab: "architecture", title: "How the pipeline is wired", caption: "Data sources feed dbt_pipeline's staging/mart models, which feed 18 of the 23 tools — 18 sharing one KPI registry, 19 also sharing one flagging engine. Click any source box or shared-layer box below to trace its exact data-flow path through the diagram." },
+  { tab: "overview", title: "The whole engine, one screen", caption: "This walkthrough covers all 29 sections in the sidebar, in order — every tool's status rolls up into one verdict banner right here, alongside a findings feed of every flagged item across every tool, worst first." },
+  { tab: "architecture", title: "How the pipeline is wired", caption: "Data sources feed dbt_pipeline's staging/mart models, which feed 18 of the 24 tools — 18 sharing one KPI registry, 20 also sharing one flagging engine. Click any source box or shared-layer box below to trace its exact data-flow path through the diagram." },
   { tab: "dbt", title: "From hand-shaped files to a real pipeline", caption: "Right now the tools each read a hand-shaped sample file directly. This section shows what a real raw-export → tested-transformation → analysis pipeline in front of them looks like: 34 raw seeds → dbt staging (a malformed value becomes NULL and gets flagged, never crashes the load) → mart models shaped exactly like each tool's real input." },
   { tab: "narrator", title: "AI commentary, verified before it ships", caption: "The model-drafted narrative here is illustrative only — the numbers underneath are always code-computed, never model output. Direction is independently sign-checked against the real variance and account type, so a model claiming 'favorable' on an actual cost increase gets rejected before it would ever show here." },
   { tab: "recon", title: "ERP meets CPM", caption: "Two synthetic exports — one shaped like an ERP GL extract, one shaped like a CPM export — reconciled against each other to catch real mismatches and timing differences before they become a close problem." },
@@ -4547,7 +4598,8 @@ const TOUR_STEPS = [
   { tab: "aigovernance", title: "The JD's own words, made mechanical", caption: "Duty #8 says it explicitly: \"apply AI and automation... without sacrificing control.\" Dollar-weighted cost-center tag coverage gates showback-vs-chargeback readiness; every spend line records whether a documented human-oversight checkpoint exists. Built from generic, publicly-documented FinOps practice only." },
   { tab: "gaapcompliance", title: "Materiality isn't the only question", caption: "Every other cost tool checks whether a variance is material — this one checks whether it was disposed of correctly under GAAP once found. ASC 330-10-30-3: abnormal idle-capacity/spoilage must be expensed, never capitalized, regardless of dollar size. ASC 330-10-35: a SKU can't be carried above its net realizable value." },
   { tab: "dataprovenance", title: "The no-fabrication promise, made runnable", caption: "Every tool in this repo discloses a no-fabrication policy — this one checks it. Audits a claims manifest against the real, checked-in CSV rows each claim cites, catching three distinct failure modes: a stale figure, a row that doesn't exist, and a file that was moved or renamed." },
-  { tab: "infra", title: "Built against the JD's own highest weight", caption: "Scores discovery observations per domain, weighted by which JD Essential Duty it maps to. Systems, Data & Automation is weighted 5× — the single highest weight of any domain in the job description — and 9 of the 23 tools are tagged directly to it." },
+  { tab: "docversioncontrol", title: "Is the document itself trustworthy?", caption: "pbc_audit_tracker tracks a PBC calendar's status and deadlines — this tool asks a different question: is the document a well-controlled artifact? Catches out-of-order version numbers, silent overwrites without a version bump, missing audit-trail metadata, and folder/naming-convention violations." },
+  { tab: "infra", title: "Built against the JD's own highest weight", caption: "Scores discovery observations per domain, weighted by which JD Essential Duty it maps to. Systems, Data & Automation is weighted 5× — the single highest weight of any domain in the job description — and 9 of the 24 tools are tagged directly to it." },
   { tab: "crosstool", title: "A different shape — reading the other 14", caption: "The 15th tool doesn't own its own domain data — it reads a findings feed spanning the other 14 tools' already-verified results and produces one prioritized, guardrailed action list. Try the sandbox below: build a hypothetical recommendation and watch it run through the real hallucination/coverage/priority-consistency checks." },
   { tab: "glossary", title: "Every example, a real number", caption: "Same discipline as everywhere else in this repo: every example here is a real number from a real run of the tool it describes — nothing invented for this page. Three formula terms have a live calculator — change the numbers and watch the result recompute." },
 ];
@@ -4604,7 +4656,7 @@ function goToTourStep() {
   tourHighlightTimer = setTimeout(tourHighlightTarget, 350);
 }
 function startTour() {
-  // Interview Mode hides 23 of these 28 stops' sections entirely (display:none) -- scrolling
+  // Interview Mode hides 24 of these 29 stops' sections entirely (display:none) -- scrolling
   // to a hidden section is a silent no-op, so a tour started there would desync (card
   // advances, page/sidebar don't) the moment it hit any non-demo stop. Force Full Dashboard
   // first so every stop is actually reachable; this is a real, persisted mode switch (same
@@ -4756,7 +4808,7 @@ function revealOnScroll() {
   // after a fixed delay isn't a "harmless no-op" here the way it is for a number that's
   // already finished animating: on a normal FOREGROUND load it would force-reveal every
   // card/KPI still below the fold before the reader ever scrolls to it, silently disabling
-  // the progressive reveal-on-scroll motion for most of a 23-section page (confirmed as a
+  // the progressive reveal-on-scroll motion for most of a 29-section page (confirmed as a
   // real regression, not hypothetical, by independent review). Only fire the fallback if
   // the tab is still genuinely hidden at that moment -- the exact failure mode this exists
   // to cover, nothing broader.
@@ -4816,6 +4868,7 @@ renderCarbonAdjustedThroughput();
 renderAiAutomationCostGovernor();
 renderGaapComplianceChecker();
 renderDataProvenanceAuditor();
+renderDocumentVersionControlAuditor();
 renderCrossToolSynthesis();
 renderGlossary();
 /* KPI Registry inline expandable detail rows. A detail row is a sibling <tr>, not a
@@ -4950,7 +5003,7 @@ wireKpiRegistry(document.getElementById("kpiRegistryTable"));
 wireKpiRegistryFilters(document.getElementById("kpiRegistryTable"));
 makeSortable(document.getElementById("dbtSeedsTable"));
 
-// Post-render enhancement pass — everything here reads the fully-rendered DOM the 28
+// Post-render enhancement pass — everything here reads the fully-rendered DOM the 29
 // render*() calls above just produced, so it must run after all of them, not interleaved.
 setSectionIcons();
 setNavTicks();
@@ -4958,8 +5011,8 @@ buildFeed();
 buildCmdk();
 // wireGotoButtons() moved here, after buildFeed(): its own doc-comment already says "run
 // last... covers every [data-goto] regardless of which render function produced it" — but
-// buildFeed()'s 69 feed-row buttons (each carrying data-goto) are created by a POST-render
-// call, not one of the 28 render*() functions above. Wiring before buildFeed() ran left
+// buildFeed()'s feed-row buttons (each carrying data-goto) are created by a POST-render
+// call, not one of the 29 render*() functions above. Wiring before buildFeed() ran left
 // every feed-row a dead click (confirmed empirically: row.click() left location.hash
 // unchanged) — this restores the actual invariant the comment describes.
 wireGotoButtons();
