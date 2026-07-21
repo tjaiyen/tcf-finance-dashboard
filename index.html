@@ -44,7 +44,7 @@
     --series-9:#c0a07f; --series-10:#8fb0e0; --series-11:#c9a06a; --series-12:#7fc0b0;
     --series-13:#b09fd6; --series-14:#d0997f; --series-15:#8090c0; --series-16:#c9b878;
     --series-17:#8fbf9f; --series-18:#c188a8; --series-19:#7fb0a8; --series-20:#d68fa0; --series-21:#c9a878;
-    --series-22:#7fada8; --series-23:#a3c47f;
+    --series-22:#7fada8; --series-23:#a3c47f; --series-24:#a88fc9;
     --good:#5fb07a; --warning:#d6a94a; --serious:#d68a5e; --critical:#d66a63;
   }
   [data-theme="light"] {
@@ -69,7 +69,7 @@
     --series-9:#856a4a; --series-10:#4a6aa0; --series-11:#8a6a3c; --series-12:#3f8f7f;
     --series-13:#6a5aa0; --series-14:#a3634e; --series-15:#3c5578; --series-16:#7a6a33;
     --series-17:#4f7c59; --series-18:#8f5a7a; --series-19:#3f7c74; --series-20:#a8425a; --series-21:#8a6a2e;
-    --series-22:#3f7a72; --series-23:#5f8a3f;
+    --series-22:#3f7a72; --series-23:#5f8a3f; --series-24:#6a4a8a;
     /* Darkened from the original #2f8f5a/#a8791e/#a8603e/#a84a44 -- those measured
        1.94-2.97:1 text-vs-pill-background contrast in this theme, below WCAG AA's 4.5:1.
        Same hue/saturation, lightness reduced until each cleared 4.5:1 (verified 4.79-4.84:1
@@ -91,6 +91,7 @@
   [data-tab="cyclecount"]{--tab-color:var(--series-19)} [data-tab="apdisbursement"]{--tab-color:var(--series-20)}
   [data-tab="pbcaudit"]{--tab-color:var(--series-21)}
   [data-tab="glvariance"]{--tab-color:var(--series-22)} [data-tab="carbonthroughput"]{--tab-color:var(--series-23)}
+  [data-tab="aigovernance"]{--tab-color:var(--series-24)}
   [data-tab="crosstool"]{--tab-color:var(--series-18)} [data-tab="glossary"]{--tab-color:var(--text-muted)}
 
   /* palette · Vivid — the original high-signal tool colours */
@@ -100,7 +101,7 @@
     --series-9:#9a6d3c; --series-10:#5b7fbd; --series-11:#b5762a; --series-12:#4f9e8f;
     --series-13:#8a6bb8; --series-14:#c1654f; --series-15:#5b84c4; --series-16:#b08d1f; --series-17:#4a7c59;
     --series-18:#3fa0c1; --series-19:#2e9e88; --series-20:#d6547a; --series-21:#c99a1f;
-    --series-22:#2fa89c; --series-23:#7cb342;
+    --series-22:#2fa89c; --series-23:#7cb342; --series-24:#9d6bc9;
   }
   /* palette · Mono — every tool collapses to the one blurple accent */
   [data-palette="mono"] {
@@ -109,7 +110,7 @@
     --series-9:var(--accent); --series-10:var(--accent); --series-11:var(--accent); --series-12:var(--accent);
     --series-13:var(--accent); --series-14:var(--accent); --series-15:var(--accent); --series-16:var(--accent); --series-17:var(--accent);
     --series-18:var(--accent); --series-19:var(--accent); --series-20:var(--accent); --series-21:var(--accent);
-    --series-22:var(--accent); --series-23:var(--accent);
+    --series-22:var(--accent); --series-23:var(--accent); --series-24:var(--accent);
   }
 
   * { box-sizing: border-box; }
@@ -495,9 +496,9 @@
   .switcher-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
 
   /* ---- Interview Mode — declutters the default click-path down to the 5 tools the
-     live-demo walkthrough uses. The 20 non-demo sections are actually hidden below
+     live-demo walkthrough uses. The 21 non-demo sections are actually hidden below
      (display:none), not just their nav links -- a bare scroll/#hash into one of them is
-     a no-op while Interview Mode is active. The 25-stop "Take the tour" forces Full
+     a no-op while Interview Mode is active. The 26-stop "Take the tour" forces Full
      Dashboard mode before it starts (see startTour()) specifically so every stop stays
      reachable regardless of which mode the page loaded in. */
   [data-view="interview"] #cmdkOpen,
@@ -611,7 +612,7 @@
     <div>
       <div class="kicker">Finance Automation Engine</div>
       <h1>Operations Dashboard</h1>
-      <div class="sub">A live read over 20 already-built, stress-tested components + a shared KPI registry &mdash; synthetic sample data throughout, every figure from a real deterministic tool run.</div>
+      <div class="sub">A live read over 21 already-built, stress-tested components + a shared KPI registry &mdash; synthetic sample data throughout, every figure from a real deterministic tool run.</div>
       <div class="nav-hint">New here? Click <strong>Interview Mode</strong> (top right) for a simplified 5-tool view, or explore the sidebar / press <kbd>&#8984;K</kbd> to search any tool or finding.</div>
     </div>
     <div class="top-actions">
@@ -623,7 +624,7 @@
         <span class="switcher-label">Density</span>
         <button class="theme-toggle" id="densityToggle" title="Toggle layout density"><i class="ph ph-rows"></i>Comfortable</button>
       </div>
-      <button class="theme-toggle" id="tourStart" title="A guided 25-stop walkthrough covering every tool and reference tab on the dashboard, in sidebar order"><i class="ph ph-compass"></i>Take the tour</button>
+      <button class="theme-toggle" id="tourStart" title="A guided 26-stop walkthrough covering every tool and reference tab on the dashboard, in sidebar order"><i class="ph ph-compass"></i>Take the tour</button>
       <button class="cmdk-open" id="cmdkOpen"><i class="ph ph-magnifying-glass"></i>Search<kbd>&#8984;K</kbd></button>
       <button class="theme-toggle" id="themeToggle"><i class="ph ph-moon-stars"></i>Toggle theme</button>
       <button class="theme-toggle" id="modeToggle" title="Toggle interview-ready view (hides search, switchers, and non-demo tools)"><i class="ph ph-presentation-chart"></i>Full Dashboard</button>
@@ -668,6 +669,7 @@
         <a href="#fsma" data-tab="fsma"><span class="idx">13</span><span>FSMA Traceability</span></a>
         <a href="#bbcinv" data-tab="bbcinv" data-demo><span class="idx">16</span><span>BBC Inventory</span></a>
         <a href="#pbcaudit" data-tab="pbcaudit"><span class="idx">23</span><span>PBC Audit Tracker</span></a>
+        <a href="#aigovernance" data-tab="aigovernance"><span class="idx">26</span><span>AI/Automation Cost Governor</span></a>
       </div>
       <div class="nav-group">
         <div class="nav-group-label">Readiness</div>
@@ -775,6 +777,10 @@
       <section class="section" id="section-pbcaudit" aria-labelledby="heading-pbcaudit">
         <div class="section-title" data-tab="pbcaudit"><span class="section-num">23</span><span class="section-dot"></span><h1 id="heading-pbcaudit">PBC Audit Tracker</h1></div>
         <div id="panel-pbcaudit"></div>
+      </section>
+      <section class="section" id="section-aigovernance" aria-labelledby="heading-aigovernance">
+        <div class="section-title" data-tab="aigovernance"><span class="section-num">26</span><span class="section-dot"></span><h1 id="heading-aigovernance">AI/Automation Cost Governor</h1></div>
+        <div id="panel-aigovernance"></div>
       </section>
       <section class="section" id="section-crosstool" aria-labelledby="heading-crosstool">
         <div class="section-title" data-tab="crosstool"><span class="section-num">19</span><span class="section-dot"></span><h1 id="heading-crosstool">Cross-Tool Insight Synthesizer</h1></div>
@@ -1199,6 +1205,34 @@ const DATA = {
       { outputProduct: "Baby Lima Beans - Frozen", throughputPerUnit: 0.40, throughputPerConstraintMinute: 22.222222, carbonPerConstraintMinute: 13.888889, dollarRank: 4, carbonRank: 2, rankDivergence: -2, flagged: false, reason: "$ rank #4, carbon rank #2 -- carbon efficiency is BETTER than $ priority here, the opposite of the tension this tool flags" },
       { outputProduct: "Carrots - Frozen", throughputPerUnit: 0.45, throughputPerConstraintMinute: 18.00, carbonPerConstraintMinute: 8.00, dollarRank: 5, carbonRank: 1, rankDivergence: -4, flagged: false, reason: "$ rank #5, carbon rank #1 -- the cheapest $ priority is also the best carbon performer" },
       { outputProduct: "Cauliflower - Frozen", throughputPerUnit: null, throughputPerConstraintMinute: null, carbonPerConstraintMinute: null, dollarRank: null, carbonRank: null, rankDivergence: null, flagged: true, reason: "constraint_minutes_per_lb is zero or negative -- cannot compute a per-constraint-minute rate, excluded from ranking" },
+    ],
+  },
+  aiGovernance: {
+    // ai_automation_cost_governor/sample_data/ai_automation_spend.csv, run 2026-07-20 at
+    // --total-automation-budget 40000 -- transcribed verbatim from the real governor.py CLI
+    // output (see TWIN_CITY_MAPPING.md's own entry). GENERIC METHODOLOGY ONLY: built from
+    // publicly-documented FinOps showback/chargeback practice, not from or in reference to
+    // any employer-specific source; every line below is synthetic, illustrative pilot data.
+    // tagCoverageGate (0.80) and materialityBand (0.10) are TAG_COVERAGE_CHARGEBACK_GATE and
+    // MATERIALITY_BAND, local module constants (same reasoning as glVariance.tolerance and
+    // carbonThroughput.rankDivergenceThreshold above -- no real (date, commit) pair exists
+    // yet for a threshold introduced in this tool's own first commit).
+    totalAutomationBudget: 40000.00,
+    tagCoverageGate: 0.80,
+    materialityBand: 0.10,
+    totalSpend: 4400.00,
+    taggedSpend: 3200.00,
+    tagCoveragePct: 0.7272727272727273,
+    chargebackEligible: false,
+    materialityPct: 0.11,
+    materialityFlagged: true,
+    lines: [
+      { department: "Finance", useCase: "AP invoice-coding copilot", monthlyCost: 1200.00, costCenterTag: "6200-Finance-Automation", oversightCheckpoint: true, oversightFlagged: false, reason: "human-oversight checkpoint documented and present" },
+      { department: "Finance", useCase: "Close variance-narrative drafting (LLM)", monthlyCost: 800.00, costCenterTag: "6200-Finance-Automation", oversightCheckpoint: true, oversightFlagged: false, reason: "human-oversight checkpoint documented and present" },
+      { department: "IT", useCase: "SQL query-generation copilot", monthlyCost: 500.00, costCenterTag: "", oversightCheckpoint: true, oversightFlagged: false, reason: "human-oversight checkpoint documented and present" },
+      { department: "Ops", useCase: "Demand-forecast anomaly flagging", monthlyCost: 900.00, costCenterTag: "7100-Ops-Analytics", oversightCheckpoint: false, oversightFlagged: true, reason: "human-oversight checkpoint documented as absent -- no human review/approval point before this AI/automation output is relied on" },
+      { department: "Finance", useCase: "AR collections-email drafting", monthlyCost: 300.00, costCenterTag: "6200-Finance-Automation", oversightCheckpoint: null, oversightFlagged: true, reason: "no human-oversight checkpoint documented -- unknown control status, cannot confirm this line is applied \"without sacrificing control\"" },
+      { department: "IT", useCase: "Automated report-build pipeline", monthlyCost: 700.00, costCenterTag: "", oversightCheckpoint: true, oversightFlagged: false, reason: "human-oversight checkpoint documented and present" },
     ],
   },
   crossToolSynthesis: {
@@ -1715,6 +1749,7 @@ function computeToolStatus() {
     pbcaudit: f(d.pbcAudit.items.some(i => i.flagged)),
     glvariance: f(d.glVariance.results.some(r => r.flagged)),
     carbonthroughput: f(d.carbonThroughput.products.some(p => p.flagged)),
+    aigovernance: f(!d.aiGovernance.chargebackEligible || d.aiGovernance.materialityFlagged || d.aiGovernance.lines.some(l => l.oversightFlagged)),
     crosstool: f(d.crossToolSynthesis.recommendations.some(r => r.urgency === "immediate" || r.urgency === "this_week")),
     glossary: "na",
   };
@@ -1750,6 +1785,8 @@ function computeFindings() {
   d.pbcAudit.items.filter(i => i.flagged).forEach(i => add("pbcaudit", "PBC Tracker", i.overdue ? "serious" : "warning", i.itemId + " (" + i.category + "): " + i.reason));
   d.glVariance.results.filter(r => r.flagged).forEach(r => add("glvariance", "GL Variance Tie-Out", "serious", r.glAccount + " " + r.period + " [" + r.category + "]: " + r.reason));
   d.carbonThroughput.products.filter(p => p.flagged).forEach(p => add("carbonthroughput", "Carbon Throughput", "warning", p.outputProduct + ": " + p.reason));
+  d.aiGovernance.lines.filter(l => l.oversightFlagged).forEach(l => add("aigovernance", "AI Cost Governor", "warning", l.department + " / " + l.useCase + ": " + l.reason));
+  if (!d.aiGovernance.chargebackEligible) add("aigovernance", "AI Cost Governor", "warning", "Tag coverage " + fmtPct(d.aiGovernance.tagCoveragePct).replace("+", "") + " is below the " + fmtPct(d.aiGovernance.tagCoverageGate).replace("+", "") + " chargeback-eligibility gate -- showback-only.");
   const URGENCY_SEV = { immediate: "critical", this_week: "serious", this_month: "warning", monitor: "good" };
   d.crossToolSynthesis.recommendations.forEach(r => add("crosstool", "Cross-Tool Synthesis", URGENCY_SEV[r.urgency] || "warning", r.action));
   return out;
@@ -1761,7 +1798,7 @@ const TOOL_ICONS = {
   yieldmix: "stack", energyvar: "lightning", fsma: "shield-check", opsmonitor: "chart-line",
   laboreff: "users", bbcinv: "package", timephasedpnl: "calendar-blank", vendorscorecard: "truck",
   cyclecount: "list-checks", apdisbursement: "credit-card", pbcaudit: "clipboard-text",
-  glvariance: "scales", carbonthroughput: "leaf",
+  glvariance: "scales", carbonthroughput: "leaf", aigovernance: "robot",
   crosstool: "brain", glossary: "book-open",
 };
 function setSectionIcons() {
@@ -3380,6 +3417,39 @@ function renderCarbonAdjustedThroughput() {
   `;
 }
 
+/* ---------- AI/Automation Cost Governor ---------- */
+function renderAiAutomationCostGovernor() {
+  const d = DATA.aiGovernance;
+  const oversightFlagged = d.lines.filter(l => l.oversightFlagged);
+  const rows = d.lines.map(l => `<tr><td>${l.department}</td><td>${esc(l.useCase)}</td><td class="num">${fmt$(l.monthlyCost)}</td><td>${l.costCenterTag ? esc(l.costCenterTag) : `<span style="color:var(--text-muted)">untagged</span>`}</td><td>${l.oversightFlagged ? statusPill("serious", "Flagged") : statusPill("good", "OK")}</td><td style="color:var(--text-secondary)">${l.reason}</td></tr>`).join("");
+
+  document.getElementById("panel-aigovernance").innerHTML = `
+    <div class="card">
+      <h2>Is AI/automation adoption applied "without sacrificing control"?</h2>
+      <div class="desc">Makes the JD's own Duty #8 language mechanical: "sponsor/drive AP/AR automation adoption with human oversight... actively seek opportunities to apply AI and automation... without sacrificing control." Two axes, computed independently per spend line: (1) DOLLAR-WEIGHTED cost-center tag coverage gates showback-vs-chargeback readiness (${fmtPct(d.tagCoverageGate).replace("+", "")} floor — common FinOps industry practice, since billing off inaccurate attribution erodes program credibility faster than staying showback-only); (2) every line records whether a documented human-oversight checkpoint exists — a checkpoint left BLANK is a distinct, always-flagged case from one explicitly marked absent, since unknown control status is not evidence of control. <strong>Generic methodology only:</strong> built from publicly-documented FinOps practice, not from or in reference to any employer-specific source; every line below is synthetic, illustrative pilot data. <strong>Scope note:</strong> file-based first pass — no dbt layer yet.</div>
+    </div>
+    <div class="card">
+      <h2>Chargeback readiness &amp; materiality</h2>
+      <table>
+        <tbody>
+          <tr><td>Total AI/automation spend</td><td class="num">${fmt$(d.totalSpend)}</td></tr>
+          <tr><td>Tagged spend (dollar-weighted)</td><td class="num">${fmt$(d.taggedSpend)}</td></tr>
+          <tr><td>Tag coverage</td><td class="num">${fmtPct(d.tagCoveragePct).replace("+", "")}</td></tr>
+          <tr><td>Status</td><td>${d.chargebackEligible ? statusPill("good", "Chargeback-eligible") : statusPill("warning", "Showback-only")} <span style="color:var(--text-secondary)">(${fmtPct(d.tagCoverageGate).replace("+", "")} gate)</span></td></tr>
+          <tr><td>Materiality</td><td>${d.materialityFlagged ? statusPill("serious", "Flagged") : statusPill("good", "Within band")} <span style="color:var(--text-secondary)">${fmtPct(d.materialityPct).replace("+", "")} of ${fmt$(d.totalAutomationBudget)} total automation budget (${fmtPct(d.materialityBand).replace("+", "")} band)</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h2>Spend lines (${oversightFlagged.length} of ${d.lines.length} missing a documented human-oversight checkpoint)</h2>
+      <table>
+        <thead><tr><th>Department</th><th>Use case</th><th class="num">Monthly cost</th><th>Cost-center tag</th><th>Oversight</th><th>Reason</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+  `;
+}
+
 /* ---------- Cross-Tool Insight Synthesizer ---------- */
 // ---- Guardrail sandbox: a live, hand-built hypothetical recommendation run through the
 // SAME logic as cross_tool_insight_synthesizer/synthesizer.py's run_guardrails() (mirrored
@@ -3864,8 +3934,8 @@ function renderDbtPipeline() {
 
   document.getElementById("panel-dbt").innerHTML = `
     <div class="card">
-      <h2>dbt-core + Postgres: a transformation layer in front of 18 of the 20 data tools</h2>
-      <div class="desc">Right now 18 of the 20 data tools each read a hand-shaped sample file directly (<code>gl_variance_tie_out</code> and <code>carbon_adjusted_throughput_analyzer</code> are file-based only, no dbt layer yet). This is what a real "raw export → tested transformation → analysis" pipeline in front of them looks like: 34 raw seeds (exact mirrors of the existing sample data, messy fields intact) → dbt staging models (a malformed value becomes NULL and gets flagged, never crashes the load — Postgres has no native TRY_CAST, so this uses a small safe-cast helper) → mart models shaped exactly like each tool's existing input. Every eligible tool gained an optional <code>--source postgres</code> flag, plus a third <code>--source postgres-airbyte</code> choice (see below); the file-based default is completely unchanged.</div>
+      <h2>dbt-core + Postgres: a transformation layer in front of 18 of the 21 data tools</h2>
+      <div class="desc">Right now 18 of the 21 data tools each read a hand-shaped sample file directly (<code>gl_variance_tie_out</code>, <code>carbon_adjusted_throughput_analyzer</code>, and <code>ai_automation_cost_governor</code> are file-based only, no dbt layer yet). This is what a real "raw export → tested transformation → analysis" pipeline in front of them looks like: 34 raw seeds (exact mirrors of the existing sample data, messy fields intact) → dbt staging models (a malformed value becomes NULL and gets flagged, never crashes the load — Postgres has no native TRY_CAST, so this uses a small safe-cast helper) → mart models shaped exactly like each tool's existing input. Every eligible tool gained an optional <code>--source postgres</code> flag, plus a third <code>--source postgres-airbyte</code> choice (see below); the file-based default is completely unchanged.</div>
     </div>
     <div class="kpi-grid">
       <div class="kpi" style="border-top:3px solid var(--series-7)">
@@ -4004,12 +4074,12 @@ function renderArchitecture() {
   // to either of these two boxes previously showed the washed-out default outline color even
   // when the box was simultaneously part of an active trace.
   boxes += `<foreignObject x="20" y="${sharedY}" width="720" height="${sharedH}"><div xmlns="http://www.w3.org/1999/xhtml" class="arch-shared-wrap">
-    <button type="button" class="arch-box arch-el" data-arch-group="${SHARED_COLS}" data-arch-trace="${SHARED_COLS}" aria-pressed="false" aria-describedby="archTraceHint" style="--accent:var(--text-secondary); --active-accent:var(--series-1)"><h4>shared/kpi_registry.py</h4><p>33 thresholds tagged to a JD Duty. 18 of the 20 tools pull their defaults from here — one source of truth (gl_variance_tie_out and carbon_adjusted_throughput_analyzer keep their own tolerance/threshold as local constants — see their own module docstrings for why).</p></button>
-    <button type="button" class="arch-box arch-el" data-arch-group="${SHARED_COLS}" data-arch-trace="${SHARED_COLS}" aria-pressed="false" aria-describedby="archTraceHint" style="--accent:var(--text-secondary); --active-accent:var(--series-1)"><h4>shared/flagging_engine.py</h4><p>9 generic checks: threshold, band, missing-data, timing-adjacency, cost-baseline-materiality, z-score, trend-break, flatline, period-gap. 16 of the 20 tools delegate real logic here, not just parameters.</p></button>
+    <button type="button" class="arch-box arch-el" data-arch-group="${SHARED_COLS}" data-arch-trace="${SHARED_COLS}" aria-pressed="false" aria-describedby="archTraceHint" style="--accent:var(--text-secondary); --active-accent:var(--series-1)"><h4>shared/kpi_registry.py</h4><p>33 thresholds tagged to a JD Duty. 18 of the 21 tools pull their defaults from here — one source of truth (gl_variance_tie_out, carbon_adjusted_throughput_analyzer, and ai_automation_cost_governor keep their own tolerance/threshold as local constants — see their own module docstrings for why).</p></button>
+    <button type="button" class="arch-box arch-el" data-arch-group="${SHARED_COLS}" data-arch-trace="${SHARED_COLS}" aria-pressed="false" aria-describedby="archTraceHint" style="--accent:var(--text-secondary); --active-accent:var(--series-1)"><h4>shared/flagging_engine.py</h4><p>9 generic checks: threshold, band, missing-data, timing-adjacency, cost-baseline-materiality, z-score, trend-break, flatline, period-gap. 17 of the 21 tools delegate real logic here, not just parameters.</p></button>
   </div></foreignObject>`;
   arrows += `<line class="flow-arrow arch-el" data-arch-group="${SHARED_COLS}" style="--accent:var(--series-1)" x1="380" y1="${sharedY + sharedH}" x2="380" y2="${outY}" marker-end="url(#arrow)"/>`;
 
-  boxes += `<foreignObject x="20" y="${outY}" width="860" height="${outH}"><div xmlns="http://www.w3.org/1999/xhtml" class="arch-box arch-outputs-box arch-el" data-arch-group="${ALL_COLS}" style="--accent:var(--series-1)"><p><strong>Outputs</strong> — this dashboard (20 tabs) · KPI_REGISTRY.md · TWIN_CITY_MAPPING.md · COST_ACCOUNTING_DEFENSE_VS_FOOD.md</p></div></foreignObject>`;
+  boxes += `<foreignObject x="20" y="${outY}" width="860" height="${outH}"><div xmlns="http://www.w3.org/1999/xhtml" class="arch-box arch-outputs-box arch-el" data-arch-group="${ALL_COLS}" style="--accent:var(--series-1)"><p><strong>Outputs</strong> — this dashboard (21 tabs) · KPI_REGISTRY.md · TWIN_CITY_MAPPING.md · COST_ACCOUNTING_DEFENSE_VS_FOOD.md</p></div></foreignObject>`;
 
   // viewBox is 906 wide (not 900) purely to give col4's box -- whose right edge sits exactly
   // flush at x=900 -- room for its 2px active box-shadow and 2px focus outline to render
@@ -4019,7 +4089,7 @@ function renderArchitecture() {
   // one opaque image, which would hide every trace-trigger button (and its aria-pressed state)
   // from screen-reader users entirely. "group" keeps the aria-label while leaving descendants
   // in the accessibility tree.
-  const svg = `<svg viewBox="0 0 906 ${vh}" width="100%" height="${vh}" class="arch-diagram" id="archDiagram" role="group" aria-label="Pipeline architecture: data sources feed dbt_pipeline's staging and mart models, which feed 5 representative tools (20 total, see the tool cards above), 4 of these 5 sharing a KPI registry and flagging engine, all producing this dashboard. Click any source box or shared-layer box to trace its data-flow path.">
+  const svg = `<svg viewBox="0 0 906 ${vh}" width="100%" height="${vh}" class="arch-diagram" id="archDiagram" role="group" aria-label="Pipeline architecture: data sources feed dbt_pipeline's staging and mart models, which feed 5 representative tools (21 total, see the tool cards above), 4 of these 5 sharing a KPI registry and flagging engine, all producing this dashboard. Click any source box or shared-layer box to trace its data-flow path.">
     <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="var(--text-muted)"/></marker></defs>
     <g stroke="var(--text-muted)" stroke-width="1.5">${arrows}</g>
     ${boxes}
@@ -4028,7 +4098,7 @@ function renderArchitecture() {
   document.getElementById("panel-architecture").innerHTML = `
     <div class="card">
       <h2>How the pipeline is wired</h2>
-      <div class="desc">Data sources feed <code>dbt_pipeline</code>'s staging/mart models, which feed 18 of the 20 tools (each also still readable directly from a file — dbt is an optional <code>--source postgres</code> path, not a required hop; <code>gl_variance_tie_out</code> and <code>carbon_adjusted_throughput_analyzer</code> are file-based only, no dbt layer yet); 18 of the 20 pull from the shared KPI registry, and 16 of them also share the flagging engine (variance_narrator's guardrails and fsma_traceability_checker's completeness checks are different-shaped problems it doesn't cover); everything lands in this dashboard. The infra maturity assessor deliberately bypasses both shared modules — a coarser, whole-domain weighting concept, not an oversight (see the comment in <code>assessor.py</code>).</div>
+      <div class="desc">Data sources feed <code>dbt_pipeline</code>'s staging/mart models, which feed 18 of the 21 tools (each also still readable directly from a file — dbt is an optional <code>--source postgres</code> path, not a required hop; <code>gl_variance_tie_out</code>, <code>carbon_adjusted_throughput_analyzer</code>, and <code>ai_automation_cost_governor</code> are file-based only, no dbt layer yet); 18 of the 21 pull from the shared KPI registry, and 17 of them also share the flagging engine (variance_narrator's guardrails and fsma_traceability_checker's completeness checks are different-shaped problems it doesn't cover); everything lands in this dashboard. The infra maturity assessor deliberately bypasses both shared modules — a coarser, whole-domain weighting concept, not an oversight (see the comment in <code>assessor.py</code>).</div>
       <div class="arch-trace-hint" id="archTraceHint">Try it — click a source box (top row) or a shared-layer box to trace its data-flow path through the diagram.<button type="button" class="threshold-reset" id="archTraceReset" hidden>Show full pipeline</button></div>
       ${svg}
       <div class="arch-trace-caption" id="archTraceCaption" aria-live="polite"></div>
@@ -4090,13 +4160,13 @@ function renderArchitecture() {
   resetBtn.addEventListener("click", clearTrace);
 }
 
-/* ---------- Navigation (scroll-based — all 25 sections render in one continuous document
+/* ---------- Navigation (scroll-based — all 26 sections render in one continuous document
    now, replacing the old show-one-panel-at-a-time tab model) ---------- */
-const VALID_TABS = ["overview", "architecture", "dbt", "narrator", "recon", "costroll", "margin", "infra", "ap", "costsim", "yieldmix", "energyvar", "fsma", "opsmonitor", "laboreff", "bbcinv", "timephasedpnl", "vendorscorecard", "cyclecount", "apdisbursement", "pbcaudit", "glvariance", "carbonthroughput", "crosstool", "glossary"];
+const VALID_TABS = ["overview", "architecture", "dbt", "narrator", "recon", "costroll", "margin", "infra", "ap", "costsim", "yieldmix", "energyvar", "fsma", "opsmonitor", "laboreff", "bbcinv", "timephasedpnl", "vendorscorecard", "cyclecount", "apdisbursement", "pbcaudit", "glvariance", "carbonthroughput", "aigovernance", "crosstool", "glossary"];
 
 function setActiveSidebarLink(name) {
   // Interview Mode hides every non-demo sidebar link via CSS; don't silently drop the
-  // visible highlight onto a hidden link while the reader scrolls through one of the 20
+  // visible highlight onto a hidden link while the reader scrolls through one of the 21
   // sections outside the demo path — leave the last visible demo link active instead.
   if (document.documentElement.getAttribute("data-view") === "interview") {
     const link = document.querySelector(`.sidebar a[data-tab="${name}"]`);
@@ -4335,17 +4405,17 @@ function buildFeed() {
 }
 
 /* ---------- Guided tour ----------
-   All 20 sidebar sections, in sidebar order. Every caption traces to one of three sources,
+   All 21 sidebar sections, in sidebar order. Every caption traces to one of three sources,
    nothing invented: 4 stops (costroll/margin/vendorscorecard/bbcinv) keep their original,
    already-tested INTERVIEW_TALKING_POINTS.md-sourced captions unchanged; 5 more
    (timephasedpnl/yieldmix/energyvar/laboreff/infra) paraphrase that same file's other
-   sections; the remaining 11 adapt each tool's own already-shipped `.desc` copy. Reuses
+   sections; the remaining 12 adapt each tool's own already-shipped `.desc` copy. Reuses
    scrollToSection (the same nav function the sidebar/cmdk use) rather than a separate scroll
-   mechanism. startTour() force-exits Interview Mode first (see below) since 20 of these 25
+   mechanism. startTour() force-exits Interview Mode first (see below) since 21 of these 26
    stops are non-demo sections Interview Mode hides entirely. */
 const TOUR_STEPS = [
-  { tab: "overview", title: "The whole engine, one screen", caption: "This walkthrough covers all 25 sections in the sidebar, in order — every tool's status rolls up into one verdict banner right here, alongside a findings feed of every flagged item across every tool, worst first." },
-  { tab: "architecture", title: "How the pipeline is wired", caption: "Data sources feed dbt_pipeline's staging/mart models, which feed 18 of the 20 tools — 18 sharing one KPI registry, 16 also sharing one flagging engine. Click any source box or shared-layer box below to trace its exact data-flow path through the diagram." },
+  { tab: "overview", title: "The whole engine, one screen", caption: "This walkthrough covers all 26 sections in the sidebar, in order — every tool's status rolls up into one verdict banner right here, alongside a findings feed of every flagged item across every tool, worst first." },
+  { tab: "architecture", title: "How the pipeline is wired", caption: "Data sources feed dbt_pipeline's staging/mart models, which feed 18 of the 21 tools — 18 sharing one KPI registry, 17 also sharing one flagging engine. Click any source box or shared-layer box below to trace its exact data-flow path through the diagram." },
   { tab: "dbt", title: "From hand-shaped files to a real pipeline", caption: "Right now the tools each read a hand-shaped sample file directly. This section shows what a real raw-export → tested-transformation → analysis pipeline in front of them looks like: 34 raw seeds → dbt staging (a malformed value becomes NULL and gets flagged, never crashes the load) → mart models shaped exactly like each tool's real input." },
   { tab: "narrator", title: "AI commentary, verified before it ships", caption: "The model-drafted narrative here is illustrative only — the numbers underneath are always code-computed, never model output. Direction is independently sign-checked against the real variance and account type, so a model claiming 'favorable' on an actual cost increase gets rejected before it would ever show here." },
   { tab: "recon", title: "ERP meets CPM", caption: "Two synthetic exports — one shaped like an ERP GL extract, one shaped like a CPM export — reconciled against each other to catch real mismatches and timing differences before they become a close problem." },
@@ -4366,7 +4436,8 @@ const TOUR_STEPS = [
   { tab: "carbonthroughput", title: "A bounded pilot, not a platform claim", caption: "Does pure $-throughput product-mix priority at a plant's own bottleneck diverge from carbon-efficiency priority at that same bottleneck? A single-pass prior-art search found nothing combining Theory-of-Constraints logic with a carbon signal — a genuine white space, so this ships as one constraint, five products, an explicit flag, not a committed feature." },
   { tab: "apdisbursement", title: "Paying on time is only half of it", caption: "Late payments are the obvious risk — but paying too early with no discount reason ties up cash for no benefit. Three independent findings per invoice: late, missed discount (a literal dollar figure), and premature." },
   { tab: "pbcaudit", title: "Duty #5's first tool", caption: "Every other JD duty already had a dedicated tool — audit/tax interface & compliance had zero. Tracks PBC completeness as of an explicit fieldwork date: an item already in progress isn't at-risk, but one untouched with the deadline closing in is." },
-  { tab: "infra", title: "Built against the JD's own highest weight", caption: "Scores discovery observations per domain, weighted by which JD Essential Duty it maps to. Systems, Data & Automation is weighted 5× — the single highest weight of any domain in the job description — and 7 of the 20 tools are tagged directly to it." },
+  { tab: "aigovernance", title: "The JD's own words, made mechanical", caption: "Duty #8 says it explicitly: \"apply AI and automation... without sacrificing control.\" Dollar-weighted cost-center tag coverage gates showback-vs-chargeback readiness; every spend line records whether a documented human-oversight checkpoint exists. Built from generic, publicly-documented FinOps practice only." },
+  { tab: "infra", title: "Built against the JD's own highest weight", caption: "Scores discovery observations per domain, weighted by which JD Essential Duty it maps to. Systems, Data & Automation is weighted 5× — the single highest weight of any domain in the job description — and 8 of the 21 tools are tagged directly to it." },
   { tab: "crosstool", title: "A different shape — reading the other 14", caption: "The 15th tool doesn't own its own domain data — it reads a findings feed spanning the other 14 tools' already-verified results and produces one prioritized, guardrailed action list. Try the sandbox below: build a hypothetical recommendation and watch it run through the real hallucination/coverage/priority-consistency checks." },
   { tab: "glossary", title: "Every example, a real number", caption: "Same discipline as everywhere else in this repo: every example here is a real number from a real run of the tool it describes — nothing invented for this page. Three formula terms have a live calculator — change the numbers and watch the result recompute." },
 ];
@@ -4423,7 +4494,7 @@ function goToTourStep() {
   tourHighlightTimer = setTimeout(tourHighlightTarget, 350);
 }
 function startTour() {
-  // Interview Mode hides 20 of these 25 stops' sections entirely (display:none) -- scrolling
+  // Interview Mode hides 21 of these 26 stops' sections entirely (display:none) -- scrolling
   // to a hidden section is a silent no-op, so a tour started there would desync (card
   // advances, page/sidebar don't) the moment it hit any non-demo stop. Force Full Dashboard
   // first so every stop is actually reachable; this is a real, persisted mode switch (same
@@ -4575,7 +4646,7 @@ function revealOnScroll() {
   // after a fixed delay isn't a "harmless no-op" here the way it is for a number that's
   // already finished animating: on a normal FOREGROUND load it would force-reveal every
   // card/KPI still below the fold before the reader ever scrolls to it, silently disabling
-  // the progressive reveal-on-scroll motion for most of a 20-section page (confirmed as a
+  // the progressive reveal-on-scroll motion for most of a 21-section page (confirmed as a
   // real regression, not hypothetical, by independent review). Only fire the fallback if
   // the tab is still genuinely hidden at that moment -- the exact failure mode this exists
   // to cover, nothing broader.
@@ -4632,6 +4703,7 @@ renderApDisbursement();
 renderPbcAudit();
 renderGlVarianceTieOut();
 renderCarbonAdjustedThroughput();
+renderAiAutomationCostGovernor();
 renderCrossToolSynthesis();
 renderGlossary();
 /* KPI Registry inline expandable detail rows. A detail row is a sibling <tr>, not a
@@ -4766,7 +4838,7 @@ wireKpiRegistry(document.getElementById("kpiRegistryTable"));
 wireKpiRegistryFilters(document.getElementById("kpiRegistryTable"));
 makeSortable(document.getElementById("dbtSeedsTable"));
 
-// Post-render enhancement pass — everything here reads the fully-rendered DOM the 20
+// Post-render enhancement pass — everything here reads the fully-rendered DOM the 26
 // render*() calls above just produced, so it must run after all of them, not interleaved.
 setSectionIcons();
 setNavTicks();
@@ -4775,7 +4847,7 @@ buildCmdk();
 // wireGotoButtons() moved here, after buildFeed(): its own doc-comment already says "run
 // last... covers every [data-goto] regardless of which render function produced it" — but
 // buildFeed()'s 69 feed-row buttons (each carrying data-goto) are created by a POST-render
-// call, not one of the 20 render*() functions above. Wiring before buildFeed() ran left
+// call, not one of the 26 render*() functions above. Wiring before buildFeed() ran left
 // every feed-row a dead click (confirmed empirically: row.click() left location.hash
 // unchanged) — this restores the actual invariant the comment describes.
 wireGotoButtons();
