@@ -1939,7 +1939,7 @@ function renderOverview() {
         <i class="ph ph-pulse verdict-ico"></i>
         <div>
           <div class="verdict-title">Engine status</div>
-          <div class="verdict-sub">${tabsActive.length} tools active &middot; ${flaggedCount} surfacing findings &middot; ${cleanCount} clean &middot; 454/454 pytest &amp; 181/181 dbt tests passing</div>
+          <div class="verdict-sub">${tabsActive.length} tools active &middot; ${flaggedCount} surfacing findings &middot; ${cleanCount} clean &middot; 638/638 pytest &amp; 182/182 dbt tests passing</div>
         </div>
         <div class="verdict-figure"><span class="verdict-big">${findingsCount}</span><span class="verdict-cap">findings</span></div>
       </div>
@@ -1970,7 +1970,7 @@ function renderOverview() {
         <div class="label">top-priority discovery gap — ${DOMAIN_LABELS[topGap.domain]} (weighted ${topGap.weight}× as the JD centerpiece)</div>
       </div>
       <div class="kpi">
-        <div class="num">454/454</div>
+        <div class="num">638/638</div>
         <div class="label">pytest cases passing across every component — edge cases included, not just the happy path</div>
       </div>
       <div class="kpi">
@@ -2041,7 +2041,7 @@ function renderOverview() {
       </button>
       <button class="tool-card" style="--accent: var(--series-7)" data-goto="dbt">
         <h3>Data Pipeline (dbt)</h3>
-        <p>Raw exports → tested dbt staging/mart models → the exact input shape each tool already expects. 181/181 dbt tests, 37/37 loaders confirmed byte-identical to the file-based path, plus a 6-model Airbyte-fed sibling layer the tools can now actually read via --source postgres-airbyte, and a deep-audit verification layer (row-conservation, guardrail canaries, cross-source tie-out).</p>
+        <p>Raw exports → tested dbt staging/mart models → the exact input shape each tool already expects. 182/182 dbt tests, 38/38 loaders confirmed byte-identical to the file-based path, plus a 6-model Airbyte-fed sibling layer the tools can now actually read via --source postgres-airbyte, and a deep-audit verification layer (row-conservation, guardrail canaries, cross-source tie-out).</p>
       </button>
       <button class="tool-card" style="--accent: var(--series-8)" data-goto="ap">
         <h3>AP 3-Way Match</h3>
@@ -4197,7 +4197,7 @@ function renderArchitecture() {
   // component processing all 5 sources, not 5 distinct tools, so it's drawn as one wide
   // band (same pattern as the shared-layer/outputs boxes below) rather than 5 copies of
   // the same box. Belongs to every column's group -- every traced column's path runs through it.
-  boxes += `<foreignObject x="20" y="${dbtY}" width="860" height="${dbtH}"><button xmlns="http://www.w3.org/1999/xhtml" type="button" class="arch-box arch-outputs-box arch-el" data-arch-group="${ALL_COLS}" data-goto="dbt" style="--accent:var(--series-7)"><p><strong>dbt_pipeline</strong> — staging + mart models, one table per source above (181/181 dbt tests) — plus a parallel Airbyte-fed sibling layer wired into every eligible tool, and a deep-audit verification layer</p></button></foreignObject>`;
+  boxes += `<foreignObject x="20" y="${dbtY}" width="860" height="${dbtH}"><button xmlns="http://www.w3.org/1999/xhtml" type="button" class="arch-box arch-outputs-box arch-el" data-arch-group="${ALL_COLS}" data-goto="dbt" style="--accent:var(--series-7)"><p><strong>dbt_pipeline</strong> — staging + mart models, one table per source above (182/182 dbt tests) — plus a parallel Airbyte-fed sibling layer wired into every eligible tool, and a deep-audit verification layer</p></button></foreignObject>`;
   cols.forEach((c, i) => {
     const g = `col${i}`;
     boxes += `<foreignObject x="${c.x}" y="${toolY}" width="${colW}" height="${toolH}"><button xmlns="http://www.w3.org/1999/xhtml" type="button" class="arch-box arch-el" data-arch-group="${g}" data-goto="${c.tab}" style="--accent:${c.accent}"><h4>${c.tool}</h4><p>${c.toolNote}</p></button></foreignObject>`;
