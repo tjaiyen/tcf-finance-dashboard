@@ -280,6 +280,9 @@
   .kpi-detail-field .kpi-detail-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); display: block; margin-bottom: 1px; }
   .kpi-formula-block { margin: 10px 0; padding: 9px 12px; border-radius: var(--radius-md, 8px); background: color-mix(in srgb, var(--accent) 8%, var(--surface)); border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--border)); font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12.5px; line-height: 1.5; overflow-x: auto; }
   .kpi-example-callout { margin: 10px 0 2px; padding: 9px 12px; border-radius: var(--radius-md, 8px); background: color-mix(in srgb, var(--good) 10%, var(--surface)); border-left: 3px solid var(--good); font-size: 13px; }
+  .kpi-significance-callout { margin: 8px 0 2px; padding: 9px 12px; border-radius: var(--radius-md, 8px); background: color-mix(in srgb, var(--accent) 8%, var(--surface)); border-left: 3px solid var(--accent); font-size: 13px; }
+  .kpi-significance-callout .kpi-detail-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); display: block; margin-bottom: 2px; }
+  .kpi-sig-caption { margin-top: 5px; font-size: 11px; color: var(--text-muted); font-style: italic; }
   /* Spotlight: a brief attention pulse on the row a reader is dropped onto, then it fades to
      the same steady state as any other row -- draws the eye without leaving a permanent mark. */
   @keyframes kpiSpotlightPulse { 0%, 100% { background: transparent; } 25%, 75% { background: color-mix(in srgb, var(--accent) 16%, transparent); } }
@@ -1889,6 +1892,74 @@ const KPI_DETAILS = {
     formula: "check_cost_baseline_materiality(sum(pv_period) - bac, bac, tolerance): flagged = abs(sum(pv_period) - bac)/bac > tolerance",
     example: "Every phased work package in this repo's fixture sums its monthly PV to exactly its BAC (0.0 deviation, inside 1%); WP-EQ-03 (Spare parts) has NO baseline rows at all, caught by the distinct 'no baseline PV on file' guard rather than this sum-tolerance check.",
   },
+};
+
+/* ---- narrate(type, value, opts): a plain-language read of one value ----
+   Deterministic value-significance narrator, copied verbatim from tcf-bridge/insight.js.
+   types: cpi | spi | tcpi | variancePct | currency | pctComplete | onTimeRate | ratio | count
+   opts:  { band, favorable (bool), unit, subject } — all optional. Rule-based, no LLM. */
+function narrate(type, value, opts){
+  opts = opts || {};
+  var v = value, band = opts.band;
+  function pct(x){ return (x*100).toFixed(x*100 % 1 === 0 ? 0 : 1) + "%"; }
+  switch(type){
+    case "cpi": case "spi": {
+      var kind = type === "cpi" ? "cost" : "schedule";
+      var cents = Math.round(v * 100);
+      var read = v >= 1
+        ? "at or ahead of plan — not eating into contingency"
+        : v >= 0.95
+          ? "slipping, but inside the 0.95 watch band — monitor, don't escalate yet"
+          : "below the 0.95 floor — needs a recovery plan, not just watching";
+      return "You're earning about " + cents + "¢ of planned work for every $1 of " + kind + " so far. " + read + ".";
+    }
+    case "tcpi":
+      return v > 1
+        ? "The remaining work would have to run at " + v.toFixed(3) + " efficiency to still finish on budget — i.e. BEAT the plan. That's a recovery red flag; the budget is likely gone."
+        : "The remaining work only needs " + v.toFixed(3) + " efficiency to finish on budget — achievable at the current run rate.";
+    case "variancePct": {
+      var mag = Math.abs(v), dir = opts.favorable ? "favorable" : "unfavorable";
+      var over = band != null && mag > band;
+      return pct(mag) + " " + dir + " vs. the baseline. " + (over
+        ? "That exceeds the ±" + pct(band) + " materiality band, so a written variance analysis is triggered."
+        : "That's inside the ±" + (band!=null?pct(band):"5%") + " band — routine noise, no write-up needed.");
+    }
+    case "currency": {
+      var d = opts.favorable == null ? "" : (opts.favorable ? " favorable" : " unfavorable");
+      return "$" + Math.abs(v).toLocaleString() + d + (opts.subject ? " — " + opts.subject : "") + ".";
+    }
+    case "pctComplete":
+      return pct(v) + " of the budget-at-completion has been physically earned so far.";
+    case "onTimeRate":
+      return pct(v) + " of promised deliveries arrived on time. " + (band!=null && v < band
+        ? "Below the " + pct(band) + " floor — a supplier-reliability flag."
+        : "At or above the " + (band!=null?pct(band):"85%") + " floor.");
+    case "count":
+      return v + " " + (opts.unit || "item(s)") + (opts.subject ? " — " + opts.subject : "") + ".";
+    default:
+      return String(value) + (opts.subject ? " — " + opts.subject : "");
+  }
+}
+
+/* ---- KPI_SIGNIFICANCE: for KPI-registry controls whose "Real example" carries a clean
+   metric type + value + threshold, map that control to a narrate() call using the SAME real
+   numbers already stated in its example. Controls without a clean type/threshold are omitted
+   deliberately (no fabricated values). Surfaced as a "Significance" line in the KPI detail row. */
+const KPI_SIGNIFICANCE = {
+  variance_materiality_threshold:             { type: "variancePct", value: 0.317, opts: { band: 0.05, favorable: false } },
+  cost_roll_validation_band:                  { type: "variancePct", value: 0.199, opts: { band: 0.10, favorable: true } },
+  ap_price_variance_band:                     { type: "variancePct", value: 0.25,  opts: { band: 0.05, favorable: false } },
+  ap_qty_overbill_band:                       { type: "variancePct", value: 0.111, opts: { band: 0.02, favorable: false } },
+  yield_mix_variance_materiality_band:        { type: "variancePct", value: 0.12,  opts: { band: 0.05, favorable: false } },
+  energy_variance_materiality_band:           { type: "variancePct", value: 0.294, opts: { band: 0.05, favorable: false } },
+  labor_efficiency_variance_materiality_band: { type: "variancePct", value: 0.25,  opts: { band: 0.05, favorable: false } },
+  vendor_scorecard_price_variance_band:       { type: "variancePct", value: 0.125, opts: { band: 0.05, favorable: false } },
+  vendor_scorecard_on_time_delivery_rate_floor:{ type: "onTimeRate", value: 0.0,   opts: { band: 0.85 } },
+  cycle_count_variance_materiality_band:      { type: "variancePct", value: 0.40,  opts: { band: 0.05, favorable: false } },
+  evm_variance_analysis_band:                 { type: "variancePct", value: 0.25,  opts: { band: 0.10, favorable: false } },
+  evm_index_watch_threshold:                  { type: "cpi",  value: 1.017 },
+  evm_index_risk_threshold:                   { type: "cpi",  value: 0.80 },
+  evm_eac_realism_band:                       { type: "tcpi", value: 1.20 },
 };
 
 const fmt$ = (n) => (n < 0 ? "-$" : "$") + Math.abs(n).toLocaleString(undefined, { maximumFractionDigits: 0 });
@@ -5685,12 +5756,19 @@ renderGlossary();
 function renderKpiDetailRow(name) {
   const d = KPI_DETAILS[name];
   if (!d) return "";
+  // For controls whose example carries a clean metric type + value + threshold, append a
+  // deterministic "Significance" line computed by narrate() from those same real numbers.
+  const sig = KPI_SIGNIFICANCE[name];
+  const sigHtml = sig
+    ? `<div class="kpi-significance-callout"><span class="kpi-detail-label">Significance</span>${esc(narrate(sig.type, sig.value, sig.opts))}<div class="kpi-sig-caption">Rule-based reading — computed from the example value and its threshold, not a live model.</div></div>`
+    : "";
   return `<tr class="kpi-detail-row" data-kpi-detail-for="${name}"><td colspan="4">
     <div class="kpi-detail-field"><i class="ph ph-book-open"></i><div><span class="kpi-detail-label">What it is</span>${esc(d.explanation)}</div></div>
     <div class="kpi-detail-field"><i class="ph ph-target"></i><div><span class="kpi-detail-label">Why it exists</span>${esc(d.purpose)}</div></div>
     <div class="kpi-detail-field"><i class="ph ph-lightbulb"></i><div><span class="kpi-detail-label">What a flag means</span>${esc(d.insight)}</div></div>
     <div class="kpi-formula-block"><i class="ph ph-function" style="margin-right:6px;color:var(--text-muted)"></i>${esc(d.formula)}</div>
     <div class="kpi-example-callout"><strong>Real example:</strong> ${esc(d.example)}</div>
+    ${sigHtml}
   </td></tr>`;
 }
 function openKpiDetail(name, table) {
