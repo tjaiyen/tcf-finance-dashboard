@@ -25,7 +25,7 @@ searches across all tools and findings.
 - **Dark-first UI** with a live palette (Nocturne/Vivid/Mono) and density (Comfortable/Compact)
   switcher, a command palette (`⌘K`) that jumps to any tool or finding, and an **Interview
   Mode** toggle that collapses the view down to a short guided walkthrough.
-- **25 tools** spanning cost accounting, AP/procurement, compliance, and operational readiness —
+- **26 tools** spanning cost accounting, AP/procurement, compliance, and operational readiness —
   reachable from the sidebar, with an Overview panel that rolls every tool's status up into one
   screen. Includes a bounded research pilot (Carbon-Adjusted Throughput) that's explicit about
   its own limits — see that tab's own disclosure, not a polished "finished feature." The two
@@ -48,8 +48,9 @@ searches across all tools and findings.
 
 This is a standalone snapshot published for sharing — it does not include the underlying Python
 tools, tests, dbt pipeline, or any other project documentation. All data shown is synthetic
-sample data, disclosed as such in the page's own footer. 18 of the 25 tools have an optional dbt
+sample data, disclosed as such in the page's own footer. 19 of the 26 tools have an optional dbt
 layer in the source repo (`tcf-engine-prep`, private); `gl_variance_tie_out`,
 `carbon_adjusted_throughput_analyzer`, `ai_automation_cost_governor`,
-`gaap_cost_compliance_checker`, and `data_provenance_auditor` are file-based only, no dbt layer
+`gaap_cost_compliance_checker`, `data_provenance_auditor`, and `document_version_control_auditor`
+are file-based only, and `grower_settlement_analyzer` joins them as the seventh — no dbt layer
 yet — a named follow-up, disclosed on their own tabs, not an oversight.

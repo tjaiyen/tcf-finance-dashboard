@@ -4671,7 +4671,7 @@
     --series-9:#c0a07f; --series-10:#8fb0e0; --series-11:#c9a06a; --series-12:#7fc0b0;
     --series-13:#b09fd6; --series-14:#d0997f; --series-15:#8090c0; --series-16:#c9b878;
     --series-17:#8fbf9f; --series-18:#c188a8; --series-19:#7fb0a8; --series-20:#d68fa0; --series-21:#c9a878;
-    --series-22:#7fada8; --series-23:#a3c47f; --series-24:#a88fc9; --series-25:#c9944f; --series-26:#7f9fc9;
+    --series-22:#7fada8; --series-23:#a3c47f; --series-24:#a88fc9; --series-25:#c9944f; --series-26:#7f9fc9; --series-27:#6fb0c9;
     --good:#5fb07a; --warning:#d6a94a; --serious:#d68a5e; --critical:#d66a63;
   }
   [data-theme="light"] {
@@ -4696,7 +4696,7 @@
     --series-9:#856a4a; --series-10:#4a6aa0; --series-11:#8a6a3c; --series-12:#3f8f7f;
     --series-13:#6a5aa0; --series-14:#a3634e; --series-15:#3c5578; --series-16:#7a6a33;
     --series-17:#4f7c59; --series-18:#8f5a7a; --series-19:#3f7c74; --series-20:#a8425a; --series-21:#8a6a2e;
-    --series-22:#3f7a72; --series-23:#5f8a3f; --series-24:#6a4a8a; --series-25:#8a5f2f; --series-26:#3f5f8a;
+    --series-22:#3f7a72; --series-23:#5f8a3f; --series-24:#6a4a8a; --series-25:#8a5f2f; --series-26:#3f5f8a; --series-27:#3f88a0;
     /* Darkened from the original #2f8f5a/#a8791e/#a8603e/#a84a44 -- those measured
        1.94-2.97:1 text-vs-pill-background contrast in this theme, below WCAG AA's 4.5:1.
        Same hue/saturation, lightness reduced until each cleared 4.5:1 (verified 4.79-4.84:1
@@ -4720,6 +4720,7 @@
   [data-tab="glvariance"]{--tab-color:var(--series-22)} [data-tab="carbonthroughput"]{--tab-color:var(--series-23)}
   [data-tab="aigovernance"]{--tab-color:var(--series-24)}
   [data-tab="gaapcompliance"]{--tab-color:var(--series-25)} [data-tab="dataprovenance"]{--tab-color:var(--series-26)}
+  [data-tab="earnedvalue"]{--tab-color:var(--series-27)}
   [data-tab="crosstool"]{--tab-color:var(--series-18)} [data-tab="glossary"]{--tab-color:var(--text-muted)}
 
   /* palette · Vivid — the original high-signal tool colours */
@@ -4881,6 +4882,9 @@
   .kpi-detail-field .kpi-detail-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); display: block; margin-bottom: 1px; }
   .kpi-formula-block { margin: 10px 0; padding: 9px 12px; border-radius: var(--radius-md, 8px); background: color-mix(in srgb, var(--accent) 8%, var(--surface)); border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--border)); font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12.5px; line-height: 1.5; overflow-x: auto; }
   .kpi-example-callout { margin: 10px 0 2px; padding: 9px 12px; border-radius: var(--radius-md, 8px); background: color-mix(in srgb, var(--good) 10%, var(--surface)); border-left: 3px solid var(--good); font-size: 13px; }
+  .kpi-significance-callout { margin: 8px 0 2px; padding: 9px 12px; border-radius: var(--radius-md, 8px); background: color-mix(in srgb, var(--accent) 8%, var(--surface)); border-left: 3px solid var(--accent); font-size: 13px; }
+  .kpi-significance-callout .kpi-detail-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); display: block; margin-bottom: 2px; }
+  .kpi-sig-caption { margin-top: 5px; font-size: 11px; color: var(--text-muted); font-style: italic; }
   /* Spotlight: a brief attention pulse on the row a reader is dropped onto, then it fades to
      the same steady state as any other row -- draws the eye without leaving a permanent mark. */
   @keyframes kpiSpotlightPulse { 0%, 100% { background: transparent; } 25%, 75% { background: color-mix(in srgb, var(--accent) 16%, transparent); } }
@@ -5236,9 +5240,9 @@
   .switcher-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
 
   /* ---- Interview Mode — declutters the default click-path down to the 5 tools the
-     live-demo walkthrough uses. The 26 non-demo sections are actually hidden below
+     live-demo walkthrough uses. The 27 non-demo sections are actually hidden below
      (display:none), not just their nav links -- a bare scroll/#hash into one of them is
-     a no-op while Interview Mode is active. The 31-stop "Take the tour" forces Full
+     a no-op while Interview Mode is active. The 32-stop "Take the tour" forces Full
      Dashboard mode before it starts (see startTour()) specifically so every stop stays
      reachable regardless of which mode the page loaded in. */
   [data-view="interview"] #cmdkOpen,
@@ -5358,7 +5362,7 @@
     <div>
       <div class="kicker">Finance Automation Engine</div>
       <h1>Operations Dashboard</h1>
-      <div class="sub">A live read over 25 already-built, stress-tested components + a shared KPI registry &mdash; synthetic sample data throughout, every figure from a real deterministic tool run.</div>
+      <div class="sub">A live read over 26 already-built, stress-tested components + a shared KPI registry &mdash; synthetic sample data throughout, every figure from a real deterministic tool run.</div>
       <div class="nav-hint">New here? Click <strong>Interview Mode</strong> (top right) for a simplified 5-tool view, or explore the sidebar / press <kbd>&#8984;K</kbd> to search any tool or finding.</div>
     </div>
     <div class="top-actions">
@@ -5370,7 +5374,7 @@
         <span class="switcher-label">Density</span>
         <button class="theme-toggle" id="densityToggle" title="Toggle layout density"><i class="ph ph-rows"></i>Comfortable</button>
       </div>
-      <button class="theme-toggle" id="tourStart" title="A guided 31-stop walkthrough covering every tool and reference tab on the dashboard, in sidebar order"><i class="ph ph-compass"></i>Take the tour</button>
+      <button class="theme-toggle" id="tourStart" title="A guided 32-stop walkthrough covering every tool and reference tab on the dashboard, in sidebar order"><i class="ph ph-compass"></i>Take the tour</button>
       <button class="cmdk-open" id="cmdkOpen"><i class="ph ph-magnifying-glass"></i>Search<kbd>&#8984;K</kbd></button>
       <button class="theme-toggle" id="themeToggle"><i class="ph ph-moon-stars"></i>Toggle theme</button>
       <button class="theme-toggle" id="modeToggle" title="Toggle interview-ready view (hides search, switchers, and non-demo tools)"><i class="ph ph-presentation-chart"></i>Full Dashboard</button>
@@ -5404,6 +5408,7 @@
         <a href="#laboreff" data-tab="laboreff"><span class="idx">15</span><span>Labor Efficiency</span></a>
         <a href="#cyclecount" data-tab="cyclecount"><span class="idx">21</span><span>Cycle Count Reconciler</span></a>
         <a href="#carbonthroughput" data-tab="carbonthroughput"><span class="idx">25</span><span>Carbon-Adjusted Throughput</span></a>
+        <a href="#earnedvalue" data-tab="earnedvalue"><span class="idx">31</span><span>Earned Value Manager</span></a>
       </div>
       <div class="nav-group">
         <div class="nav-group-label">Procurement</div>
@@ -5416,7 +5421,7 @@
         <a href="#opsmonitor" data-tab="opsmonitor"><span class="idx">14</span><span>Operations Monitor</span></a>
         <a href="#fsma" data-tab="fsma"><span class="idx">13</span><span>FSMA Traceability</span></a>
         <a href="#bbcinv" data-tab="bbcinv" data-demo><span class="idx">16</span><span>BBC Inventory</span></a>
-        <a href="#grower" data-tab="grower"><span class="idx">31</span><span>Grower Settlement</span></a>
+        <a href="#grower" data-tab="grower"><span class="idx">32</span><span>Grower Settlement</span></a>
         <a href="#pbcaudit" data-tab="pbcaudit"><span class="idx">23</span><span>PBC Audit Tracker</span></a>
         <a href="#aigovernance" data-tab="aigovernance"><span class="idx">26</span><span>AI/Automation Cost Governor</span></a>
         <a href="#dataprovenance" data-tab="dataprovenance"><span class="idx">28</span><span>Data Provenance Auditor</span></a>
@@ -5506,7 +5511,7 @@
         <div id="panel-bbcinv"></div>
       </section>
       <section class="section" id="section-grower" aria-labelledby="heading-grower">
-        <div class="section-title" data-tab="grower"><span class="section-num">31</span><span class="section-dot"></span><h1 id="heading-grower">Grower Settlement</h1></div>
+        <div class="section-title" data-tab="grower"><span class="section-num">32</span><span class="section-dot"></span><h1 id="heading-grower">Grower Settlement</h1></div>
         <div id="panel-grower"></div>
       </section>
       <section class="section" id="section-timephasedpnl" aria-labelledby="heading-timephasedpnl">
@@ -5552,6 +5557,10 @@
       <section class="section" id="section-docversioncontrol" aria-labelledby="heading-docversioncontrol">
         <div class="section-title" data-tab="docversioncontrol"><span class="section-num">29</span><span class="section-dot"></span><h1 id="heading-docversioncontrol">Document Version Control</h1></div>
         <div id="panel-docversioncontrol"></div>
+      </section>
+      <section class="section" id="section-earnedvalue" aria-labelledby="heading-earnedvalue">
+        <div class="section-title" data-tab="earnedvalue"><span class="section-num">31</span><span class="section-dot"></span><h1 id="heading-earnedvalue">Earned Value Manager</h1></div>
+        <div id="panel-earnedvalue"></div>
       </section>
       <section class="section" id="section-crosstool" aria-labelledby="heading-crosstool">
         <div class="section-title" data-tab="crosstool"><span class="section-num">19</span><span class="section-dot"></span><h1 id="heading-crosstool">Cross-Tool Insight Synthesizer</h1></div>
@@ -6145,6 +6154,12 @@ const DATA = {
   ],
 };
 
+/* ---------- Earned Value Manager (EVM) — capital-project & pack-season program controls ----------
+   Transcribed verbatim from a real earned_value_manager run (evm_nodes.json + evm_scurve.json):
+   23 WBS nodes across two programs (CP-L3 capital freezer expansion, PP-CORN26 pack season) plus
+   each project's planned-PV S-curve. Sample data — same no-fabrication posture as every tool here. */
+DATA.earnedValue = { nodes: [{"wbs_id":"CP-L3","level":"project","name":"Pasco Line-3 IQF Freezer Expansion","cost_account":"","claiming_method":"","pv":3195000,"ev":2871000,"ac":3000000,"bac":4460000,"cv":-129000,"sv":-324000,"cv_pct":-0.04493207941483804,"sv_pct":-0.10140845070422536,"cpi":0.957,"spi":0.8985915492957747,"pct_complete":0.6437219730941705,"cpi_status":"watch","spi_status":"at_risk","eac_typical":4589000,"eac_cpi":4660397.074190178,"eac_composite":4847777.3082680665,"eac_reforecast":4730997.2677595625,"eac_mc_p50":4692069.645326713,"eac_mc_p80":4749299.135460773,"etc":1660397.074190178,"vac":-200397.07419017795,"tcpi_bac":1.0883561643835618,"tcpi_eac":0.9569999999999999,"contract_value":4200000,"revenue_recognized":2703632.2869955157,"flagged":true,"reasons":["variance analysis required -- schedule variance (SV) $-324,000.00 is 10.1% of PV $3,195,000.00 (exceeds 10% band)","SPI 0.899 at risk (below 0.95)","TCPI-to-BAC 1.088 > 1.0 -- remaining work must beat plan to finish at budget","at-budget forecast not credible -- TCPI-to-BAC 1.088 exceeds CPI 0.957 by more than 0.05; EAC $4,660,397 (VAC $-200,397) is the honest number"],"excluded_from_rollup":false,"parent_id":null},{"wbs_id":"CA-ENG","level":"control_account","name":"Engineering & Design","cost_account":"5410-ENG","claiming_method":"","pv":480000,"ev":480000,"ac":465000,"bac":480000,"cv":15000,"sv":0,"cv_pct":0.03125,"sv_pct":0,"cpi":1.032258064516129,"spi":1,"pct_complete":1,"cpi_status":"good","spi_status":"good","eac_typical":465000,"eac_cpi":465000,"eac_composite":465000,"eac_reforecast":465000,"eac_mc_p50":null,"eac_mc_p80":null,"etc":0,"vac":15000,"tcpi_bac":0,"tcpi_eac":null,"contract_value":null,"revenue_recognized":null,"flagged":false,"reasons":[],"excluded_from_rollup":false,"parent_id":"CP-L3"},{"wbs_id":"WP-ENG-01","level":"work_package","name":"Process & mechanical design","cost_account":"5410-ENG","claiming_method":"percent_complete","pv":300000,"ev":300000,"ac":295000,"bac":300000,"cv":5000,"sv":0,"cv_pct":0.016666666666666666,"sv_pct":0,"cpi":1.0169491525423728,"spi":1,"pct_complete":1,"cpi_status":"good","spi_status":"good","eac_typical":295000,"eac_cpi":295000,"eac_composite":295000,"eac_reforecast":null,"eac_mc_p50":null,"eac_mc_p80":null,"etc":0,"vac":5000,"tcpi_bac":0,"tcpi_eac":null,"contract_value":null,"revenue_recognized":null,"flagged":false,"reasons":[],"excluded_from_rollup":false,"parent_id":"CA-ENG"},{"wbs_id":"WP-ENG-02","level":"work_package","name":"Controls & electrical design","cost_account":"5410-ENG","claiming_method":"percent_complete","pv":180000,"ev":180000,"ac":170000,"bac":180000,"cv":10000,"sv":0,"cv_pct":0.05555555555555555,"sv_pct":0,"cpi":1.0588235294117647,"spi":1,"pct_complete":1,"cpi_status":"good","spi_status":"good","eac_typical":170000,"eac_cpi":170000,"eac_composite":170000,"eac_reforecast":null,"eac_mc_p50":null,"eac_mc_p80":null,"etc":0,"vac":10000,"tcpi_bac":0,"tcpi_eac":null,"contract_value":null,"revenue_recognized":null,"flagged":false,"reasons":[],"excluded_from_rollup":false,"parent_id":"CA-ENG"},{"wbs_id":"CA-EQUIP","level":"control_account","name":"Equipment Procurement","cost_account":"5420-EQP","claiming_method":"","pv":1260000,"ev":1166000,"ac":1210000,"bac":1800000,"cv":-44000,"sv":-94000,"cv_pct":-0.03773584905660377,"sv_pct":-0.0746031746031746,"cpi":0.9636363636363636,"spi":0.9253968253968254,"pct_complete":0.6477777777777778,"cpi_status":"watch","spi_status":"at_risk","eac_typical":1844000,"eac_cpi":1867924.5283018867,"eac_composite":1920964.7561409753,"eac_reforecast":1865163.9344262294,"eac_mc_p50":1875786.0653603803,"eac_mc_p80":1892391.2432267494,"etc":657924.5283018867,"vac":-67924.52830188675,"tcpi_bac":1.0745762711864406,"tcpi_eac":0.9636363636363637,"contract_value":null,"revenue_recognized":null,"flagged":true,"reasons":["SPI 0.925 at risk (below 0.95)","TCPI-to-BAC 1.075 > 1.0 -- remaining work must beat plan to finish at budget","at-budget forecast not credible -- TCPI-to-BAC 1.075 exceeds CPI 0.964 by more than 0.05; EAC $1,867,925 (VAC $-67,925) is the honest number"],"excluded_from_rollup":false,"parent_id":"CP-L3"},{"wbs_id":"WP-EQ-01","level":"work_package","name":"IQF freezer & spiral belts","cost_account":"5420-EQP","claiming_method":"units","pv":900000,"ev":800000,"ac":850000,"bac":1200000,"cv":-50000,"sv":-100000,"cv_pct":-0.0625,"sv_pct":-0.1111111111111111,"cpi":0.9411764705882353,"spi":0.8888888888888888,"pct_complete":0.6666666666666666,"cpi_status":"at_risk","spi_status":"at_risk","eac_typical":1250000,"eac_cpi":1275000,"eac_composite":1328125,"eac_reforecast":null,"eac_mc_p50":1282570.688321521,"eac_mc_p80":1299313.9235709598,"etc":425000,"vac":-75000,"tcpi_bac":1.1428571428571428,"tcpi_eac":0.9411764705882353,"contract_value":null,"revenue_recognized":null,"flagged":true,"reasons":["variance analysis required -- schedule variance (SV) $-100,000.00 is 11.1% of PV $900,000.00 (exceeds 10% band)","CPI 0.941 at risk (below 0.95)","SPI 0.889 at risk (below 0.95)","TCPI-to-BAC 1.143 > 1.0 -- remaining work must beat plan to finish at budget","at-budget forecast not credible -- TCPI-to-BAC 1.143 exceeds CPI 0.941 by more than 0.05; EAC $1,275,000 (VAC $-75,000) is the honest number"],"excluded_from_rollup":false,"parent_id":"CA-EQUIP"},{"wbs_id":"WP-EQ-02","level":"work_package","name":"Packaging line equipment","cost_account":"5420-EQP","claiming_method":"percent_complete","pv":360000,"ev":366000,"ac":360000,"bac":600000,"cv":6000,"sv":6000,"cv_pct":0.01639344262295082,"sv_pct":0.016666666666666666,"cpi":1.0166666666666666,"spi":1.0166666666666666,"pct_complete":0.61,"cpi_status":"good","spi_status":"good","eac_typical":594000,"eac_cpi":590163.9344262296,"eac_composite":586390.7551733406,"eac_reforecast":null,"eac_mc_p50":590179.6883555173,"eac_mc_p80":591583.8227663543,"etc":230163.93442622956,"vac":9836.065573770436,"tcpi_bac":0.975,"tcpi_eac":1.0166666666666664,"contract_value":null,"revenue_recognized":null,"flagged":false,"reasons":[],"excluded_from_rollup":false,"parent_id":"CA-EQUIP"},{"wbs_id":"WP-EQ-03","level":"work_package","name":"Spare parts inventory","cost_account":"5420-EQP","claiming_method":"percent_complete","pv":null,"ev":null,"ac":null,"bac":null,"cv":null,"sv":null,"cv_pct":null,"sv_pct":null,"cpi":null,"spi":null,"pct_complete":null,"cpi_status":"","spi_status":"","eac_typical":null,"eac_cpi":null,"eac_composite":null,"eac_reforecast":null,"eac_mc_p50":null,"eac_mc_p80":null,"etc":null,"vac":null,"tcpi_bac":null,"tcpi_eac":null,"contract_value":null,"revenue_recognized":null,"flagged":true,"reasons":["no baseline planned-value (PV) on file -- cannot compute SV or SPI"],"excluded_from_rollup":true,"parent_id":"CA-EQUIP"},{"wbs_id":"CA-CONST","level":"control_account","name":"Construction & Install","cost_account":"5430-CON","claiming_method":"","pv":1310000,"ev":1080000,"ac":1155000,"bac":1750000,"cv":-75000,"sv":-230000,"cv_pct":-0.06944444444444445,"sv_pct":-0.17557251908396945,"cpi":0.935064935064935,"spi":0.8244274809160306,"pct_complete":0.6171428571428571,"cpi_status":"at_risk","spi_status":"at_risk","eac_typical":1825000,"eac_cpi":1871527.7777777778,"eac_composite":2024121.6563786007,"eac_reforecast":1935833.3333333333,"eac_mc_p50":1900864.3120533417,"eac_mc_p80":1946166.867096311,"etc":716527.7777777778,"vac":-121527.77777777775,"tcpi_bac":1.1260504201680672,"tcpi_eac":0.935064935064935,"contract_value":null,"revenue_recognized":null,"flagged":true,"reasons":["variance analysis required -- schedule variance (SV) $-230,000.00 is 17.6% of PV $1,310,000.00 (exceeds 10% band)","CPI 0.935 at risk (below 0.95)","SPI 0.824 at risk (below 0.95)","TCPI-to-BAC 1.126 > 1.0 -- remaining work must beat plan to finish at budget","at-budget forecast not credible -- TCPI-to-BAC 1.126 exceeds CPI 0.935 by more than 0.05; EAC $1,871,528 (VAC $-121,528) is the honest number"],"excluded_from_rollup":false,"parent_id":"CP-L3"},{"wbs_id":"WP-CON-01","level":"work_package","name":"Building & foundation","cost_account":"5430-CON","claiming_method":"0_100","pv":500000,"ev":500000,"ac":490000,"bac":500000,"cv":10000,"sv":0,"cv_pct":0.02,"sv_pct":0,"cpi":1.0204081632653061,"spi":1,"pct_complete":1,"cpi_status":"good","spi_status":"good","eac_typical":490000,"eac_cpi":490000,"eac_composite":490000,"eac_reforecast":null,"eac_mc_p50":null,"eac_mc_p80":null,"etc":0,"vac":10000,"tcpi_bac":0,"tcpi_eac":null,"contract_value":null,"revenue_recognized":null,"flagged":false,"reasons":[],"excluded_from_rollup":false,"parent_id":"CA-CONST"},{"wbs_id":"WP-CON-02","level":"work_package","name":"Mechanical installation","cost_account":"5430-CON","claiming_method":"percent_complete","pv":420000,"ev":280000,"ac":350000,"bac":700000,"cv":-70000,"sv":-140000,"cv_pct":-0.25,"sv_pct":-0.3333333333333333,"cpi":0.8,"spi":0.6666666666666666,"pct_complete":0.4,"cpi_status":"at_risk","spi_status":"at_risk","eac_typical":770000,"eac_cpi":875000,"eac_composite":1137500,"eac_reforecast":null,"eac_mc_p50":917876.7430348052,"eac_mc_p80":998598.056169109,"etc":525000,"vac":-175000,"tcpi_bac":1.2,"tcpi_eac":0.8,"contract_value":null,"revenue_recognized":null,"flagged":true,"reasons":["variance analysis required -- cost variance (CV) $-70,000.00 is 25.0% of EV $280,000.00 (exceeds 10% band)","variance analysis required -- schedule variance (SV) $-140,000.00 is 33.3% of PV $420,000.00 (exceeds 10% band)","CPI 0.800 at risk (below 0.95)","SPI 0.667 at risk (below 0.95)","TCPI-to-BAC 1.200 > 1.0 -- remaining work must beat plan to finish at budget","at-budget forecast not credible -- TCPI-to-BAC 1.200 exceeds CPI 0.800 by more than 0.05; EAC $875,000 (VAC $-175,000) is the honest number"],"excluded_from_rollup":false,"parent_id":"CA-CONST"},{"wbs_id":"WP-CON-03","level":"work_package","name":"Refrigeration piping","cost_account":"5430-CON","claiming_method":"milestone","pv":300000,"ev":240000,"ac":260000,"bac":400000,"cv":-20000,"sv":-60000,"cv_pct":-0.08333333333333333,"sv_pct":-0.2,"cpi":0.9230769230769231,"spi":0.8,"pct_complete":0.6,"cpi_status":"at_risk","spi_status":"at_risk","eac_typical":420000,"eac_cpi":433333.3333333333,"eac_composite":476666.6666666666,"eac_reforecast":null,"eac_mc_p50":441627.0065972856,"eac_mc_p80":454505.6398152071,"etc":173333.3333333333,"vac":-33333.333333333314,"tcpi_bac":1.1428571428571428,"tcpi_eac":0.9230769230769231,"contract_value":null,"revenue_recognized":null,"flagged":true,"reasons":["variance analysis required -- schedule variance (SV) $-60,000.00 is 20.0% of PV $300,000.00 (exceeds 10% band)","CPI 0.923 at risk (below 0.95)","SPI 0.800 at risk (below 0.95)","TCPI-to-BAC 1.143 > 1.0 -- remaining work must beat plan to finish at budget","at-budget forecast not credible -- TCPI-to-BAC 1.143 exceeds CPI 0.923 by more than 0.05; EAC $433,333 (VAC $-33,333) is the honest number"],"excluded_from_rollup":false,"parent_id":"CA-CONST"},{"wbs_id":"WP-CON-04","level":"work_package","name":"Site preparation","cost_account":"5430-CON","claiming_method":"percent_complete","pv":null,"ev":null,"ac":null,"bac":null,"cv":null,"sv":null,"cv_pct":null,"sv_pct":null,"cpi":null,"spi":null,"pct_complete":null,"cpi_status":"","spi_status":"","eac_typical":null,"eac_cpi":null,"eac_composite":null,"eac_reforecast":null,"eac_mc_p50":null,"eac_mc_p80":null,"etc":null,"vac":null,"tcpi_bac":null,"tcpi_eac":null,"contract_value":null,"revenue_recognized":null,"flagged":true,"reasons":["no actual cost (AC) on file -- cannot compute CPI or a credible forecast"],"excluded_from_rollup":true,"parent_id":"CA-CONST"},{"wbs_id":"WP-QA-01","level":"work_package","name":"QA/QC inspection","cost_account":"5430-CON","claiming_method":"apportioned","pv":90000,"ev":60000,"ac":55000,"bac":150000,"cv":5000,"sv":-30000,"cv_pct":0.08333333333333333,"sv_pct":-0.3333333333333333,"cpi":1.0909090909090908,"spi":0.6666666666666666,"pct_complete":0.4,"cpi_status":"good","spi_status":"at_risk","eac_typical":145000,"eac_cpi":137500,"eac_composite":178750,"eac_reforecast":null,"eac_mc_p50":149581.84527605493,"eac_mc_p80":160302.43918562675,"etc":82500,"vac":12500,"tcpi_bac":0.9473684210526315,"tcpi_eac":1.0909090909090908,"contract_value":null,"revenue_recognized":null,"flagged":true,"reasons":["variance analysis required -- schedule variance (SV) $-30,000.00 is 33.3% of PV $90,000.00 (exceeds 10% band)","SPI 0.667 at risk (below 0.95)"],"excluded_from_rollup":false,"parent_id":"CA-CONST"},{"wbs_id":"CA-COMM","level":"control_account","name":"Commissioning & Startup","cost_account":"5440-COM","claiming_method":"","pv":25000,"ev":25000,"ac":40000,"bac":250000,"cv":-15000,"sv":0,"cv_pct":-0.6,"sv_pct":0,"cpi":0.625,"spi":1,"pct_complete":0.1,"cpi_status":"at_risk","spi_status":"good","eac_typical":265000,"eac_cpi":400000,"eac_composite":400000,"eac_reforecast":270000,"eac_mc_p50":360459.4154601839,"eac_mc_p80":385747.6707849887,"etc":360000,"vac":-150000,"tcpi_bac":1.0714285714285714,"tcpi_eac":0.625,"contract_value":null,"revenue_recognized":null,"flagged":true,"reasons":["variance analysis required -- cost variance (CV) $-15,000.00 is 60.0% of EV $25,000.00 (exceeds 10% band)","CPI 0.625 at risk (below 0.95)","TCPI-to-BAC 1.071 > 1.0 -- remaining work must beat plan to finish at budget","at-budget forecast not credible -- TCPI-to-BAC 1.071 exceeds CPI 0.625 by more than 0.05; EAC $400,000 (VAC $-150,000) is the honest number"],"excluded_from_rollup":false,"parent_id":"CP-L3"},{"wbs_id":"WP-COMM-01","level":"work_package","name":"Commissioning & startup","cost_account":"5440-COM","claiming_method":"percent_complete","pv":25000,"ev":25000,"ac":40000,"bac":250000,"cv":-15000,"sv":0,"cv_pct":-0.6,"sv_pct":0,"cpi":0.625,"spi":1,"pct_complete":0.1,"cpi_status":"at_risk","spi_status":"good","eac_typical":265000,"eac_cpi":400000,"eac_composite":400000,"eac_reforecast":270000,"eac_mc_p50":360459.4154601839,"eac_mc_p80":385747.6707849887,"etc":360000,"vac":-150000,"tcpi_bac":1.0714285714285714,"tcpi_eac":0.625,"contract_value":null,"revenue_recognized":null,"flagged":true,"reasons":["variance analysis required -- cost variance (CV) $-15,000.00 is 60.0% of EV $25,000.00 (exceeds 10% band)","CPI 0.625 at risk (below 0.95)","TCPI-to-BAC 1.071 > 1.0 -- remaining work must beat plan to finish at budget","at-budget forecast not credible -- TCPI-to-BAC 1.071 exceeds CPI 0.625 by more than 0.05; EAC $400,000 (VAC $-150,000) is the honest number"],"excluded_from_rollup":false,"parent_id":"CA-COMM"},{"wbs_id":"WP-XX-01","level":"work_package","name":"Unscoped change order","cost_account":"5440-COM","claiming_method":"percent_complete","pv":null,"ev":null,"ac":null,"bac":null,"cv":null,"sv":null,"cv_pct":null,"sv_pct":null,"cpi":null,"spi":null,"pct_complete":null,"cpi_status":"","spi_status":"","eac_typical":null,"eac_cpi":null,"eac_composite":null,"eac_reforecast":null,"eac_mc_p50":null,"eac_mc_p80":null,"etc":null,"vac":null,"tcpi_bac":null,"tcpi_eac":null,"contract_value":null,"revenue_recognized":null,"flagged":true,"reasons":["no BAC on file for this work package -- cannot compute earned value or indices"],"excluded_from_rollup":true,"parent_id":"CA-COMM"},{"wbs_id":"CA-PM","level":"control_account","name":"Project Management","cost_account":"5450-PM","claiming_method":"","pv":120000,"ev":120000,"ac":130000,"bac":180000,"cv":-10000,"sv":0,"cv_pct":-0.08333333333333333,"sv_pct":0,"cpi":0.9230769230769231,"spi":1,"pct_complete":0.6666666666666666,"cpi_status":"at_risk","spi_status":"good","eac_typical":190000,"eac_cpi":195000,"eac_composite":195000,"eac_reforecast":195000,"eac_mc_p50":193535.53390593274,"eac_mc_p80":194472.1359549996,"etc":65000,"vac":-15000,"tcpi_bac":1.2,"tcpi_eac":0.9230769230769231,"contract_value":null,"revenue_recognized":null,"flagged":true,"reasons":["CPI 0.923 at risk (below 0.95)","TCPI-to-BAC 1.200 > 1.0 -- remaining work must beat plan to finish at budget","at-budget forecast not credible -- TCPI-to-BAC 1.200 exceeds CPI 0.923 by more than 0.05; EAC $195,000 (VAC $-15,000) is the honest number"],"excluded_from_rollup":false,"parent_id":"CP-L3"},{"wbs_id":"WP-PM-01","level":"work_package","name":"Program management","cost_account":"5450-PM","claiming_method":"loe","pv":120000,"ev":120000,"ac":130000,"bac":180000,"cv":-10000,"sv":0,"cv_pct":-0.08333333333333333,"sv_pct":0,"cpi":0.9230769230769231,"spi":1,"pct_complete":0.6666666666666666,"cpi_status":"at_risk","spi_status":"good","eac_typical":190000,"eac_cpi":195000,"eac_composite":195000,"eac_reforecast":null,"eac_mc_p50":193535.53390593274,"eac_mc_p80":194472.1359549996,"etc":65000,"vac":-15000,"tcpi_bac":1.2,"tcpi_eac":0.9230769230769231,"contract_value":null,"revenue_recognized":null,"flagged":true,"reasons":["CPI 0.923 at risk (below 0.95)","TCPI-to-BAC 1.200 > 1.0 -- remaining work must beat plan to finish at budget","at-budget forecast not credible -- TCPI-to-BAC 1.200 exceeds CPI 0.923 by more than 0.05; EAC $195,000 (VAC $-15,000) is the honest number"],"excluded_from_rollup":false,"parent_id":"CA-PM"},{"wbs_id":"PP-CORN26","level":"project","name":"2026 Sweet Corn Pack Season","cost_account":"","claiming_method":"","pv":420000,"ev":696000,"ac":820000,"bac":1200000,"cv":-124000,"sv":276000,"cv_pct":-0.1781609195402299,"sv_pct":0.6571428571428571,"cpi":0.848780487804878,"spi":1.6571428571428573,"pct_complete":0.58,"cpi_status":"at_risk","spi_status":"good","eac_typical":1324000,"eac_cpi":1413793.103448276,"eac_composite":1178323.4244946493,"eac_reforecast":1478125,"eac_mc_p50":1344825.631246578,"eac_mc_p80":1388933.9080067934,"etc":593793.103448276,"vac":-213793.10344827594,"tcpi_bac":1.3263157894736841,"tcpi_eac":0.8487804878048779,"contract_value":null,"revenue_recognized":null,"flagged":true,"reasons":["variance analysis required -- cost variance (CV) $-124,000.00 is 17.8% of EV $696,000.00 (exceeds 10% band)","variance analysis required -- schedule variance (SV) $+276,000.00 is 65.7% of PV $420,000.00 (exceeds 10% band)","CPI 0.849 at risk (below 0.95)","TCPI-to-BAC 1.326 > 1.0 -- remaining work must beat plan to finish at budget","at-budget forecast not credible -- TCPI-to-BAC 1.326 exceeds CPI 0.849 by more than 0.05; EAC $1,413,793 (VAC $-213,793) is the honest number"],"excluded_from_rollup":false,"parent_id":null},{"wbs_id":"CA-PACK","level":"control_account","name":"Pack Operations","cost_account":"6100-PACK","claiming_method":"","pv":420000,"ev":696000,"ac":820000,"bac":1200000,"cv":-124000,"sv":276000,"cv_pct":-0.1781609195402299,"sv_pct":0.6571428571428571,"cpi":0.848780487804878,"spi":1.6571428571428573,"pct_complete":0.58,"cpi_status":"at_risk","spi_status":"good","eac_typical":1324000,"eac_cpi":1413793.103448276,"eac_composite":1178323.4244946493,"eac_reforecast":1478125,"eac_mc_p50":1344825.631246578,"eac_mc_p80":1388933.9080067934,"etc":593793.103448276,"vac":-213793.10344827594,"tcpi_bac":1.3263157894736841,"tcpi_eac":0.8487804878048779,"contract_value":null,"revenue_recognized":null,"flagged":true,"reasons":["variance analysis required -- cost variance (CV) $-124,000.00 is 17.8% of EV $696,000.00 (exceeds 10% band)","variance analysis required -- schedule variance (SV) $+276,000.00 is 65.7% of PV $420,000.00 (exceeds 10% band)","CPI 0.849 at risk (below 0.95)","TCPI-to-BAC 1.326 > 1.0 -- remaining work must beat plan to finish at budget","at-budget forecast not credible -- TCPI-to-BAC 1.326 exceeds CPI 0.849 by more than 0.05; EAC $1,413,793 (VAC $-213,793) is the honest number"],"excluded_from_rollup":false,"parent_id":"PP-CORN26"},{"wbs_id":"WP-PACK-CORN","level":"work_package","name":"Sweet corn IQF pack","cost_account":"6100-PACK","claiming_method":"units","pv":300000,"ev":576000,"ac":610000,"bac":900000,"cv":-34000,"sv":276000,"cv_pct":-0.059027777777777776,"sv_pct":0.92,"cpi":0.9442622950819672,"spi":1.92,"pct_complete":0.64,"cpi_status":"at_risk","spi_status":"good","eac_typical":934000,"eac_cpi":953125,"eac_composite":788710.9375,"eac_reforecast":null,"eac_mc_p50":904969.2360161789,"eac_mc_p80":935767.3455827596,"etc":343125,"vac":-53125,"tcpi_bac":1.1172413793103448,"tcpi_eac":0.9442622950819672,"contract_value":null,"revenue_recognized":null,"flagged":true,"reasons":["variance analysis required -- schedule variance (SV) $+276,000.00 is 92.0% of PV $300,000.00 (exceeds 10% band)","CPI 0.944 at risk (below 0.95)","TCPI-to-BAC 1.117 > 1.0 -- remaining work must beat plan to finish at budget","at-budget forecast not credible -- TCPI-to-BAC 1.117 exceeds CPI 0.944 by more than 0.05; EAC $953,125 (VAC $-53,125) is the honest number"],"excluded_from_rollup":false,"parent_id":"CA-PACK"},{"wbs_id":"WP-PACK-LABOR","level":"work_package","name":"Seasonal pack labor","cost_account":"6100-PACK","claiming_method":"loe","pv":120000,"ev":120000,"ac":210000,"bac":300000,"cv":-90000,"sv":0,"cv_pct":-0.75,"sv_pct":0,"cpi":0.5714285714285714,"spi":1,"pct_complete":0.4,"cpi_status":"at_risk","spi_status":"good","eac_typical":390000,"eac_cpi":525000,"eac_composite":525000,"eac_reforecast":null,"eac_mc_p50":485459.4154601839,"eac_mc_p80":510747.6707849887,"etc":315000,"vac":-225000,"tcpi_bac":2,"tcpi_eac":0.5714285714285714,"contract_value":null,"revenue_recognized":null,"flagged":true,"reasons":["variance analysis required -- cost variance (CV) $-90,000.00 is 75.0% of EV $120,000.00 (exceeds 10% band)","CPI 0.571 at risk (below 0.95)","TCPI-to-BAC 2.000 > 1.0 -- remaining work must beat plan to finish at budget","at-budget forecast not credible -- TCPI-to-BAC 2.000 exceeds CPI 0.571 by more than 0.05; EAC $525,000 (VAC $-225,000) is the honest number"],"excluded_from_rollup":false,"parent_id":"CA-PACK"}], scurve: {"CP-L3":{"plannedPV":[["2026-01",365000],["2026-02",926000],["2026-03",1487000],["2026-04",2048000],["2026-05",2609000],["2026-06",3195000],["2026-07",3730000],["2026-08",4265000],["2026-09",4460000]],"statusPeriod":"2026-06","ev":2871000,"ac":3000000,"bac":4460000},"PP-CORN26":{"plannedPV":[["2026-05",60000],["2026-06",420000],["2026-07",780000],["2026-08",1140000],["2026-09",1200000]],"statusPeriod":"2026-06","ev":696000,"ac":820000,"bac":1200000}} };
+
 // ---- glossary: hover-tooltips for the jargon this dashboard actually uses. Same pattern
 // as this session's Graph Explorer glossary work (bin/graph-explorer.template.html) — one
 // GLOSSARY array feeds native title= tooltips via esc(), no separate hover-JS component,
@@ -6453,6 +6468,109 @@ const KPI_DETAILS = {
     formula: "check_missing_data(item_count, min_tracked_items): flagged = item_count < min_tracked_items",
     example: "This repo's own fixture tracks 6 PBC items, above the minimum of 4 — 'calendar coverage: 6 PBC data point(s) (meets minimum 4)'.",
   },
+  evm_variance_analysis_band: {
+    explanation: "How large a cost variance (CV as a fraction of EV) or schedule variance (SV as a fraction of PV) may run at a WBS node before that node requires a written variance analysis (a VAR).",
+    purpose: "Makes the classic earned-value ±10% cost/schedule variance trip-wire mechanical. ±10% is INDUSTRY-STANDARD (EIA-748 / typical CPR-CDRL practice), not a Twin City Foods-specific figure — labeled as such so a reviewer knows its provenance; the 0.95 CPI/SPI RAG bands are the separate, softer at-a-glance signal.",
+    insight: "A node past this band is off plan by enough that 'explain it in writing' beats 'watch it' — the same materiality logic the standard-cost tools apply to a dollar variance, here applied to a project's cost/schedule performance.",
+    formula: "check_cost_baseline_materiality(CV, EV, band) and (SV, PV, band): flagged = abs(variance)/baseline > band",
+    example: "Work package WP-CON-02 (Mechanical installation): CV -$70,000 is 25.0% of EV $280,000 and SV -$140,000 is 33.3% of PV $420,000 — both exceed 10%, so the package is flagged for a written variance analysis.",
+  },
+  evm_index_watch_threshold: {
+    explanation: "The CPI/SPI value at or above which a WBS node's performance status is 'good' (on or ahead of plan); below it, the node is at least 'watch'.",
+    purpose: "The green/amber boundary of the harvested EVM RAG banding (≥1.00 good / 0.95–0.999 watch / <0.95 at-risk), sourced from TJ's own EVM reference; separates 'on plan' from 'slipping' before a node crosses the harder at-risk floor.",
+    insight: "An index at or above 1.00 means a dollar of budgeted work is being earned for a dollar of cost (CPI) or on schedule (SPI) — the node is not consuming its contingency.",
+    formula: "evm_index_status(index, watch_threshold, risk_threshold): 'good' if index >= watch_threshold",
+    example: "Work package WP-EQ-02 (Packaging line equipment): CPI 1.017 (≥1.00) → 'good' on cost; a node at CPI 0.80 (WP-CON-02) falls below both this and the 0.95 floor → 'at_risk'.",
+  },
+  evm_index_risk_threshold: {
+    explanation: "The CPI/SPI floor below which a WBS node's status escalates from 'watch' to 'at_risk'.",
+    purpose: "The amber/red boundary of the harvested EVM RAG banding. A node under this floor is eroding budget/schedule fast enough to escalate, distinct from the softer 'watch' band just above it.",
+    insight: "Below 0.95, more than a nickel on the dollar of budgeted work is being lost to cost (CPI) or schedule (SPI) — the node needs a recovery plan, not just monitoring.",
+    formula: "evm_index_status(index, watch_threshold, risk_threshold): 'at_risk' if index < risk_threshold, 'watch' if risk_threshold <= index < watch_threshold",
+    example: "Work package WP-CON-02 (Mechanical installation): CPI 0.80 and SPI 0.667 are both below the 0.95 floor → 'at_risk' on both cost and schedule.",
+  },
+  evm_eac_realism_band: {
+    explanation: "How far the to-complete performance index (TCPI, the efficiency the remaining work must achieve to still finish at BAC) may exceed the cost efficiency achieved so far (CPI) before the at-budget forecast is flagged as unrealistic.",
+    purpose: "The standard EVM realism test: a program cannot usually recover to budget if the efficiency it now needs (TCPI) far outruns the efficiency it has demonstrated (CPI). A TCPI more than this band above CPI means the BAC-based forecast is not credible and the CPI-based EAC is the honest number.",
+    insight: "When TCPI-to-BAC sits well above CPI, 'we'll make it up on the back half' is not supported by the run rate — the forecast should move to the EAC, and VAC (the projected overrun) is the number to manage.",
+    formula: "earned_value_manager: flagged = (tcpi_to_bac - cpi) > evm_eac_realism_band",
+    example: "Work package WP-CON-02: TCPI-to-BAC 1.20 vs CPI 0.80 — a 0.40 gap, far above the 0.05 band, so the at-budget forecast is flagged unrealistic; the CPI-based EAC $875,000 (VAC -$175,000) is the credible number.",
+  },
+  evm_baseline_pv_sum_tolerance: {
+    explanation: "How far a work package's time-phased planned-value curve may sum away from its budget-at-completion (BAC) before the baseline is flagged as internally inconsistent.",
+    purpose: "A performance measurement baseline is only sound if each work package's planned value fully time-phases its own budget: the monthly PV must sum to BAC. This catches a mis-phased or truncated baseline at load — the same load-time integrity discipline time_phased_pnl_analyzer's curve-sum tolerance applies to a phasing curve.",
+    insight: "Every rolled-up SV and SPI is only trustworthy if the planned-value curve underneath it actually accounts for the whole budget — a package whose PV doesn't sum to BAC is measuring schedule against an incomplete plan.",
+    formula: "check_cost_baseline_materiality(sum(pv_period) - bac, bac, tolerance): flagged = abs(sum(pv_period) - bac)/bac > tolerance",
+    example: "Every phased work package in this repo's fixture sums its monthly PV to exactly its BAC (0.0 deviation, inside 1%); WP-EQ-03 (Spare parts) has NO baseline rows at all, caught by the distinct 'no baseline PV on file' guard rather than this sum-tolerance check.",
+  },
+};
+
+/* ---- narrate(type, value, opts): a plain-language read of one value ----
+   Deterministic value-significance narrator, copied verbatim from tcf-bridge/insight.js.
+   types: cpi | spi | tcpi | variancePct | currency | pctComplete | onTimeRate | ratio | count
+   opts:  { band, favorable (bool), unit, subject } — all optional. Rule-based, no LLM. */
+function narrate(type, value, opts){
+  opts = opts || {};
+  var v = value, band = opts.band;
+  function pct(x){ return (x*100).toFixed(x*100 % 1 === 0 ? 0 : 1) + "%"; }
+  switch(type){
+    case "cpi": case "spi": {
+      var kind = type === "cpi" ? "cost" : "schedule";
+      var cents = Math.round(v * 100);
+      var read = v >= 1
+        ? "at or ahead of plan — not eating into contingency"
+        : v >= 0.95
+          ? "slipping, but inside the 0.95 watch band — monitor, don't escalate yet"
+          : "below the 0.95 floor — needs a recovery plan, not just watching";
+      return "You're earning about " + cents + "¢ of planned work for every $1 of " + kind + " so far. " + read + ".";
+    }
+    case "tcpi":
+      return v > 1
+        ? "The remaining work would have to run at " + v.toFixed(3) + " efficiency to still finish on budget — i.e. BEAT the plan. That's a recovery red flag; the budget is likely gone."
+        : "The remaining work only needs " + v.toFixed(3) + " efficiency to finish on budget — achievable at the current run rate.";
+    case "variancePct": {
+      var mag = Math.abs(v), dir = opts.favorable ? "favorable" : "unfavorable";
+      var over = band != null && mag > band;
+      return pct(mag) + " " + dir + " vs. the baseline. " + (over
+        ? "That exceeds the ±" + pct(band) + " materiality band, so a written variance analysis is triggered."
+        : "That's inside the ±" + (band!=null?pct(band):"5%") + " band — routine noise, no write-up needed.");
+    }
+    case "currency": {
+      var d = opts.favorable == null ? "" : (opts.favorable ? " favorable" : " unfavorable");
+      return "$" + Math.abs(v).toLocaleString() + d + (opts.subject ? " — " + opts.subject : "") + ".";
+    }
+    case "pctComplete":
+      return pct(v) + " of the budget-at-completion has been physically earned so far.";
+    case "onTimeRate":
+      return pct(v) + " of promised deliveries arrived on time. " + (band!=null && v < band
+        ? "Below the " + pct(band) + " floor — a supplier-reliability flag."
+        : "At or above the " + (band!=null?pct(band):"85%") + " floor.");
+    case "count":
+      return v + " " + (opts.unit || "item(s)") + (opts.subject ? " — " + opts.subject : "") + ".";
+    default:
+      return String(value) + (opts.subject ? " — " + opts.subject : "");
+  }
+}
+
+/* ---- KPI_SIGNIFICANCE: for KPI-registry controls whose "Real example" carries a clean
+   metric type + value + threshold, map that control to a narrate() call using the SAME real
+   numbers already stated in its example. Controls without a clean type/threshold are omitted
+   deliberately (no fabricated values). Surfaced as a "Significance" line in the KPI detail row. */
+const KPI_SIGNIFICANCE = {
+  variance_materiality_threshold:             { type: "variancePct", value: 0.317, opts: { band: 0.05, favorable: false } },
+  cost_roll_validation_band:                  { type: "variancePct", value: 0.199, opts: { band: 0.10, favorable: true } },
+  ap_price_variance_band:                     { type: "variancePct", value: 0.25,  opts: { band: 0.05, favorable: false } },
+  ap_qty_overbill_band:                       { type: "variancePct", value: 0.111, opts: { band: 0.02, favorable: false } },
+  yield_mix_variance_materiality_band:        { type: "variancePct", value: 0.12,  opts: { band: 0.05, favorable: false } },
+  energy_variance_materiality_band:           { type: "variancePct", value: 0.294, opts: { band: 0.05, favorable: false } },
+  labor_efficiency_variance_materiality_band: { type: "variancePct", value: 0.25,  opts: { band: 0.05, favorable: false } },
+  vendor_scorecard_price_variance_band:       { type: "variancePct", value: 0.125, opts: { band: 0.05, favorable: false } },
+  vendor_scorecard_on_time_delivery_rate_floor:{ type: "onTimeRate", value: 0.0,   opts: { band: 0.85 } },
+  cycle_count_variance_materiality_band:      { type: "variancePct", value: 0.40,  opts: { band: 0.05, favorable: false } },
+  evm_variance_analysis_band:                 { type: "variancePct", value: 0.25,  opts: { band: 0.10, favorable: false } },
+  evm_index_watch_threshold:                  { type: "cpi",  value: 1.017 },
+  evm_index_risk_threshold:                   { type: "cpi",  value: 0.80 },
+  evm_eac_realism_band:                       { type: "tcpi", value: 1.20 },
 };
 
 const fmt$ = (n) => (n < 0 ? "-$" : "$") + Math.abs(n).toLocaleString(undefined, { maximumFractionDigits: 0 });
@@ -6590,6 +6708,7 @@ function computeToolStatus() {
     gaapcompliance: f(d.gaapCompliance.dispositionResults.some(r => r.flagged) || d.gaapCompliance.valuationResults.some(r => r.flagged)),
     dataprovenance: f(d.dataProvenance.results.some(r => r.flagged)),
     docversioncontrol: f(d.documentVersionControl.results.some(r => r.flagged)),
+    earnedvalue: f(d.earnedValue.nodes.some(n => n.flagged)),
     crosstool: f(d.crossToolSynthesis.recommendations.some(r => r.urgency === "immediate" || r.urgency === "this_week")),
     glossary: "na",
   };
@@ -6631,6 +6750,7 @@ function computeFindings() {
   d.gaapCompliance.valuationResults.filter(r => r.flagged).forEach(r => add("gaapcompliance", "GAAP Compliance", "serious", r.product + ": " + r.reason));
   d.dataProvenance.results.filter(r => r.flagged).forEach(r => add("dataprovenance", "Data Provenance", "warning", r.sourceTool + " (" + r.matchColumn + "=" + r.matchValue + "): " + r.reason));
   d.documentVersionControl.results.filter(r => r.flagged).forEach(r => add("docversioncontrol", "Document Version Control", "warning", r.docId + " v" + r.versionNumber + " (" + r.filename + "): " + r.reason));
+  d.earnedValue.nodes.filter(n => n.flagged).forEach(n => add("earnedvalue", "Earned Value Manager", n.excluded_from_rollup ? "serious" : "warning", n.wbs_id + " (" + n.name + "): " + (n.reasons[0] || "flagged")));
   const URGENCY_SEV = { immediate: "critical", this_week: "serious", this_month: "warning", monitor: "good" };
   d.crossToolSynthesis.recommendations.forEach(r => add("crosstool", "Cross-Tool Synthesis", URGENCY_SEV[r.urgency] || "warning", r.action));
   return out;
@@ -6644,7 +6764,7 @@ const TOOL_ICONS = {
   cyclecount: "list-checks", apdisbursement: "credit-card", pbcaudit: "clipboard-text",
   glvariance: "scales", carbonthroughput: "leaf", aigovernance: "robot",
   gaapcompliance: "seal-check", dataprovenance: "fingerprint",
-  docversioncontrol: "clock-counter-clockwise",
+  docversioncontrol: "clock-counter-clockwise", earnedvalue: "gauge",
   crosstool: "brain", glossary: "book-open",
 };
 function setSectionIcons() {
@@ -6685,6 +6805,7 @@ function renderOverview() {
   const bbcInventoryFlaggedCount = DATA.bbcInventory.lines.filter(l => l.flagged).length;
   const timePhasedPnlFlaggedCount = DATA.timePhasedPnl.periods.filter(p => p.flagged || p.cumFlagged).length;
   const vendorScorecardFlaggedCount = DATA.vendorScorecard.vendors.filter(v => v.flagged).length;
+  const earnedValueFlaggedCount = DATA.earnedValue.nodes.filter(n => n.flagged).length;
 
   const st = computeToolStatus();
   const tabsActive = Object.keys(st).filter(t => st[t] !== "na");
@@ -6699,7 +6820,7 @@ function renderOverview() {
         <i class="ph ph-pulse verdict-ico"></i>
         <div>
           <div class="verdict-title">Engine status</div>
-          <div class="verdict-sub">${tabsActive.length} components active &middot; ${flaggedCount} surfacing findings &middot; ${cleanCount} clean &middot; 661 pytest cases &amp; 182/182 dbt tests passing</div>
+          <div class="verdict-sub">${tabsActive.length} components active &middot; ${flaggedCount} surfacing findings &middot; ${cleanCount} clean &middot; 674 pytest cases &amp; 195/195 dbt tests passing</div>
         </div>
         <div class="verdict-figure"><span class="verdict-big">${findingsCount}</span><span class="verdict-cap">findings</span></div>
       </div>
@@ -6730,7 +6851,7 @@ function renderOverview() {
         <div class="label">top-priority discovery gap — ${DOMAIN_LABELS[topGap.domain]} (weighted ${topGap.weight}× as the JD centerpiece)</div>
       </div>
       <div class="kpi">
-        <div class="num">661</div>
+        <div class="num">674</div>
         <div class="label">pytest cases passing across every component — edge cases included, not just the happy path</div>
       </div>
       <div class="kpi">
@@ -6773,6 +6894,10 @@ function renderOverview() {
         <div class="num">${vendorScorecardFlaggedCount} of ${DATA.vendorScorecard.vendors.length}</div>
         <div class="label">vendors flagged by the performance scorecard — completeness, delivery, price, or estimated internal-process impact</div>
       </div>
+      <div class="kpi">
+        <div class="num">${earnedValueFlaggedCount} of ${DATA.earnedValue.nodes.length}</div>
+        <div class="label">WBS nodes flagged by the earned value manager — a ±10% cost/schedule variance, a CPI/SPI breach, an unrealistic at-budget forecast, or a baseline-data guard failure</div>
+      </div>
     </div>
     <div class="tool-grid">
       <button class="tool-card" style="--accent: var(--series-2)" data-goto="narrator">
@@ -6801,7 +6926,7 @@ function renderOverview() {
       </button>
       <button class="tool-card" style="--accent: var(--series-7)" data-goto="dbt">
         <h3>Data Pipeline (dbt)</h3>
-        <p>Raw exports → tested dbt staging/mart models → the exact input shape each tool already expects. 182/182 dbt tests, 38/38 loaders confirmed byte-identical to the file-based path, plus a 6-model Airbyte-fed sibling layer the tools can now actually read via --source postgres-airbyte, and a deep-audit verification layer (row-conservation, guardrail canaries, cross-source tie-out).</p>
+        <p>Raw exports → tested dbt staging/mart models → the exact input shape each tool already expects. 195/195 dbt tests, 38/38 loaders confirmed byte-identical to the file-based path, plus a 6-model Airbyte-fed sibling layer the tools can now actually read via --source postgres-airbyte, and a deep-audit verification layer (row-conservation, guardrail canaries, cross-source tie-out).</p>
       </button>
       <button class="tool-card" style="--accent: var(--series-8)" data-goto="ap">
         <h3>AP 3-Way Match</h3>
@@ -6842,6 +6967,10 @@ function renderOverview() {
       <button class="tool-card" style="--accent: var(--series-17)" data-goto="vendorscorecard">
         <h3>Vendor Scorecard</h3>
         <p>On-time-delivery and price-variance rates rolled up per vendor — the first vendor-level aggregation in this repo — plus an illustrative days-late × criticality-$/day estimate of the internal-process impact an unreliable vendor creates.</p>
+      </button>
+      <button class="tool-card" style="--accent: var(--series-27)" data-goto="earnedvalue">
+        <h3>Earned Value Manager</h3>
+        <p>Full EVM over a WBS tree — CPI/SPI RAG banding, six EAC forecasting methods (typical, CPI, CPI×SPI, reforecast, Monte-Carlo p50/p80), TCPI realism test, and the ±10% variance-analysis trip-wire — for capital projects and pack-season programs.</p>
       </button>
       <button class="tool-card" style="--accent: var(--series-19)" data-goto="cyclecount">
         <h3>Cycle Count Reconciler</h3>
@@ -8075,6 +8204,171 @@ function renderTimePhasedPnl() {
   `;
 }
 
+/* ---------- Earned Value Manager (EVM) ---------- */
+function renderEarnedValue() {
+  const d = DATA.earnedValue;
+  const nodes = d.nodes;
+  const byId = (id) => nodes.find(n => n.wbs_id === id);
+  const projects = nodes.filter(n => n.level === "project");
+  const f3 = (n) => (n === null || n === undefined) ? "—" : n.toFixed(3);
+  const money = (n) => (n === null || n === undefined) ? "—" : fmt$(n);
+  const ragKind = (status) => status === "good" ? "good" : status === "watch" ? "warning" : status === "at_risk" ? "critical" : "warning";
+  const ragLabel = (status) => status === "good" ? "Good" : status === "watch" ? "Watch" : status === "at_risk" ? "At risk" : "—";
+  const ragPill = (status) => status ? statusPill(ragKind(status), ragLabel(status)) : "";
+  const indentFor = { project: 0, control_account: 1, work_package: 2 };
+
+  // (a) Two project scorecards (CP-L3, PP-CORN26)
+  const scorecards = projects.map(p => `
+    <div class="card">
+      <h2>${p.wbs_id} — ${p.name}</h2>
+      <div class="desc">${fmtRate(p.pct_complete)} complete · Cost ${f3(p.cpi)} CPI ${ragPill(p.cpi_status)} · Schedule ${f3(p.spi)} SPI ${ragPill(p.spi_status)}</div>
+      <table>
+        <tbody>
+          <tr><td>Budget at completion (BAC)</td><td class="num">${money(p.bac)}</td></tr>
+          <tr><td>Earned value (EV)</td><td class="num">${money(p.ev)}</td></tr>
+          <tr><td>Actual cost (AC)</td><td class="num">${money(p.ac)}</td></tr>
+          <tr><td>Cost variance (CV)</td><td class="num">${money(p.cv)}</td></tr>
+          <tr><td>Schedule variance (SV)</td><td class="num">${money(p.sv)}</td></tr>
+          <tr><td>Forecast at completion (EAC, CPI-based)</td><td class="num">${money(p.eac_cpi)}</td></tr>
+          <tr><td>Variance at completion (VAC)</td><td class="num">${money(p.vac)}</td></tr>
+          ${p.revenue_recognized != null ? `<tr><td>Revenue recognized (% complete × contract ${money(p.contract_value)})</td><td class="num">${money(p.revenue_recognized)}</td></tr>` : ""}
+        </tbody>
+      </table>
+    </div>`).join("");
+
+  // (b) EAC-methods fan for CP-L3
+  const cp = byId("CP-L3");
+  const eacMethods = [
+    ["Typical (BAC − EV) ÷ 1", cp.eac_typical],
+    ["CPI-based (BAC − EV) ÷ CPI", cp.eac_cpi],
+    ["Composite (CPI × SPI)", cp.eac_composite],
+    ["Bottom-up reforecast", cp.eac_reforecast],
+    ["Monte-Carlo p50", cp.eac_mc_p50],
+    ["Monte-Carlo p80", cp.eac_mc_p80],
+  ];
+  const eacMax = Math.max(...eacMethods.map(m => m[1] || 0));
+  const eacRows = eacMethods.map(([label, val]) => {
+    const pct = eacMax ? (val / eacMax) * 100 : 0;
+    return `
+      <tr>
+        <td>${label}</td>
+        <td class="num">${money(val)}</td>
+        <td class="num">${money(val == null ? null : cp.bac - val)}</td>
+        <td style="width:34%"><div style="background:var(--series-27);height:11px;border-radius:3px;width:${pct.toFixed(1)}%"></div></td>
+      </tr>`;
+  }).join("");
+
+  // (c) WBS tree
+  const wbsRows = nodes.map(n => {
+    const pad = 8 + (indentFor[n.level] || 0) * 20;
+    const statusCell = n.excluded_from_rollup
+      ? statusPill("warning", "Guard")
+      : (n.cpi_status === "at_risk" || n.spi_status === "at_risk") ? statusPill("critical", "At risk")
+      : (n.cpi_status === "watch" || n.spi_status === "watch") ? statusPill("warning", "Watch")
+      : statusPill("good", "On plan");
+    const main = `
+      <tr>
+        <td style="padding-left:${pad}px">${n.wbs_id} · ${n.name}</td>
+        <td class="num">${money(n.pv)}</td>
+        <td class="num">${money(n.ev)}</td>
+        <td class="num">${money(n.ac)}</td>
+        <td class="num">${money(n.bac)}</td>
+        <td class="num">${money(n.cv)}</td>
+        <td class="num">${money(n.sv)}</td>
+        <td class="num">${f3(n.cpi)}</td>
+        <td class="num">${f3(n.spi)}</td>
+        <td class="num">${money(n.eac_cpi)}</td>
+        <td class="num">${money(n.vac)}</td>
+        <td class="num">${f3(n.tcpi_bac)}</td>
+        <td>${statusCell}</td>
+      </tr>`;
+    const reasonRow = n.excluded_from_rollup && n.reasons.length
+      ? `<tr><td></td><td colspan="12" style="color:var(--text-muted)">${n.reasons.join("; ")}</td></tr>`
+      : "";
+    return main + reasonRow;
+  }).join("");
+
+  // (d) S-curve SVG (planned PV line + EV/AC markers at status period)
+  const scurveSvg = (projId) => {
+    const sc = d.scurve[projId];
+    const pv = sc.plannedPV;
+    const maxY = Math.max(sc.bac, sc.ev, sc.ac);
+    const W = 700, H = 250, padL = 66, padR = 14, padT = 16, padB = 34;
+    const iw = W - padL - padR, ih = H - padT - padB;
+    const xat = (i) => padL + (pv.length === 1 ? 0 : (i / (pv.length - 1)) * iw);
+    const yat = (v) => padT + ih - (v / maxY) * ih;
+    const spIdx = pv.findIndex(p => p[0] === sc.statusPeriod);
+    const spX = xat(spIdx < 0 ? pv.length - 1 : spIdx);
+    const linePts = pv.map((p, i) => `${xat(i).toFixed(1)},${yat(p[1]).toFixed(1)}`).join(" ");
+    const gridY = [0, 0.25, 0.5, 0.75, 1].map(t => {
+      const v = maxY * t, y = yat(v);
+      return `<line x1="${padL}" y1="${y.toFixed(1)}" x2="${W - padR}" y2="${y.toFixed(1)}" stroke="var(--border)" stroke-width="1"/>`
+        + `<text x="${padL - 6}" y="${(y + 3).toFixed(1)}" text-anchor="end" font-size="10" fill="var(--text-muted)">${fmt$(v)}</text>`;
+    }).join("");
+    const xlab = pv.map((p, i) => `<text x="${xat(i).toFixed(1)}" y="${H - 10}" text-anchor="middle" font-size="10" fill="var(--text-muted)">${p[0].slice(5)}</text>`).join("");
+    return `<svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}" role="img" aria-label="${projId} planned-value S-curve with earned-value and actual-cost markers at ${sc.statusPeriod}">
+      ${gridY}
+      <line x1="${spX.toFixed(1)}" y1="${padT}" x2="${spX.toFixed(1)}" y2="${padT + ih}" stroke="var(--text-muted)" stroke-width="1" stroke-dasharray="3 3"/>
+      <polyline points="${linePts}" fill="none" stroke="var(--series-27)" stroke-width="2"/>
+      <circle cx="${spX.toFixed(1)}" cy="${yat(sc.ev).toFixed(1)}" r="5" fill="var(--good, #8fbf9f)"/>
+      <circle cx="${spX.toFixed(1)}" cy="${yat(sc.ac).toFixed(1)}" r="5" fill="var(--series-20)"/>
+      ${xlab}
+    </svg>
+    <div style="font-size:11.5px;color:var(--text-muted);margin-top:4px"><span style="color:var(--series-27)">■</span> Planned value (PV) &nbsp; <span style="color:#8fbf9f">●</span> Earned value (EV) ${fmt$(sc.ev)} &nbsp; <span style="color:var(--series-20)">●</span> Actual cost (AC) ${fmt$(sc.ac)} &nbsp;·&nbsp; status ${sc.statusPeriod}, BAC ${fmt$(sc.bac)}</div>`;
+  };
+
+  // (e) Variance analyses required
+  const flaggedNodes = nodes.filter(n => n.flagged);
+  const varRows = flaggedNodes.map(n => `
+    <tr>
+      <td>${n.wbs_id}</td>
+      <td>${n.name}</td>
+      <td style="color:var(--text-secondary)">${(n.reasons || []).join("; ") || "flagged"}</td>
+    </tr>`).join("");
+
+  document.getElementById("panel-earnedvalue").innerHTML = `
+    <div class="card">
+      <h2>Earned Value Manager — WBS-level cost/schedule performance &amp; forecasting</h2>
+      <div class="desc">Full earned-value management (EVM) over a work-breakdown-structure (WBS) tree, for the capital projects and pack-season programs a food processor runs alongside its recurring cost accounting. Two programs here: <strong>CP-L3</strong>, a Pasco Line-3 IQF freezer expansion (a capital project with a contract value and recognized revenue), and <strong>PP-CORN26</strong>, the 2026 sweet-corn pack season (a program that runs ahead of schedule but over cost). For every node it computes CPI/SPI with a Red/Amber/Green band (≥1.00 good / 0.95–0.999 watch / &lt;0.95 at-risk), six EAC forecasting methods, a to-complete performance index (TCPI) realism test, and the industry-standard ±10% cost/schedule <span>variance-analysis trip-wire</span>. <strong>Sample data</strong> — a real, deterministic <code>earned_value_manager</code> run transcribed verbatim; same no-fabrication posture as every tool on this page.</div>
+    </div>
+    <div class="tool-grid">${scorecards}</div>
+    <div class="card">
+      <h2>EAC forecasting methods — CP-L3 (which number do you believe?)</h2>
+      <div class="desc">Six independent ways to forecast the estimate-at-completion for the capital project, from the optimistic (typical: assume the overrun-to-date doesn't repeat) to the conservative (composite CPI×SPI, and a Monte-Carlo p80). The spread is the honesty: a single point estimate hides it. VAC is BAC (${money(cp.bac)}) minus each EAC.</div>
+      <table>
+        <thead><tr><th>Method</th><th class="num">EAC</th><th class="num">Implied VAC</th><th>Relative</th></tr></thead>
+        <tbody>${eacRows}</tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h2>WBS tree — every node, indented by level</h2>
+      <div class="desc">Project → control account → work package. EAC and VAC are CPI-based; TCPI is the efficiency the remaining work must achieve to still finish at BAC. Guard-failed leaves (no baseline PV, no AC, or no BAC) are excluded from the rollup and shown with their reason.</div>
+      <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>WBS · Name</th><th class="num">PV</th><th class="num">EV</th><th class="num">AC</th><th class="num">BAC</th><th class="num">CV</th><th class="num">SV</th><th class="num">CPI</th><th class="num">SPI</th><th class="num">EAC</th><th class="num">VAC</th><th class="num">TCPI</th><th>Status</th></tr></thead>
+        <tbody>${wbsRows}</tbody>
+      </table>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Planned-value S-curves — plan vs. earned vs. actual</h2>
+      <div class="desc">The classic EVM S-curve: the planned-value baseline across the program calendar, with the earned-value and actual-cost points measured at the status period. EV below the PV line is schedule slippage (CP-L3); EV above it is running ahead of plan (PP-CORN26). AC above EV is a cost overrun on both.</div>
+      <h3 style="margin:14px 0 4px">CP-L3 — Pasco Line-3 IQF Freezer Expansion</h3>
+      ${scurveSvg("CP-L3")}
+      <h3 style="margin:18px 0 4px">PP-CORN26 — 2026 Sweet Corn Pack Season</h3>
+      ${scurveSvg("PP-CORN26")}
+    </div>
+    <div class="card">
+      <h2>Variance analyses required — ${flaggedNodes.length} flagged node${flaggedNodes.length === 1 ? "" : "s"}</h2>
+      <div class="desc">Every node that tripped a variance band, a CPI/SPI floor, the TCPI realism test, or a baseline-data guard — each needs a written variance analysis (a VAR) with its own reason.</div>
+      <table>
+        <thead><tr><th>WBS</th><th>Name</th><th>Reason(s)</th></tr></thead>
+        <tbody>${varRows}</tbody>
+      </table>
+    </div>
+  `;
+}
+
 /* ---------- Vendor Performance Scorecard ---------- */
 const VS_REAL_FLOOR = 0.85, VS_REAL_CEILING = 0.20;
 let vsOnTimeFloor = null, vsPriceCeiling = null; // null until first render sets them from the real KPI values
@@ -8898,8 +9192,8 @@ function renderDbtPipeline() {
 
   document.getElementById("panel-dbt").innerHTML = `
     <div class="card">
-      <h2>dbt-core + Postgres: a transformation layer in front of 18 of the 25 data tools</h2>
-      <div class="desc">Right now 18 of the 25 data tools each read a hand-shaped sample file directly (<code>gl_variance_tie_out</code>, <code>carbon_adjusted_throughput_analyzer</code>, <code>ai_automation_cost_governor</code>, <code>gaap_cost_compliance_checker</code>, <code>data_provenance_auditor</code>, and <code>document_version_control_auditor</code> are file-based only, no dbt layer yet). This is what a real "raw export → tested transformation → analysis" pipeline in front of them looks like: 34 raw seeds (exact mirrors of the existing sample data, messy fields intact) → dbt staging models (a malformed value becomes NULL and gets flagged, never crashes the load — Postgres has no native TRY_CAST, so this uses a small safe-cast helper) → mart models shaped exactly like each tool's existing input. Every eligible tool gained an optional <code>--source postgres</code> flag, plus a third <code>--source postgres-airbyte</code> choice (see below); the file-based default is completely unchanged.</div>
+      <h2>dbt-core + Postgres: a transformation layer in front of 19 of the 26 data tools</h2>
+      <div class="desc">Right now 19 of the 26 data tools each read a hand-shaped sample file directly (<code>gl_variance_tie_out</code>, <code>carbon_adjusted_throughput_analyzer</code>, <code>ai_automation_cost_governor</code>, <code>gaap_cost_compliance_checker</code>, <code>data_provenance_auditor</code>, and <code>document_version_control_auditor</code> are file-based only, no dbt layer yet). This is what a real "raw export → tested transformation → analysis" pipeline in front of them looks like: 34 raw seeds (exact mirrors of the existing sample data, messy fields intact) → dbt staging models (a malformed value becomes NULL and gets flagged, never crashes the load — Postgres has no native TRY_CAST, so this uses a small safe-cast helper) → mart models shaped exactly like each tool's existing input. Every eligible tool gained an optional <code>--source postgres</code> flag, plus a third <code>--source postgres-airbyte</code> choice (see below); the file-based default is completely unchanged.</div>
     </div>
     <div class="kpi-grid">
       <div class="kpi" style="border-top:3px solid var(--series-7)">
@@ -8962,13 +9256,13 @@ function renderDbtPipeline() {
 }
 
 /* ---------- System Map (mind map) ----------
-   MAINTENANCE: to add a 25th tool, append one { name, tab, why, flag } object to the matching
+   MAINTENANCE: to add a 26th tool, append one { name, tab, why, flag } object to the matching
    duty's `tools` array in MINDMAP_DATA.clusters below (search "ADD A NEW TOOL HERE"). `tab` must
    be a real VALID_TABS slug (that's what makes the tool chip clickable-to-navigate) and `why`
    should be a short, real, grounded reason -- not filler. Duty tags are transcribed from this
    repo's own TWIN_CITY_MAPPING.md "## `tool/` → Duty #N" headers -- keep them in sync with that
-   file, don't invent a new taxonomy here. Every stat below is a live-verified number (25 tools,
-   36 KPI thresholds, 11 flagging_engine checks, 34 dbt raw seeds, 661 pytest cases, 29 non-
+   file, don't invent a new taxonomy here. Every stat below is a live-verified number (26 tools,
+   41 KPI thresholds, 11 flagging_engine checks, 37 dbt raw seeds, 674 pytest cases, 31 non-
    mindmap dashboard sections), not copied from any other doc's own count strings (several of
    which had drifted stale independently of each other). Duty colors reuse this dashboard's own
    --series-N tokens, not a new palette; tool-chip icons reuse TOOL_ICONS (zero new icon data).
@@ -8987,11 +9281,11 @@ const MINDMAP_DATA = {
   },
   dataFoundation: [
     { eyebrow: "Extract-Load", title: "airbyte_pipeline", tab: "dbt", body: "Config scaffolding (real Terraform against Airbyte's current API), not a running deployment.", metric: "4 mechanical streams + a 2nd CPM source" },
-    { eyebrow: "Transform", title: "dbt_pipeline", tab: "dbt", body: "Raw messy exports → tested staging models → mart models shaped exactly like each tool's real input.", metric: "<b>34</b> raw seeds · <b>182/182</b> dbt tests" },
+    { eyebrow: "Transform", title: "dbt_pipeline", tab: "dbt", body: "Raw messy exports → tested staging models → mart models shaped exactly like each tool's real input.", metric: "<b>34</b> raw seeds · <b>195/195</b> dbt tests" },
   ],
   sharedSpine: [
-    { eyebrow: "Parameters", title: "shared/kpi_registry.py", tab: "architecture", body: "One source of truth for every materiality threshold, tolerance, and band — each tagged to the JD duty it maps to.", metric: "<b>36</b> thresholds · feeds 19 of 25 tools" },
-    { eyebrow: "Logic", title: "shared/flagging_engine.py", tab: "architecture", body: "Generic statistical/structural checks shared instead of copy-pasted per tool.", metric: "<b>11</b> checks · feeds 21 of 25 tools" },
+    { eyebrow: "Parameters", title: "shared/kpi_registry.py", tab: "architecture", body: "One source of truth for every materiality threshold, tolerance, and band — each tagged to the JD duty it maps to.", metric: "<b>41</b> thresholds · feeds 20 of 26 tools" },
+    { eyebrow: "Logic", title: "shared/flagging_engine.py", tab: "architecture", body: "Generic statistical/structural checks shared instead of copy-pasted per tool.", metric: "<b>11</b> checks · feeds 22 of 26 tools" },
   ],
   // ADD A NEW TOOL HERE — append to the matching duty's `tools` array: { name, tab, why, flag }.
   clusters: [
@@ -9011,7 +9305,7 @@ const MINDMAP_DATA = {
       ] },
     { id: "Duty #3", color: "var(--series-7)", icon: "factory", title: "Cost Accounting & Manufacturing Finance",
       why: "Standard-cost policy, overhead allocation, seasonal absorption, variance review, inventory valuation.",
-      detail: "The JD says: <em>\"standard-cost policy, overhead allocation, seasonal absorption; review manufacturing variance...; inventory valuation, physical/cycle counts.\"</em> The largest cluster in the repo — eight tools, each a genuinely different axis of that one sentence.",
+      detail: "The JD says: <em>\"standard-cost policy, overhead allocation, seasonal absorption; review manufacturing variance...; inventory valuation, physical/cycle counts.\"</em> The largest cluster in the repo — nine tools, each a genuinely different axis of that one sentence.",
       tools: [
         { name: "Cost-Roll Validator", tab: "costroll", flag: "seasonal + tiered", why: "Standard cost vs. PO history, with a seasonal mode for a business that isn't flat year-round." },
         { name: "Cost-Roll Simulator", tab: "costsim", flag: "Monte Carlo", why: "Same question, Monte Carlo — how much does the validator's single point estimate actually vary?" },
@@ -9019,8 +9313,9 @@ const MINDMAP_DATA = {
         { name: "Energy Variance Analyzer", tab: "energyvar", flag: "", why: "Rate variance (paid more per kWh) vs. efficiency variance (used more kWh) — refrigeration's the plant's biggest utility line." },
         { name: "Labor Efficiency Analyzer", tab: "laboreff", flag: "TDABC", why: "Time-driven ABC — flags a labor standard nobody's re-verified in too long, not just a variance." },
         { name: "Time-Phased P&amp;L Analyzer", tab: "timephasedpnl", flag: "", why: "Plan vs. Actual vs. Forecast, period by period — not just a single-point cost roll." },
-        { name: "Cycle Count Reconciler", tab: "cyclecount", flag: "", why: "Physical count vs. book quantity — the one Duty #3 axis none of the other seven cost tools touch." },
+        { name: "Cycle Count Reconciler", tab: "cyclecount", flag: "", why: "Physical count vs. book quantity — the one Duty #3 axis none of the other eight cost tools touch." },
         { name: "Carbon-Adjusted Throughput Analyzer", tab: "carbonthroughput", flag: "research pilot", why: "Bounded pilot: does $-throughput priority at the bottleneck diverge from carbon-efficiency priority?" },
+        { name: "Earned Value Manager", tab: "earnedvalue", flag: "capital projects & pack season", why: "Full EVM over a WBS tree — CPI/SPI, six EAC methods, TCPI realism — for a capital freezer expansion and a sweet-corn pack season, not a single-point cost roll." },
       ] },
     { id: "Duty #4", color: "var(--series-6)", icon: "truck", title: "Other-Selling P&amp;L",
       why: "Category P&amp;L for outbound freight, storage, brokerage, discounts — drive toward break-even.",
@@ -9055,11 +9350,11 @@ const MINDMAP_DATA = {
   terminal: {
     eyebrow: "How it ends", title: "This Dashboard", tab: "overview",
     body: "Every tool's real, deterministic CLI output — transcribed, not simulated — converges here: one verdict banner, one findings feed worst-first, a guided tour, an Interview Mode for a 5-tool live demo.",
-    metrics: [["30", "sections"], ["661", "pytest"], ["182/182", "dbt tests"]],
+    metrics: [["32", "sections"], ["674", "pytest"], ["195/195", "dbt tests"]],
   },
 };
 let mmPinned = null;
-const MINDMAP_STATS = [["25", "tools"], ["9", "essential duties"], ["36", "KPI thresholds"], ["661", "pytest cases"]];
+const MINDMAP_STATS = [["26", "tools"], ["9", "essential duties"], ["41", "KPI thresholds"], ["674", "pytest cases"]];
 
 function mmEscAttr(s) {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -9342,7 +9637,7 @@ function renderArchitecture() {
   // component processing all 5 sources, not 5 distinct tools, so it's drawn as one wide
   // band (same pattern as the shared-layer/outputs boxes below) rather than 5 copies of
   // the same box. Belongs to every column's group -- every traced column's path runs through it.
-  boxes += `<foreignObject x="20" y="${dbtY}" width="860" height="${dbtH}"><button xmlns="http://www.w3.org/1999/xhtml" type="button" class="arch-box arch-outputs-box arch-el" data-arch-group="${ALL_COLS}" data-goto="dbt" style="--accent:var(--series-7)"><p><strong>dbt_pipeline</strong> — staging + mart models, one table per source above (182/182 dbt tests) — plus a parallel Airbyte-fed sibling layer wired into every eligible tool, and a deep-audit verification layer</p></button></foreignObject>`;
+  boxes += `<foreignObject x="20" y="${dbtY}" width="860" height="${dbtH}"><button xmlns="http://www.w3.org/1999/xhtml" type="button" class="arch-box arch-outputs-box arch-el" data-arch-group="${ALL_COLS}" data-goto="dbt" style="--accent:var(--series-7)"><p><strong>dbt_pipeline</strong> — staging + mart models, one table per source above (195/195 dbt tests) — plus a parallel Airbyte-fed sibling layer wired into every eligible tool, and a deep-audit verification layer</p></button></foreignObject>`;
   cols.forEach((c, i) => {
     const g = `col${i}`;
     boxes += `<foreignObject x="${c.x}" y="${toolY}" width="${colW}" height="${toolH}"><button xmlns="http://www.w3.org/1999/xhtml" type="button" class="arch-box arch-el" data-arch-group="${g}" data-goto="${c.tab}" style="--accent:${c.accent}"><h4>${c.tool}</h4><p>${c.toolNote}</p></button></foreignObject>`;
@@ -9377,12 +9672,12 @@ function renderArchitecture() {
   // to either of these two boxes previously showed the washed-out default outline color even
   // when the box was simultaneously part of an active trace.
   boxes += `<foreignObject x="20" y="${sharedY}" width="720" height="${sharedH}"><div xmlns="http://www.w3.org/1999/xhtml" class="arch-shared-wrap">
-    <button type="button" class="arch-box arch-el" data-arch-group="${SHARED_COLS}" data-arch-trace="${SHARED_COLS}" aria-pressed="false" aria-describedby="archTraceHint" style="--accent:var(--text-secondary); --active-accent:var(--series-1)"><h4>shared/kpi_registry.py</h4><p>36 thresholds tagged to a JD Duty. 19 of the 25 tools pull their defaults from here — one source of truth (gl_variance_tie_out, carbon_adjusted_throughput_analyzer, ai_automation_cost_governor, gaap_cost_compliance_checker, data_provenance_auditor, and document_version_control_auditor keep their own tolerance/threshold or policy constants as local values — see their own module docstrings for why).</p></button>
-    <button type="button" class="arch-box arch-el" data-arch-group="${SHARED_COLS}" data-arch-trace="${SHARED_COLS}" aria-pressed="false" aria-describedby="archTraceHint" style="--accent:var(--text-secondary); --active-accent:var(--series-1)"><h4>shared/flagging_engine.py</h4><p>9 generic checks: threshold, band, missing-data, timing-adjacency, cost-baseline-materiality, z-score, trend-break, flatline, period-gap. 21 of the 25 tools delegate real logic here, not just parameters.</p></button>
+    <button type="button" class="arch-box arch-el" data-arch-group="${SHARED_COLS}" data-arch-trace="${SHARED_COLS}" aria-pressed="false" aria-describedby="archTraceHint" style="--accent:var(--text-secondary); --active-accent:var(--series-1)"><h4>shared/kpi_registry.py</h4><p>41 thresholds tagged to a JD Duty. 20 of the 26 tools pull their defaults from here — one source of truth (gl_variance_tie_out, carbon_adjusted_throughput_analyzer, ai_automation_cost_governor, gaap_cost_compliance_checker, data_provenance_auditor, and document_version_control_auditor keep their own tolerance/threshold or policy constants as local values — see their own module docstrings for why).</p></button>
+    <button type="button" class="arch-box arch-el" data-arch-group="${SHARED_COLS}" data-arch-trace="${SHARED_COLS}" aria-pressed="false" aria-describedby="archTraceHint" style="--accent:var(--text-secondary); --active-accent:var(--series-1)"><h4>shared/flagging_engine.py</h4><p>9 generic checks: threshold, band, missing-data, timing-adjacency, cost-baseline-materiality, z-score, trend-break, flatline, period-gap. 22 of the 26 tools delegate real logic here, not just parameters.</p></button>
   </div></foreignObject>`;
   arrows += `<line class="flow-arrow arch-el" data-arch-group="${SHARED_COLS}" style="--accent:var(--series-1)" x1="380" y1="${sharedY + sharedH}" x2="380" y2="${outY}" marker-end="url(#arrow)"/>`;
 
-  boxes += `<foreignObject x="20" y="${outY}" width="860" height="${outH}"><div xmlns="http://www.w3.org/1999/xhtml" class="arch-box arch-outputs-box arch-el" data-arch-group="${ALL_COLS}" style="--accent:var(--series-1)"><p><strong>Outputs</strong> — this dashboard (24 tabs) · KPI_REGISTRY.md · TWIN_CITY_MAPPING.md · COST_ACCOUNTING_DEFENSE_VS_FOOD.md</p></div></foreignObject>`;
+  boxes += `<foreignObject x="20" y="${outY}" width="860" height="${outH}"><div xmlns="http://www.w3.org/1999/xhtml" class="arch-box arch-outputs-box arch-el" data-arch-group="${ALL_COLS}" style="--accent:var(--series-1)"><p><strong>Outputs</strong> — this dashboard (25 tabs) · KPI_REGISTRY.md · TWIN_CITY_MAPPING.md · COST_ACCOUNTING_DEFENSE_VS_FOOD.md</p></div></foreignObject>`;
 
   // viewBox is 906 wide (not 900) purely to give col4's box -- whose right edge sits exactly
   // flush at x=900 -- room for its 2px active box-shadow and 2px focus outline to render
@@ -9392,7 +9687,7 @@ function renderArchitecture() {
   // one opaque image, which would hide every trace-trigger button (and its aria-pressed state)
   // from screen-reader users entirely. "group" keeps the aria-label while leaving descendants
   // in the accessibility tree.
-  const svg = `<svg viewBox="0 0 906 ${vh}" width="100%" height="${vh}" class="arch-diagram" id="archDiagram" role="group" aria-label="Pipeline architecture: data sources feed dbt_pipeline's staging and mart models, which feed 5 representative tools (24 total, see the tool cards above), 4 of these 5 sharing a KPI registry and flagging engine, all producing this dashboard. Click any source box or shared-layer box to trace its data-flow path.">
+  const svg = `<svg viewBox="0 0 906 ${vh}" width="100%" height="${vh}" class="arch-diagram" id="archDiagram" role="group" aria-label="Pipeline architecture: data sources feed dbt_pipeline's staging and mart models, which feed 5 representative tools (25 total, see the tool cards above), 4 of these 5 sharing a KPI registry and flagging engine, all producing this dashboard. Click any source box or shared-layer box to trace its data-flow path.">
     <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="var(--text-muted)"/></marker></defs>
     <g stroke="var(--text-muted)" stroke-width="1.5">${arrows}</g>
     ${boxes}
@@ -9401,7 +9696,7 @@ function renderArchitecture() {
   document.getElementById("panel-architecture").innerHTML = `
     <div class="card">
       <h2>How the pipeline is wired</h2>
-      <div class="desc">Data sources feed <code>dbt_pipeline</code>'s staging/mart models, which feed 18 of the 25 tools (each also still readable directly from a file — dbt is an optional <code>--source postgres</code> path, not a required hop; <code>gl_variance_tie_out</code>, <code>carbon_adjusted_throughput_analyzer</code>, <code>ai_automation_cost_governor</code>, <code>gaap_cost_compliance_checker</code>, <code>data_provenance_auditor</code>, and <code>document_version_control_auditor</code> are file-based only, no dbt layer yet); 19 of the 25 pull from the shared KPI registry, and 21 of them also share the flagging engine (variance_narrator's guardrails and fsma_traceability_checker's completeness checks are different-shaped problems it doesn't cover); everything lands in this dashboard. The infra maturity assessor deliberately bypasses both shared modules — a coarser, whole-domain weighting concept, not an oversight (see the comment in <code>assessor.py</code>).</div>
+      <div class="desc">Data sources feed <code>dbt_pipeline</code>'s staging/mart models, which feed 19 of the 26 tools (each also still readable directly from a file — dbt is an optional <code>--source postgres</code> path, not a required hop; <code>gl_variance_tie_out</code>, <code>carbon_adjusted_throughput_analyzer</code>, <code>ai_automation_cost_governor</code>, <code>gaap_cost_compliance_checker</code>, <code>data_provenance_auditor</code>, and <code>document_version_control_auditor</code> are file-based only, no dbt layer yet); 20 of the 26 pull from the shared KPI registry, and 22 of them also share the flagging engine (variance_narrator's guardrails and fsma_traceability_checker's completeness checks are different-shaped problems it doesn't cover); everything lands in this dashboard. The infra maturity assessor deliberately bypasses both shared modules — a coarser, whole-domain weighting concept, not an oversight (see the comment in <code>assessor.py</code>).</div>
       <div class="arch-trace-hint" id="archTraceHint">Try it — click a source box (top row) or a shared-layer box to trace its data-flow path through the diagram.<button type="button" class="threshold-reset" id="archTraceReset" hidden>Show full pipeline</button></div>
       ${svg}
       <div class="arch-trace-caption" id="archTraceCaption" aria-live="polite"></div>
@@ -9463,13 +9758,13 @@ function renderArchitecture() {
   resetBtn.addEventListener("click", clearTrace);
 }
 
-/* ---------- Navigation (scroll-based — all 30 sections render in one continuous document
+/* ---------- Navigation (scroll-based — all 32 sections render in one continuous document
    now, replacing the old show-one-panel-at-a-time tab model) ---------- */
-const VALID_TABS = ["overview", "architecture", "dbt", "mindmap", "narrator", "recon", "costroll", "margin", "infra", "ap", "costsim", "yieldmix", "energyvar", "fsma", "opsmonitor", "laboreff", "bbcinv", "grower", "timephasedpnl", "vendorscorecard", "cyclecount", "apdisbursement", "pbcaudit", "glvariance", "carbonthroughput", "aigovernance", "gaapcompliance", "dataprovenance", "docversioncontrol", "crosstool", "glossary"];
+const VALID_TABS = ["overview", "architecture", "dbt", "mindmap", "narrator", "recon", "costroll", "margin", "infra", "ap", "costsim", "yieldmix", "energyvar", "fsma", "opsmonitor", "laboreff", "bbcinv", "grower", "timephasedpnl", "vendorscorecard", "cyclecount", "apdisbursement", "pbcaudit", "glvariance", "carbonthroughput", "aigovernance", "gaapcompliance", "dataprovenance", "docversioncontrol", "earnedvalue", "crosstool", "glossary"];
 
 function setActiveSidebarLink(name) {
   // Interview Mode hides every non-demo sidebar link via CSS; don't silently drop the
-  // visible highlight onto a hidden link while the reader scrolls through one of the 25
+  // visible highlight onto a hidden link while the reader scrolls through one of the 27
   // sections outside the demo path — leave the last visible demo link active instead.
   if (document.documentElement.getAttribute("data-view") === "interview") {
     const link = document.querySelector(`.sidebar a[data-tab="${name}"]`);
@@ -9795,20 +10090,20 @@ function buildFeed() {
 }
 
 /* ---------- Guided tour ----------
-   All 25 tool sections, in sidebar order (plus the non-tool reference stops -- 31 total).
+   All 26 tool sections, in sidebar order (plus the non-tool reference stops -- 32 total).
    Every caption traces to one of three sources, nothing invented: 4 stops
    (costroll/margin/vendorscorecard/bbcinv) keep their original, already-tested
    INTERVIEW_TALKING_POINTS.md-sourced captions unchanged; 5 more
    (timephasedpnl/yieldmix/energyvar/laboreff/infra) paraphrase that same file's other
-   sections; the remaining 16 adapt each tool's own already-shipped `.desc` copy. Reuses
+   sections; the remaining 17 adapt each tool's own already-shipped `.desc` copy. Reuses
    scrollToSection (the same nav function the sidebar/cmdk use) rather than a separate scroll
-   mechanism. startTour() force-exits Interview Mode first (see below) since 26 of these 31
+   mechanism. startTour() force-exits Interview Mode first (see below) since 27 of these 32
    stops are non-demo sections Interview Mode hides entirely. */
 const TOUR_STEPS = [
-  { tab: "overview", title: "The whole engine, one screen", caption: "This walkthrough covers all 31 sections in the sidebar, in order — every tool's status rolls up into one verdict banner right here, alongside a findings feed of every flagged item across every tool, worst first." },
-  { tab: "architecture", title: "How the pipeline is wired", caption: "Data sources feed dbt_pipeline's staging/mart models, which feed 18 of the 25 tools — 19 sharing one KPI registry, 21 also sharing one flagging engine. Click any source box or shared-layer box below to trace its exact data-flow path through the diagram." },
+  { tab: "overview", title: "The whole engine, one screen", caption: "This walkthrough covers all 32 sections in the sidebar, in order — every tool's status rolls up into one verdict banner right here, alongside a findings feed of every flagged item across every tool, worst first." },
+  { tab: "architecture", title: "How the pipeline is wired", caption: "Data sources feed dbt_pipeline's staging/mart models, which feed 19 of the 26 tools — 20 sharing one KPI registry, 22 also sharing one flagging engine. Click any source box or shared-layer box below to trace its exact data-flow path through the diagram." },
   { tab: "dbt", title: "From hand-shaped files to a real pipeline", caption: "Right now the tools each read a hand-shaped sample file directly. This section shows what a real raw-export → tested-transformation → analysis pipeline in front of them looks like: 34 raw seeds → dbt staging (a malformed value becomes NULL and gets flagged, never crashes the load) → mart models shaped exactly like each tool's real input." },
-  { tab: "mindmap", title: "The whole engine, one map", caption: "Every one of the 25 tools traced back to the real job description that grounds it — discovery → data pipeline → the 25 tools grouped by JD Essential Duty → shared infra → synthesis → this dashboard. Hover a duty cluster to trace its connections." },
+  { tab: "mindmap", title: "The whole engine, one map", caption: "Every one of the 26 tools traced back to the real job description that grounds it — discovery → data pipeline → the 26 tools grouped by JD Essential Duty → shared infra → synthesis → this dashboard. Hover a duty cluster to trace its connections." },
   { tab: "narrator", title: "AI commentary, verified before it ships", caption: "The model-drafted narrative here is illustrative only — the numbers underneath are always code-computed, never model output. Direction is independently sign-checked against the real variance and account type, so a model claiming 'favorable' on an actual cost increase gets rejected before it would ever show here." },
   { tab: "recon", title: "ERP meets CPM", caption: "Two synthetic exports — one shaped like an ERP GL extract, one shaped like a CPM export — reconciled against each other to catch real mismatches and timing differences before they become a close problem." },
   { tab: "timephasedpnl", title: "Overhead absorption, the literal formula", caption: "Phases an annual plan into periods, then blends actuals with forecast into one continuous Latest Estimate. One line item is a literal overhead-absorption volume variance — (latest-estimate volume − phased budgeted volume) × budgeted fixed overhead rate — the textbook formula, not an analogy to it." },
@@ -9833,7 +10128,8 @@ const TOUR_STEPS = [
   { tab: "gaapcompliance", title: "Materiality isn't the only question", caption: "Every other cost tool checks whether a variance is material — this one checks whether it was disposed of correctly under GAAP once found. ASC 330-10-30-3: abnormal idle-capacity/spoilage must be expensed, never capitalized, regardless of dollar size. ASC 330-10-35: a SKU can't be carried above its net realizable value." },
   { tab: "dataprovenance", title: "The no-fabrication promise, made runnable", caption: "Every tool in this repo discloses a no-fabrication policy — this one checks it. Audits a claims manifest against the real, checked-in CSV rows each claim cites, catching three distinct failure modes: a stale figure, a row that doesn't exist, and a file that was moved or renamed." },
   { tab: "docversioncontrol", title: "Is the document itself trustworthy?", caption: "pbc_audit_tracker tracks a PBC calendar's status and deadlines — this tool asks a different question: is the document a well-controlled artifact? Catches out-of-order version numbers, silent overwrites without a version bump, missing audit-trail metadata, and folder/naming-convention violations." },
-  { tab: "infra", title: "Built against the JD's own highest weight", caption: "Scores discovery observations per domain, weighted by which JD Essential Duty it maps to. Systems, Data & Automation is weighted 5× — the single highest weight of any domain in the job description — and 9 of the 25 tools are tagged directly to it." },
+  { tab: "earnedvalue", title: "Cost roll meets schedule — full EVM", caption: "The other Duty #3 cost tools take a single-point snapshot; this one measures earned value across a WBS tree. CPI/SPI RAG banding, six EAC forecasting methods (typical, CPI, CPI×SPI, reforecast, Monte-Carlo p50/p80), a TCPI realism test that rejects a not-credible at-budget forecast, and the ±10% variance-analysis trip-wire — over a capital freezer expansion and a sweet-corn pack season." },
+  { tab: "infra", title: "Built against the JD's own highest weight", caption: "Scores discovery observations per domain, weighted by which JD Essential Duty it maps to. Systems, Data & Automation is weighted 5× — the single highest weight of any domain in the job description — and 9 of the 26 tools are tagged directly to it." },
   { tab: "crosstool", title: "A different shape — reading the others", caption: "This synthesis tool doesn't own its own domain data — it reads a findings feed spanning the other tools' already-verified results and produces one prioritized, guardrailed action list. Try the sandbox below: build a hypothetical recommendation and watch it run through the real hallucination/coverage/priority-consistency checks." },
   { tab: "glossary", title: "Every example, a real number", caption: "Same discipline as everywhere else in this repo: every example here is a real number from a real run of the tool it describes — nothing invented for this page. Three formula terms have a live calculator — change the numbers and watch the result recompute." },
 ];
@@ -9890,7 +10186,7 @@ function goToTourStep() {
   tourHighlightTimer = setTimeout(tourHighlightTarget, 350);
 }
 function startTour() {
-  // Interview Mode hides 26 of these 31 stops' sections entirely (display:none) -- scrolling
+  // Interview Mode hides 27 of these 32 stops' sections entirely (display:none) -- scrolling
   // to a hidden section is a silent no-op, so a tour started there would desync (card
   // advances, page/sidebar don't) the moment it hit any non-demo stop. Force Full Dashboard
   // first so every stop is actually reachable; this is a real, persisted mode switch (same
@@ -10116,6 +10412,7 @@ function renderProvenanceBadge() {
 renderProvenanceBadge();
 
 renderTimePhasedPnl();
+renderEarnedValue();
 renderVendorScorecard();
 renderCycleCount();
 renderApDisbursement();
@@ -10174,12 +10471,19 @@ try {
 function renderKpiDetailRow(name) {
   const d = KPI_DETAILS[name];
   if (!d) return "";
+  // For controls whose example carries a clean metric type + value + threshold, append a
+  // deterministic "Significance" line computed by narrate() from those same real numbers.
+  const sig = KPI_SIGNIFICANCE[name];
+  const sigHtml = sig
+    ? `<div class="kpi-significance-callout"><span class="kpi-detail-label">Significance</span>${esc(narrate(sig.type, sig.value, sig.opts))}<div class="kpi-sig-caption">Rule-based reading — computed from the example value and its threshold, not a live model.</div></div>`
+    : "";
   return `<tr class="kpi-detail-row" data-kpi-detail-for="${name}"><td colspan="4">
     <div class="kpi-detail-field"><i class="ph ph-book-open"></i><div><span class="kpi-detail-label">What it is</span>${esc(d.explanation)}</div></div>
     <div class="kpi-detail-field"><i class="ph ph-target"></i><div><span class="kpi-detail-label">Why it exists</span>${esc(d.purpose)}</div></div>
     <div class="kpi-detail-field"><i class="ph ph-lightbulb"></i><div><span class="kpi-detail-label">What a flag means</span>${esc(d.insight)}</div></div>
     <div class="kpi-formula-block"><i class="ph ph-function" style="margin-right:6px;color:var(--text-muted)"></i>${esc(d.formula)}</div>
     <div class="kpi-example-callout"><strong>Real example:</strong> ${esc(d.example)}</div>
+    ${sigHtml}
   </td></tr>`;
 }
 function openKpiDetail(name, table) {
