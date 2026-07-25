@@ -2,7 +2,7 @@
 
 **Live: https://tjaiyen.github.io/tcf-finance-dashboard/**
 
-A single, self-contained operations dashboard covering 23 cost-accounting and finance-automation
+A single, self-contained operations dashboard covering 25 cost-accounting and finance-automation
 tools built for food/beverage manufacturing — seasonal standard-cost validation, margin-leak
 recovery, vendor performance scoring, borrowing-base inventory eligibility, FSMA traceability,
 a cross-tool AI insight synthesizer, a sub-ledger-to-GL variance tie-out, and more, all backed by
@@ -15,7 +15,7 @@ on the page itself for the full statement.
 ## Getting started
 
 Open the live link above. Click **Interview Mode** (top right) for a simplified view down to
-5 tools, or explore the full sidebar — every tool has an Overview-panel summary, and `⌘K`
+a 5-panel walkthrough (Overview + 4 tools), or explore the full sidebar — every tool has an Overview-panel summary, and `⌘K`
 searches across all tools and findings.
 
 ## What's here
@@ -25,7 +25,7 @@ searches across all tools and findings.
 - **Dark-first UI** with a live palette (Nocturne/Vivid/Mono) and density (Comfortable/Compact)
   switcher, a command palette (`⌘K`) that jumps to any tool or finding, and an **Interview
   Mode** toggle that collapses the view down to a short guided walkthrough.
-- **23 tools** spanning cost accounting, AP/procurement, compliance, and operational readiness —
+- **25 tools** spanning cost accounting, AP/procurement, compliance, and operational readiness —
   reachable from the sidebar, with an Overview panel that rolls every tool's status up into one
   screen. Includes a bounded research pilot (Carbon-Adjusted Throughput) that's explicit about
   its own limits — see that tab's own disclosure, not a polished "finished feature." The two
@@ -48,7 +48,7 @@ searches across all tools and findings.
 
 This is a standalone snapshot published for sharing — it does not include the underlying Python
 tools, tests, dbt pipeline, or any other project documentation. All data shown is synthetic
-sample data, disclosed as such in the page's own footer. 18 of the 23 tools have an optional dbt
+sample data, disclosed as such in the page's own footer. 18 of the 25 tools have an optional dbt
 layer in the source repo (`tcf-engine-prep`, private); `gl_variance_tie_out`,
 `carbon_adjusted_throughput_analyzer`, `ai_automation_cost_governor`,
 `gaap_cost_compliance_checker`, and `data_provenance_auditor` are file-based only, no dbt layer
