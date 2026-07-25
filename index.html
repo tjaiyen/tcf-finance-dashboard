@@ -1918,9 +1918,9 @@ function narrate(type, value, opts){
         ? "The remaining work would have to run at " + v.toFixed(3) + " efficiency to still finish on budget — i.e. BEAT the plan. That's a recovery red flag; the budget is likely gone."
         : "The remaining work only needs " + v.toFixed(3) + " efficiency to finish on budget — achievable at the current run rate.";
     case "variancePct": {
-      var mag = Math.abs(v), dir = opts.favorable ? "favorable" : "unfavorable";
+      var mag = Math.abs(v), dir = opts.favorable == null ? "" : (opts.favorable ? "favorable " : "unfavorable ");
       var over = band != null && mag > band;
-      return pct(mag) + " " + dir + " vs. the baseline. " + (over
+      return pct(mag) + " " + dir + "vs. the baseline. " + (over
         ? "That exceeds the ±" + pct(band) + " materiality band, so a written variance analysis is triggered."
         : "That's inside the ±" + (band!=null?pct(band):"5%") + " band — routine noise, no write-up needed.");
     }
@@ -1947,7 +1947,7 @@ function narrate(type, value, opts){
    deliberately (no fabricated values). Surfaced as a "Significance" line in the KPI detail row. */
 const KPI_SIGNIFICANCE = {
   variance_materiality_threshold:             { type: "variancePct", value: 0.317, opts: { band: 0.05, favorable: false } },
-  cost_roll_validation_band:                  { type: "variancePct", value: 0.199, opts: { band: 0.10, favorable: true } },
+  cost_roll_validation_band:                  { type: "variancePct", value: 0.199, opts: { band: 0.10 } },
   ap_price_variance_band:                     { type: "variancePct", value: 0.25,  opts: { band: 0.05, favorable: false } },
   ap_qty_overbill_band:                       { type: "variancePct", value: 0.111, opts: { band: 0.02, favorable: false } },
   yield_mix_variance_materiality_band:        { type: "variancePct", value: 0.12,  opts: { band: 0.05, favorable: false } },
