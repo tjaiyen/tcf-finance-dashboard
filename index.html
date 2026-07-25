@@ -6208,6 +6208,9 @@ const GLOSSARY = [
   ["ap_disbursement_premature_pay_threshold_days", "How many days early an invoice may be paid, with no discount reason, before it's flagged as premature — cash tied up with no benefit is the other half of 'disbursement controls,' not just paying late."],
   ["pbc_at_risk_days_threshold", "A not_started PBC item due this many days or fewer from the as-of date is flagged at-risk — deliberately excludes in_progress items, since work already underway is a different risk profile than untouched work."],
   ["pbc_min_tracked_items", "Below this many PBC items on the tracked list, the audit-prep completeness read isn't meaningful — independent of whether any individual tracked item is overdue or at-risk."],
+  ["grower_paca_prompt_payment_window_days", "The number of days after delivery within which a grower settlement must be paid to stay inside PACA's prompt-payment window — 10 days is the regulatory default (7 CFR §46.2(aa)); a payment past 30 days has likely forfeited the buyer's PACA trust protection on that produce."],
+  ["grower_settlement_price_variance_band", "How far a grower settlement's settled price may deviate from the contract price before it's flagged — tighter than a market purchase-price variance because a settlement should track the signed contract, not the spot market. Quantity is deliberately not banded (delivered qty varies with the harvest vs a pre-season estimate)."],
+  ["grower_settlement_min_expected_lines", "Below this many settlement lines the analyzer reports NOT EVALUABLE instead of a falsely clean 'no exceptions' — guards a too-small extract from reading as 'nothing wrong.'"],
 ];
 const GDEF = {};
 GLOSSARY.forEach(([term, def]) => { GDEF[term.toLowerCase()] = def; });
@@ -6696,11 +6699,11 @@ function renderOverview() {
         <i class="ph ph-pulse verdict-ico"></i>
         <div>
           <div class="verdict-title">Engine status</div>
-          <div class="verdict-sub">${tabsActive.length} tools active &middot; ${flaggedCount} surfacing findings &middot; ${cleanCount} clean &middot; 661 pytest cases &amp; 182/182 dbt tests passing</div>
+          <div class="verdict-sub">${tabsActive.length} components active &middot; ${flaggedCount} surfacing findings &middot; ${cleanCount} clean &middot; 661 pytest cases &amp; 182/182 dbt tests passing</div>
         </div>
         <div class="verdict-figure"><span class="verdict-big">${findingsCount}</span><span class="verdict-cap">findings</span></div>
       </div>
-      <div class="verdict-bar" role="img" aria-label="${cleanCount} of ${tabsActive.length} data tools clean">
+      <div class="verdict-bar" role="img" aria-label="${cleanCount} of ${tabsActive.length} components clean">
         <span class="vb-clean" style="width:${cleanPct}%"></span>
         <span class="vb-flag" style="width:${100 - cleanPct}%"></span>
       </div>
@@ -10145,8 +10148,16 @@ function applySliderA11y(root) {
 }
 applySliderA11y(document);
 try {
+  const SLIDER_SEL = 'input[type="range"], .threshold-value';
   new MutationObserver(muts => {
-    for (const m of muts) if (m.addedNodes && m.addedNodes.length) { applySliderA11y(document); break; }
+    // Only rescan when a slider-related node was actually added (a panel re-render), not on every
+    // unrelated DOM mutation (tab switch, KPI detail row, command palette) — keeps the observer cheap.
+    for (const m of muts) for (const n of m.addedNodes) {
+      if (n.nodeType === 1 && (n.matches?.(SLIDER_SEL) || n.querySelector?.(SLIDER_SEL))) {
+        applySliderA11y(document);
+        return;
+      }
+    }
   }).observe(document.body, { childList: true, subtree: true });
 } catch (e) { /* observer is a progressive enhancement; never block render on it */ }
 
