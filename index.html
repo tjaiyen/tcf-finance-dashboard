@@ -6820,7 +6820,7 @@ function renderOverview() {
         <i class="ph ph-pulse verdict-ico"></i>
         <div>
           <div class="verdict-title">Engine status</div>
-          <div class="verdict-sub">${tabsActive.length} components active &middot; ${flaggedCount} surfacing findings &middot; ${cleanCount} clean &middot; 686 pytest cases &amp; 195/195 dbt tests passing</div>
+          <div class="verdict-sub">${tabsActive.length} components active &middot; ${flaggedCount} surfacing findings &middot; ${cleanCount} clean &middot; 718 pytest cases &amp; 195/195 dbt tests passing</div>
         </div>
         <div class="verdict-figure"><span class="verdict-big">${findingsCount}</span><span class="verdict-cap">findings</span></div>
       </div>
@@ -6851,7 +6851,7 @@ function renderOverview() {
         <div class="label">top-priority discovery gap — ${DOMAIN_LABELS[topGap.domain]} (weighted ${topGap.weight}× as the JD centerpiece)</div>
       </div>
       <div class="kpi">
-        <div class="num">686</div>
+        <div class="num">718</div>
         <div class="label">pytest cases passing across every component — edge cases included, not just the happy path</div>
       </div>
       <div class="kpi">
@@ -9262,7 +9262,7 @@ function renderDbtPipeline() {
    should be a short, real, grounded reason -- not filler. Duty tags are transcribed from this
    repo's own TWIN_CITY_MAPPING.md "## `tool/` → Duty #N" headers -- keep them in sync with that
    file, don't invent a new taxonomy here. Every stat below is a live-verified number (26 tools,
-   41 KPI thresholds, 11 flagging_engine checks, 37 dbt raw seeds, 686 pytest cases, 31 non-
+   41 KPI thresholds, 11 flagging_engine checks, 37 dbt raw seeds, 718 pytest cases, 31 non-
    mindmap dashboard sections), not copied from any other doc's own count strings (several of
    which had drifted stale independently of each other). Duty colors reuse this dashboard's own
    --series-N tokens, not a new palette; tool-chip icons reuse TOOL_ICONS (zero new icon data).
@@ -9350,11 +9350,11 @@ const MINDMAP_DATA = {
   terminal: {
     eyebrow: "How it ends", title: "This Dashboard", tab: "overview",
     body: "Every tool's real, deterministic CLI output — transcribed, not simulated — converges here: one verdict banner, one findings feed worst-first, a guided tour, an Interview Mode for a 5-tool live demo.",
-    metrics: [["32", "sections"], ["686", "pytest"], ["195/195", "dbt tests"]],
+    metrics: [["32", "sections"], ["718", "pytest"], ["195/195", "dbt tests"]],
   },
 };
 let mmPinned = null;
-const MINDMAP_STATS = [["26", "tools"], ["9", "essential duties"], ["41", "KPI thresholds"], ["686", "pytest cases"]];
+const MINDMAP_STATS = [["26", "tools"], ["9", "essential duties"], ["41", "KPI thresholds"], ["718", "pytest cases"]];
 
 function mmEscAttr(s) {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
